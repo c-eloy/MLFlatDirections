@@ -2,35 +2,49 @@ import numpy as np
 import matplotlib.pyplot as plt
 import random
 
-def randomwalk2D(n):
-    # [0, 0, 0, ... ,0]
-    x = np.zeros(n)
-    y = np.zeros(n)
+# Threshold to determine how flat the direction is
+threshold = 1e-3
 
-    directions = ["UP", "DOWN", "LEFT", "RIGHT"]
+# Definition of the potential
+def V(x,y):
+    return np.square(1-(np.square(x)+np.square(y))) 
+
+
+# Random walk to dertermine a possible neighbouring point in a flat direction. Tests random points, return the first
+# satisfying the contraint. n is the numbers of tries.
+def findpoint(x_init,y_init,n,ref):
     for i in range(1, n):
-        # Pick a direction at random
-        step = random.choice(directions)
-        
-        # Move the object according to the direction
-        if step == "RIGHT":
-            x[i] = x[i - 1] + 1
-            y[i] = y[i - 1]
-        elif step == "LEFT":
-            x[i] = x[i - 1] - 1
-            y[i] = y[i - 1]
-        elif step == "UP":
-            x[i] = x[i - 1]
-            y[i] = y[i - 1] + 1
-        elif step == "DOWN":
-            x[i] = x[i - 1]
-            y[i] = y[i - 1] - 1
+        # Pick an angle and a radius randomly
+        theta = random.randrange(0, 360, 1)*np.pi/180
+        r = random.randrange(1, 11, 1)*5e-2
+        x_new, y_new = (x_init+r*np.cos(theta),y_init+r*np.sin(theta))
+
+        # Test new point
+        diffpot = np.abs(ref-V(x_new,y_new))
+        if diffpot <= threshold:
+            break
     
-    # Return all the x and y positions of the object
-    return x, y
+    # Return x_new, y_new if they are different from the initial values, and the initial values otherwise
+    if (x_new, y_new) == (x_init, y_init):
+        return x_init, y_init
+    else:
+        return [x_new, y_new]
 
-x_data, y_data = randomwalk2D(1000)
+#Performs a p steps random walk from x_init,y_init, using findpoint with n tries.
+def randomwalk(x_init,y_init,n,p):
+    # Potential at initial point
+    V_init = V(x_init,y_init)
+    data = [findpoint(x_init,y_init,n,V_init)]
 
-plt.title("2D Random Walk in Python")
-plt.plot(x_data, y_data)
+    for i in range(1, p):
+        data.append(findpoint(np.array(data)[i-1,0],np.array(data)[i-1,1],n,V_init))
+
+    return np.array(data)
+
+data = randomwalk(-1,0,100,100)
+
+angles = np.linspace(0,2*np.pi,100)
+plt.plot(np.cos(angles),np.sin(angles))
+plt.scatter(-1,0,s=100)
+plt.scatter(data[:,0], data[:,1],c='r')
 plt.show()
