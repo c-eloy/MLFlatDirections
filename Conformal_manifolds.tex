@@ -1,0 +1,385 @@
+%!TEX output_directory = aux
+
+\documentclass[11pt]{article}
+
+\usepackage[english]{babel}
+
+% ---- FONT & MICROTYPOGRAPHY ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{moresize}
+
+% ---- FORMATTING ----
+\usepackage{csquotes,textcase,xspace}
+
+% ---- PAGE LAYOUT ----
+\usepackage{geometry}
+\geometry{top=2.5cm,bottom=2cm,inner=2cm,outer=2cm,footnotesep=7mm plus 4pt minus 4pt}
+\usepackage{setspace}
+\setstretch{1.1}
+
+% ---- GRAPHIQUE ----
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf,labelsep=space]{caption}
+\usepackage{subfigure}
+\captionsetup{width=0.9\textwidth,font={small,stretch=1.1}}
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
+\addto\captionsenglish{\renewcommand{\tablename}{Tab.}}
+\definecolor{JoliBleu}{rgb}{0,0.55,0.55}
+\definecolor{JoliVert}{rgb}{0.15,0.6,0}
+\definecolor{JoliRouge}{rgb}{0.86,0.08,0}
+\definecolor{JoliJaune}{rgb}{1,0.75,0}
+\definecolor{JoliGris}{rgb}{0.52,0.52,0.51}
+\definecolor{myblue}{RGB}{26, 77, 116}
+\definecolor{myorange}{RGB}{181, 116, 30}
+\definecolor{mydarkorange}{RGB}{166, 88, 0}
+\definecolor{mygreen}{RGB}{21, 124, 80}
+\definecolor{myblack}{RGB}{43, 65, 82}
+\definecolor{myred}{rgb}{0.5, 0.0, 0.13}
+
+% ---- SECTIONING ----
+\usepackage{titlesec}
+\titleformat{\section}[block]{\Large\boldmath\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\large\boldmath\bfseries}{\thesubsection}{0.5em}{}
+\usepackage{appendix}
+\renewcommand{\setthesection}{\Alph{section}}
+\renewcommand{\restoreapp}{}
+\makeatletter
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\@addtoreset{equation}{section}
+\makeatother
+
+% ---- FOOTERS HEADERS ----
+\usepackage[bottom]{footmisc}
+\usepackage{fancyhdr}
+
+% ---- TABLE OF CONTENTS ----
+\usepackage{titletoc}
+\setcounter{tocdepth}{3}
+
+% ---- BIBLIOGRAPHY ----
+\usepackage[nosort]{cite}
+\bibliographystyle{JHEP}
+\newcommand{\eprint}[1]{{\href{http://arxiv.org/abs/#1}{\texttt{[#1]}}}}
+\newcommand{\eprintN}[1]{{\href{http://arxiv.org/abs/#1}{\texttt{#1 [hep-th]}}}}
+\newcommand{\doi}[2]{\href{http://dx.doi.org/#2}{#1}}
+
+% ---- HYPER REF ----
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+        pdfstartview=FitV,
+        linkcolor= mydarkorange,
+        citecolor= mydarkorange,
+        urlcolor= JoliGris!60!black,
+        hypertexnames=false,
+        linktoc=page}
+
+% ---- TIKZ ----
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% ---- MATHS ----
+\usepackage{amsmath,amssymb,amsfonts,dsfont}
+\usepackage{mathrsfs}
+\usepackage{physics}
+\usepackage{ytableau}
+\ytableausetup{boxsize=1.1em,centertableaux}
+\usepackage{stmaryrd}
+\usepackage{nicefrac}
+\allowdisplaybreaks[1]
+% \usepackage{bbold}
+\usepackage{cases}
+\usepackage{bm}
+\usepackage{bbm}
+
+% ---- TABLES ----
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{array}
+\usepackage{arydshln}
+
+% ---- ENUMERATION ----
+\usepackage[shortlabels]{enumitem}
+
+% ---- MATHS COMMANDS ----
+\newcommand{\A}{\ensuremath{\mathcal{A}}\xspace}
+\newcommand{\F}{\ensuremath{\mathcal{F}}\xspace}
+\renewcommand{\H}{\ensuremath{\mathcal{H}}\xspace}
+\newcommand{\M}{\ensuremath{\mathcal{M}}\xspace}
+\renewcommand{\P}{\ensuremath{\mathcal{P}}\xspace}
+\newcommand{\J}{\ensuremath{\mathcal{J}}\xspace}
+\renewcommand{\d}{\ensuremath{\mathrm{d}}\xspace}
+\renewcommand{\H}{\ensuremath{\mathcal{H}}\xspace}
+\newcommand{\SO}{\ensuremath{\mathrm{SO}}\xspace}
+\renewcommand{\O}{\ensuremath{\mathrm{O}}\xspace}
+\newcommand{\SL}{\ensuremath{\mathrm{SL}}\xspace}
+\newcommand{\Odd}{\ensuremath{\mathrm{O}(d,d)}\xspace}
+\newcommand{\odd}{\ensuremath{\mathfrak{o}(d,d)}\xspace}
+\renewcommand{\Tr}[1]{\ensuremath{\mathrm{Tr}\left(#1\right)}\xspace}
+\newcommand{\vol}{{\,\rm vol}}
+\def\sst#1{{\scriptscriptstyle #1}}
+
+
+\def\0{{\sst{(0)}}}
+\def\1{{\sst{(1)}}}
+\def\2{{\sst{(2)}}}
+\def\3{{\sst{(3)}}}
+\def\4{{\sst{(4)}}}
+\def\5{{\sst{(5)}}}
+\def\6{{\sst{(6)}}}
+\def\7{{\sst{(7)}}}
+\def\8{{\sst{(8)}}}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+
+% ---- COMMENTS ----
+\usepackage[subfigure]{tocloft}		
+\newcommand{\listnotetitle}{\Large List of Notes}
+\newlistof{notes}{nt}{\listnotetitle}
+\newcommand{\notelist}[1]{%
+	\refstepcounter{notes}
+	\addcontentsline{nt}{notes}
+	{\protect\numberline{\thenotes}#1}
+}
+
+\newcommand{\note}[1]{\notelist{#1}\marginpar{\parbox{\marginparwidth}{\boldmath $\Longleftarrow$}}{\boldmath\bfseries Note: #1}}
+
+
+% ---- TITLE PAGE ----
+\usepackage[affil-it]{authblk}
+\def\preprint{}
+
+\makeatletter
+\def\@maketitle{%
+  \newpage
+  \null\hfill\texttt{\preprint}
+  \vskip 4em%
+  \begin{center}%
+  \let \footnote \thanks
+    {\LARGE\bfseries \@title \par}%
+    \vskip 2.5em%
+    {\large
+      \lineskip .5em%
+      \begin{center}
+        \begin{minipage}{0.95\textwidth}
+            \begin{tabular}[t]{c}%
+            \@author
+            \end{tabular}
+        \end{minipage}    
+      \end{center}\par}%
+    \vskip 1em%
+    {\large \@date}%
+  \end{center}%
+  \par
+  \vskip 1.5em}
+\makeatother
+
+\renewcommand\Authands{ and }
+
+\title{Notes on conformal manifolds}
+\author{}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\maketitle
+
+
+
+\tableofcontents
+
+
+%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+\section{Comments on Flat Directions and $n$-Hessians} \label{sec: hessians}
+%%%%%%%%%%%%%%
+
+Given a real function $V: M \rightarrow \mathbb R$, its critical points are defined as the zeroes of the gradient
+%
+\begin{equation}
+	x^*: H_{m}(x^*)\equiv\partial_mV\big\vert_{x^*}=0\,,
+\end{equation}
+%
+with the $n$-Hessian of $V(x)$ defined as
+%
+\begin{equation}
+	H_{m_1\dots m_n}\equiv\partial_{m_1}\dots\partial_{m_n}V\,.
+\end{equation}
+%
+
+Flat directions around the critical point $x^*$ are curves $\phi: I\rightarrow M$ such that
+%
+\begin{equation}	\label{eq: flatdef}
+	H_{m}(\phi(t))=0\,,	\qquad\text{with}\quad
+	\phi(0)=x^*\,.
+\end{equation}
+%
+Close to $x^*$, the curve can be expanded as
+%
+\begin{equation}	\label{eq: phiSeries}
+	\phi(t)=x^*+\sum_{k=1}^{\infty}\tfrac1{k!}\xi_k\, t^k\,, \qquad\text{with}\quad
+	\xi_k=\frac{d^k\phi}{dt^k}\Big\vert_{x^*}\,,
+\end{equation}
+%
+and, accordingly,
+%
+\begin{equation}
+	\begin{aligned}
+		H_{m}(\phi(t))&=\sum_{k=1}^{\infty}H_{mn_1\dots n_k}\sum_{a\in\lambda_k}t^{\sum_i^{\vert a\vert}i a_i}\bigg[\prod_{i=1}^{\vert a\vert}\frac1{a_i!}\frac{1}{\big(i!\big)^{a_i}}\xi_i^{\otimes a_i}\bigg]^{n_1\dots n_k}\,,
+	\end{aligned}
+\end{equation}
+%
+with all the $n$-Hessians on the right-hand side evaluated at $x^*$. Here, $\lambda_k$ denotes the integer partitions of $k$ (e.g. $\lambda_3=\{(3),(2,1),(1,1,1)\}$), $\vert a\vert$ is the number of elements of a specific partition $a\in\lambda_k$ (e.g. $\vert(2,1)\vert=2$ and $\vert(1,1,1)\vert=3$), and $a_i$ each of its elements. Equation \eqref{eq: flatdef} needs to be satisfied at every order in $t$, and therefore the existence of flat directions amounts to the existence solutions of the system
+%
+\begin{equation}	\label{eq: flateqnsAll}
+	O(t^p):\quad\sum_{\{a_i\}}H_{mn_1\dots n_{k}}\prod_i^{p}\bigg[\frac1{a_i!}\frac1{\big(i!\big)^{a_i}}\xi_i^{\otimes a_i}\bigg]^{n_1\dots n_k}=0\,,
+\end{equation}
+%
+with the set of coefficients $\{a_i\}$ determined as
+%
+\begin{equation}	\label{eq: as}
+	\sum_i^{p}i a_i=p\,, 	\qquad
+	a_i\in \mathbb{N}\,,
+\end{equation}
+%
+and $k$ in \eqref{eq: flateqnsAll} a shorthand for $k=\sum_i^p a_i$ for the solutions of \eqref{eq: as}.
+For lowest $p$, this is
+%
+\begin{equation}	\label{eq: flateqns}
+	\begin{aligned}
+		0&=H_{mn}\xi_1^n\,,		\\[5pt]
+		0&=H_{mn}\xi_2^n+H_{mnp}\xi_1^n\xi_1^p\,,	\\[5pt]
+		0&=H_{mn}\xi_3^n+3H_{mnp}\xi_2^n\xi_1^p+H_{mnpq}\xi_1^n\xi_1^p\xi_1^q\,,	\\[5pt]
+		0&=H_{mn}\xi_4^n+3H_{mnp}\xi_2^n\xi_2^p+4H_{mnp}\xi_3^n\xi_1^p+6H_{mnpq}\xi_2^n\xi_1^p\xi_1^q+H_{mnpqr}\xi_1^n\xi_1^p\xi_1^q\xi_1^r\,,	\\[5pt]
+		&\dots
+	\end{aligned}
+\end{equation}
+%
+
+Note that the non-linearity of \eqref{eq: flateqns} in the expansion coefficients of $\phi(t)$ implies that the number of flat directions is not easily related to the dimension of the null space of the 2-Hessian at $x^*$ (i.e. the number of massless scalars if $V$ is the scalar potential). A necessary condition for \eqref{eq: flateqnsAll} to have a solution is
+%
+\begin{equation}
+	\det H_{mn}=0\,,		\\[5pt]
+\end{equation}
+%
+but there can be more flat directions than zero eigenvalues and vice versa. These features will be studied in the following.
+
+%%%%%%%%%%%%%%
+\subsection{Flat flat directions} \label{sec: FFC}
+%%%%%%%%%%%%%%
+
+
+When flat directions can be given as straight lines $\phi(t)=x^*+\xi t$ for constant $\xi$, the set of equations \eqref{eq: flateqns} simplifies to the condition $\xi\in K_k$ for all $n\geq1$, with the kernels defined as
+%
+\begin{equation}	\label{eq: flatness}
+	K_k=\{\xi: \xi^{n_1}\dots\xi^{n_{k}}H_{mn_1\dots n_{k}}(x^*)=0\}\,,	\qquad \forall n\geq1\,.
+\end{equation}
+%
+This condition is required for $\partial_mV$ to be constant along the integral curve of $\xi^m$, since
+%
+\begin{equation}
+	\begin{aligned}
+		\xi^{n_k}\partial_{n_k}\big(\xi^{n_1}\dots\xi^{n_{k-1}}H_{mn_1\dots n_{k-1}}\big)\big\vert_{x^*}
+		=\xi^{n_1}\dots\xi^{n_{k}}H_{mn_1\dots n_{k}}(x^*)
+	\end{aligned}
+\end{equation}
+%
+must hold for all $k\geq1$.
+
+Two functions that have flat flat directions and exhibit the subtleties mentioned before are given by
+%
+\begin{equation}	\label{eq: flatflat}
+	V_1(x,y)=x^4(1+y^2)\,,		\qquad\text{and}\qquad
+	V_3(x,y)=y^2(x^2-3y^2)\,,
+\end{equation}
+%
+which are plotted in Fig.~\ref{fig: flatflat}.
+%
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\textwidth]{Figures/V1.pdf}
+	\qquad
+	\includegraphics[width=0.4\textwidth]{Figures/V3.pdf}
+	\caption{Contour plots for the potentials $V_1$ (left) and $V_3$ (right) in \eqref{eq: flatflat} with flat directions and $x^*=0$ locus superimposed.}
+	\label{fig: flatflat}
+\end{figure}
+%
+In both cases, the 2-Hessian vanishes identically at $x^*=0$, but $V_1$ only has one flat direction given by $(x,y)=(0,\zeta)$, whereas $V_3$ has three independent flat curves:
+%
+\begin{equation}
+	(x,y)=(\zeta_1,\, 0)\,,	\qquad
+	(x,y)=(\sqrt3\,\zeta_2,\, \zeta_2)\,,	\qquad
+	(x,y)=(-\sqrt3\,\zeta_3,\, \zeta_3)\,.
+\end{equation}
+%
+
+\note{How is the second compatible with the standard holography lore? Can this type of potentials arise in consistent truncations?}
+
+
+%%%%%%%%%%%%%%
+\subsection{Curved flat directions} \label{sec: FCL}
+%%%%%%%%%%%%%%
+
+(alternative name: curved flat curves)
+
+The condition \eqref{eq: flatness} does not capture curves with a non-linear dependence on $t$. For instance,
+%
+\begin{equation}	\label{eq: Vcurved}
+	V(x,y)=x^2(x^2-3y^4)
+\end{equation}
+%
+has flat directions
+%
+\begin{equation}	\label{eq: curvedcurves}
+	(x,y)=(0,\, \zeta_1)\,,	\qquad
+	(x,y)=(\sqrt3\,\zeta_2^2,\, \zeta_2)\,,	\qquad
+	(x,y)=(-\sqrt3\,\zeta_3^2,\, \zeta_3)\,,
+\end{equation}
+%
+of which only the first is captured by \eqref{eq: flatness}. For the other two, the higher order terms in \eqref{eq: flateqnsAll} also contribute. To gauge-fix the reparameterisation invariance of \eqref{eq: flatdef}, we demand without loss of generality that the lowest non-vanishing term in \eqref{eq: phiSeries} is linear in $t$.  Doing so, \eqref{eq: flateqnsAll} yields \eqref{eq: curvedcurves} unambiguously. We note that for \eqref{eq: Vcurved} the first non-trivial equation arises at order $O(t^5)$, the following at $O(t^{10})$, and from then on we get a condition on every level.
+
+This method has been checked with three other functions with flat directions:
+%
+\begin{equation}
+	\begin{aligned}
+		V(x,y)&=(y-\cos x)^2\,,	\\[5pt]
+		V(x,y)&=(x^2+y^2-1)^2\,,	\\[5pt]
+		V(x,y)&=x^2(x^2+y^2-1)^2\,,
+	\end{aligned}
+\end{equation}
+%
+recovering the analytic result in all instances and converging more quickly than for \eqref{eq: Vcurved} (as their series have non-zero contributions at lower orders).
+
+\note{The distinction between the different curves in \eqref{eq: curvedcurves} disappears at linear level, and this is very reminiscent of the TsT vs Wilson loop families in \cite{Eloy:2024lwn}.}
+
+
+%
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{Figures/V3curved.pdf}
+	\caption{Contour plot for the potential in \eqref{eq: Vcurved} with flat directions in \eqref{eq: curvedcurves} and $x^*=0$ locus superimposed.}
+	\label{fig: curvedflat}
+\end{figure}
+%
+
+
+%%%%%%%%%%%%%%
+\section{SO(8,4) supergravity in $D=3$} \label{sec: 3dSugra}
+%%%%%%%%%%%%%%
+
+
+When apply the above techniques to the potential (2.26) in \cite{Eloy:2021fhc}, we recover the two-parameter family (2.27) in there. I have not managed to get anything else, but that does not mean necessarily that there isn't. It is probably more due to the fact that the system for 13 scalars is very complicated. Using the \texttt{NSolve} routine might be useful to see if there is any solution outside the known class.
+
+\bibliography{references}
+
+
+\end{document}
