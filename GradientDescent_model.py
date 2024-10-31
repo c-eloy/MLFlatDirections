@@ -86,7 +86,9 @@ f_info = open(info_file, 'w')
 
 
 f_info.write(f'File created on {time}')
-f_info.write(f'\n\nPotential : {potential}\n')
+f_info.write(f'\n\nPotential : {potential}')
+f_info.write(f'\nNumber of points: {n_points}')
+f_info.write(f'\nNumber of steps: {n_steps}\n')
 f_info.write('\nOptimizer:\n')
 
 for key, value in optimizer_info.items(): 
