@@ -1,0 +1,9 @@
+Naming Conventions:
+
+- points_potential_number_timestamp.npy
+- loss_potential_number_timestamp.npy
+- comments_potential_number_timestamp.txt
+    - include optimizer details
+
+
+Potentials = {}
