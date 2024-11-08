@@ -26,7 +26,7 @@ n_points = args.n_points
 if args.file_of_points != 'None':
     x = tf.Variable(np.load(args.file_of_points))
 else: 
-    x = tf.Variable(2*np.random.rand(n_points,13)-1, dtype=tf.float32)
+    x = tf.Variable(2*np.random.rand(n_points,n_var)-1, dtype=tf.float32)
 
 this_history,this_x = gdm.grad_descent_potential(pot.V13d_sugra, 
                                                  x, 
