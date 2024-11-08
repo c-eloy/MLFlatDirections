@@ -2,6 +2,7 @@ import keras
 from keras import layers,models,regularizers
 from tensorflow.keras.callbacks import ReduceLROnPlateau,LearningRateScheduler
 import tensorflow as tf
+import numpy as np
 
 # Oprimizer for the gradient descent
 
@@ -21,7 +22,7 @@ def get_grad(V, x):
     gradients = tape.gradient(loss, x)  # compute ∇V at each point
     return gradients
 
-def grad_descent_potential(V, x, update_opt, n_steps = 1500, n_steps_opt = 200, step_stop_opt = 1200, alpha=10**(-3), n_step_print = 10, thres = 10):
+def grad_descent_potential(V, x, history_loss = [], update_opt = True, n_steps = 1500, n_steps_opt = 200, step_stop_opt = 1200, alpha=10**(-3), n_step_print = 10, thres = 10):
 
     """ Does the gradien descent for the point x in the potential V. 
         - V : potential to analyse, function
@@ -39,8 +40,6 @@ def grad_descent_potential(V, x, update_opt, n_steps = 1500, n_steps_opt = 200, 
     
     loss_prev_step=10**8
 
-    history_loss = []
-    
     for step in range(n_steps):
         with tf.GradientTape() as tape:
             loss = tf.reduce_sum(grad_norm_squared(V, x)) # minimize ||∇V||^2 for all points
@@ -54,7 +53,16 @@ def grad_descent_potential(V, x, update_opt, n_steps = 1500, n_steps_opt = 200, 
     
         if step == step_stop_opt:
             update_opt = False
-    
+        
+        if step == 2500:
+            optimizer = tf.optimizers.Adam(learning_rate=0.001)
+        if step == 5000:
+            optimizer = tf.optimizers.Adam(learning_rate=0.0001)
+        if step == 7500:
+            optimizer = tf.optimizers.Adam(learning_rate=0.00001)
+
+            #optimizer.learning_rate.assign(0.0001)
+
         # Apply gradient descent for all points
         optimizer.apply_gradients(zip(gradients, [x]))
 
@@ -67,3 +75,5 @@ def grad_descent_potential(V, x, update_opt, n_steps = 1500, n_steps_opt = 200, 
             print("Converged enough")
             print(f"Step {step}: ||∇V||^2 = {loss.numpy()}")
             break
+    return history_loss,x    
+
