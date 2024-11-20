@@ -194,6 +194,12 @@
 \maketitle
 
 
+Workflow as of \today:
+\begin{enumerate}
+	\item Generate larger clouds of points for the 7- and 13-param potentials (Gabriel).
+	\item For these two models, get statistics of autoencoders for several attempts per dimension of latent layer (Bastien).
+	\item Go up to full 32-param SO(8,4) potential.
+\end{enumerate}
 
 \tableofcontents
 
@@ -252,7 +258,7 @@ with the set of coefficients $\{a_i\}$ determined as
 \end{equation}
 %
 and $k$ in \eqref{eq: flateqnsAll} a shorthand for $k=\sum_i^p a_i$ for the solutions of \eqref{eq: as}.
-For lowest $p$, this is
+For lowest $p$, this is \note{Can map to CFT $n$-point functions à la Bertolini?}
 %
 \begin{equation}	\label{eq: flateqns}
 	\begin{aligned}
@@ -299,7 +305,7 @@ Two functions that have flat flat directions and exhibit the subtleties mentione
 %
 \begin{equation}	\label{eq: flatflat}
 	V_1(x,y)=x^4(1+y^2)\,,		\qquad\text{and}\qquad
-	V_3(x,y)=y^2(x^2-3y^2)\,,
+	V_3(x,y)=y^2(x^2-3y^2)^2\,,
 \end{equation}
 %
 which are plotted in Fig.~\ref{fig: flatflat}.
@@ -316,7 +322,7 @@ which are plotted in Fig.~\ref{fig: flatflat}.
 In both cases, the 2-Hessian vanishes identically at $x^*=0$, but $V_1$ only has one flat direction given by $(x,y)=(0,\zeta)$, whereas $V_3$ has three independent flat curves:
 %
 \begin{equation}
-	(x,y)=(\zeta_1,\, 0)\,,	\qquad
+	(x,y)=(0,\, \zeta_1)\,,	\qquad
 	(x,y)=(\sqrt3\,\zeta_2,\, \zeta_2)\,,	\qquad
 	(x,y)=(-\sqrt3\,\zeta_3,\, \zeta_3)\,.
 \end{equation}
@@ -324,6 +330,7 @@ In both cases, the 2-Hessian vanishes identically at $x^*=0$, but $V_1$ only has
 
 \note{How is the second compatible with the standard holography lore? Can this type of potentials arise in consistent truncations?}
 
+\note{We should remark that conformal manifolds are not smooth manifolds in general, but algebraic varieties. Apparently, people doing quivers know this [look at papers by Hanany]}
 
 %%%%%%%%%%%%%%
 \subsection{Curved flat directions} \label{sec: FCL}
@@ -334,7 +341,7 @@ In both cases, the 2-Hessian vanishes identically at $x^*=0$, but $V_1$ only has
 The condition \eqref{eq: flatness} does not capture curves with a non-linear dependence on $t$. For instance,
 %
 \begin{equation}	\label{eq: Vcurved}
-	V(x,y)=x^2(x^2-3y^4)
+	V(x,y)=x^2(x^2-3y^4)^2
 \end{equation}
 %
 has flat directions
@@ -373,12 +380,234 @@ recovering the analytic result in all instances and converging more quickly than
 
 
 %%%%%%%%%%%%%%
-\section{SO(8,4) supergravity in $D=3$} \label{sec: 3dSugra}
+\section{Machine Learning Approach} \label{sec: MLapproach}
 %%%%%%%%%%%%%%
 
+In the following, we obtain and analyse numerically the critical points of different functions $V: \mathbb{R}^n\rightarrow\mathbb{R}$. 
+In this approach, a cloud of points $x_i^m$, $m\in\llbracket1,n\rrbracket$ and $i\in\llbracket1,N\rrbracket$,
+is generated so that the loss function
+%
+\begin{equation}	\label{eq: loss_cloud}
+	L_{V}=\sum_i^N\vert \nabla_m V(x_i)\vert^2
+\end{equation}
+%
+is minimised. 
+For this minimisation, we have employed an protocol based on the \texttt{TensorFlow} Adam optimiser 
+which restarts the optimiser with the initial learning rate after a specified number of epochs until a specified loss value is attained.
+Afterwards and until the pre-determined number of epochs is reached, the learning rate decreases by a factor 10 every few epochs 
+(in the \texttt{grad\_descent\_module.py} package, the original learning rate us used by default for the first 2500 epochs with restarts every 200
+steps, and then updated every 2500 steps. These parameters need to be adapted to the potential under consideration).
 
-When apply the above techniques to the potential (2.26) in \cite{Eloy:2021fhc}, we recover the two-parameter family (2.27) in there. I have not managed to get anything else, but that does not mean necessarily that there isn't. It is probably more due to the fact that the system for 13 scalars is very complicated. Using the \texttt{NSolve} routine might be useful to see if there is any solution outside the known class.
+The structure of the resulting cloud of points minimising \eqref{eq: loss_cloud} is subseqently learnt using
+autoencoders (AEs), which are non-linear endomorphisms constructed via a neural network with an intermediate layer
+of dimension $\ell < n$, as schematically depicted in figure~\ref{fig: AE_notation}. 
+%
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[scale=3]
+		\def\xlim{.2}
+		\def\ylim{0.5}
+		\def\dist{1.2}	% distance between rectangles from center to center
 
+		% Latent layer
+		\draw[thick,fill=myorange!50] (-\xlim,-0.7*\ylim) -- (\xlim,-0.7*\ylim) -- (\xlim,0.7*\ylim) -- (-\xlim,0.7*\ylim)-- (-\xlim,-0.7*\ylim);
+		\draw (0,0.47*\ylim) circle [radius = 0.4*\xlim] node {\footnotesize{$1$}};
+		\draw (0,-0.47*\ylim) circle [radius = 0.4*\xlim] node {\footnotesize{$\ell$}};
+		\draw[thick, dotted] (0,-0.2*\ylim) -- (0,0.2*\ylim);
+		
+		% Hidden layers left
+		\draw[thick,fill=myorange!50] (-1.8*\xlim-\dist,-1.2*\ylim) -- (1.8*\xlim-\dist,-1.2*\ylim) -- (1.8*\xlim-\dist,1.2*\ylim) -- (-1.8*\xlim-\dist,1.2*\ylim)-- (-1.8*\xlim-\dist,-1.2*\ylim);
+		
+		\draw (-\dist-1.0*\xlim,0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$1,1$}};
+		\draw (-\dist-1.0*\xlim,-0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$1,q_1$}};
+		\draw (-\dist+1.0*\xlim,0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$p,1$}};
+		\draw (-\dist+1.0*\xlim,-0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$p,q_p$}};
+		
+		\draw[thick, dotted] (-\dist+0.6*\xlim,-0.25*\ylim) -- (-\dist+0.6*\xlim,0.25*\ylim);
+		\draw[thick, dotted] (-\dist+0.2*\xlim,-0.25*\ylim) -- (-\dist+0.2*\xlim,0.25*\ylim);
+		\draw[thick, dotted] (-\dist-0.2*\xlim,-0.25*\ylim) -- (-\dist-0.2*\xlim,0.25*\ylim);
+		\draw[thick, dotted] (-\dist-0.6*\xlim,-0.25*\ylim) -- (-\dist-0.6*\xlim,0.25*\ylim);
+		
+		\draw[thick, dotted] (-\dist-0.3*\xlim,0.9*\ylim) -- (-\dist+0.3*\xlim,0.9*\ylim);
+		\draw[thick, dotted] (-\dist-0.3*\xlim,-0.9*\ylim) -- (-\dist+0.3*\xlim,-0.9*\ylim);
+		
+
+		% Hidden layers right
+		\draw[thick,fill=myorange!50] (-1.8*\xlim+\dist,-1.2*\ylim) -- (1.8*\xlim+\dist,-1.2*\ylim) -- (1.8*\xlim+\dist,1.2*\ylim) -- (-1.8*\xlim+\dist,1.2*\ylim)-- (-1.8*\xlim+\dist,-1.2*\ylim);
+		
+		\draw (\dist-1.0*\xlim,0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$p,1$}};
+		\draw (\dist-1.0*\xlim,-0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$p,q_p$}};
+		\draw (\dist+1.0*\xlim,0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$1,1$}};
+		\draw (\dist+1.0*\xlim,-0.9*\ylim) circle [radius = 0.55*\xlim] node {\tiny{$1,q_1$}};
+		
+		\draw[thick, dotted] (\dist+0.6*\xlim,-0.25*\ylim) -- (\dist+0.6*\xlim,0.25*\ylim);
+		\draw[thick, dotted] (\dist+0.2*\xlim,-0.25*\ylim) -- (\dist+0.2*\xlim,0.25*\ylim);
+		\draw[thick, dotted] (\dist-0.2*\xlim,-0.25*\ylim) -- (\dist-0.2*\xlim,0.25*\ylim);
+		\draw[thick, dotted] (\dist-0.6*\xlim,-0.25*\ylim) -- (\dist-0.6*\xlim,0.25*\ylim);
+		
+		\draw[thick, dotted] (\dist-0.3*\xlim,0.9*\ylim) -- (\dist+0.3*\xlim,0.9*\ylim);
+		\draw[thick, dotted] (\dist-0.3*\xlim,-0.9*\ylim) -- (\dist+0.3*\xlim,-0.9*\ylim);
+
+
+		% Input layer
+		\draw[thick,fill=myorange!50] (-2*\dist-\xlim,-\ylim) -- (-2*\dist+\xlim,-\ylim) -- (-2*\dist+\xlim,\ylim) -- (-2*\dist-\xlim,\ylim)-- (-2*\dist-\xlim,-\ylim);
+		\draw (-2*\dist,0.7*\ylim) circle [radius = 0.4*\xlim] node {\footnotesize{$1$}};
+		\draw (-2*\dist,-0.7*\ylim) circle [radius = 0.4*\xlim] node {\footnotesize{$n$}};
+		\draw[thick, dotted] (-2*\dist,-0.25*\ylim) -- (-2*\dist,0.25*\ylim);
+
+		% Output layer
+		\draw[thick,fill=myorange!50] (2*\dist-\xlim,-\ylim) -- (2*\dist+\xlim,-\ylim) -- (2*\dist+\xlim,\ylim) -- (2*\dist-\xlim,\ylim)-- (2*\dist-\xlim,-\ylim);
+		\draw (2*\dist,0.7*\ylim) circle [radius = 0.4*\xlim] node {\footnotesize{$1$}};
+		\draw (2*\dist,-0.7*\ylim) circle [radius = 0.4*\xlim] node {\footnotesize{$n$}};
+		\draw[thick, dotted] (2*\dist,-0.25*\ylim) -- (2*\dist,0.25*\ylim);
+
+
+		% Trapezoids
+		\draw[fill=JoliGris!20] (-2*\dist+\xlim,-\ylim) -- (-1.8*\xlim-\dist,-1.2*\ylim) -- (-1.8*\xlim-\dist,+1.2*\ylim) -- (-2*\dist+\xlim,\ylim)-- (-2*\dist+\xlim,-\ylim);
+		\draw[fill=JoliGris!20] (1.8*\xlim-\dist,-1.2*\ylim) -- (-\xlim,-0.7*\ylim) -- (-\xlim,+0.7*\ylim) -- (1.8*\xlim-\dist,1.2*\ylim) -- (1.8*\xlim-\dist,-1.2*\ylim);
+		\draw[fill=JoliGris!20] (-1.8*\xlim+\dist,-1.2*\ylim) -- (+\xlim,-0.7*\ylim) -- (+\xlim,+0.7*\ylim) -- (-1.8*\xlim+\dist,1.2*\ylim) -- (-1.8*\xlim+\dist,-1.2*\ylim);
+		\draw[fill=JoliGris!20] (+2*\dist-\xlim,-\ylim) -- (+1.8*\xlim+\dist,-1.2*\ylim) -- (+1.8*\xlim+\dist,+1.2*\ylim) -- (+2*\dist-\xlim,\ylim)-- (+2*\dist-\xlim,-\ylim);
+
+		% Encoder/decoder labels
+		\draw[thick,|-|] (-2*\dist-\xlim,-1.45*\ylim) -- (\xlim,-1.45*\ylim) node [midway, below] {encoder};
+		\draw[thick,|-|] (-\xlim,-1.75*\ylim) -- (2*\dist+\xlim,-1.75*\ylim) node [midway, above] {decoder};
+		
+		
+		
+	\end{tikzpicture}
+	\caption{Architecture of a fully-connected symmetric autoencoder with input/output of dimension $n$, a latent layer of dimension $\ell$. 
+	The hidden encoder and decoder subnetworks are arranged specularly, and have $p$ layers of width $q_p$ each.
+	This information will be denoted by a list $[n,q_1,\dots,q_p,\ell]$.}
+	\label{fig: AE_notation}
+\end{figure}
+%
+The loss function for the autoencoder is chosen as
+%
+\begin{equation}	\label{eq: loss_AE}
+	L_{\rm AE}(\ell)=\sum_i^N\big\vert x_i^{\rm (in)}-x_i^{\rm (out)}\big\vert^2
+\end{equation}
+%
+with $x_i^{\rm (out)}$ being the output of the decoder for a given input $x_i^{\rm (in)}$.
+These outputs depend on the value of $\ell$, and the loss function \eqref{eq: loss_AE} displays
+a sharp transition from a steep decline into a plateau when $\ell$ reaches the dimension of the 
+conformal manifold, if the latter does not have separated components. 
+In the latter scenario, a less pronounced transition occurs, and inspection of the values at 
+the latent layer reveals clusters of data associated to the different components.
+
+In the following, we introduce these techniques on a set of toy models of low dimensionality, and then apply these
+tools to the scalar potential (2.26) in \cite{Eloy:2021fhc}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Toy examples}
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Higgs potential}
+The potential
+%
+\begin{equation}	\label{eq:toy1_V}
+	V(x^1,x^2,x^3,x^4) = \big[(x^1)^2+(x^2)^2-1\big]^2+(x^3)^2+(x^4)^2\,,
+\end{equation}
+%
+is a mexican-hat potential for the variables $x^1$ and $x^2$, and a harmonic potential for the variables $x^3$ and $x^4$.
+Its vacua are given by two different families of solutions,
+%
+\begin{equation}	\label{eq: toy1_CM}
+	\begin{tabular}{rcllll}
+	family 1	&:& $x^1=0$,	& $x^2=0$,	& $x^3=0$,	& $x^4=0$,	\\[5pt]
+	family 2	&:& $x^1=\cos t$,	& $x^2=\sin t$,	& $x^3=0$,	& $x^4=0$,	\qquad $t\in[0,2\pi)$\,.
+	\end{tabular}
+\end{equation}
+%
+We can capture this structure by performing a gradient descent with loss function \eqref{eq: loss_cloud} 
+for a cloud of $10^5$ randomly generated points in the region $[-0.75,0.75]^4$. 
+See figure~\ref{fig: toy1_cloud} for the attained cloud of points and the corresponding loss function during
+the gradient descent.
+%
+\begin{figure}
+	\centering
+	\includegraphics[width=0.5\textwidth]{Figures/loss_cloud_Higgs.png}	\\
+	\includegraphics[width=0.85\textwidth]{Figures/triangle_higgs.png}
+	\caption{Loss function and triangular plot of the numerical vacua of \eqref{eq:toy1_V}.}
+	\label{fig: toy1_cloud}
+\end{figure}
+%
+
+To ascertain the dimension of the geometric structures behind the shapes in figure~\ref{fig: toy1_cloud}, 
+we have employed an AE with the following architectures
+%
+\begin{equation}	\label{eq: AE_architecture_higgs}
+	[n,q_1,q_2,q_3,\ell]=[4,32,16,8,\ell]\,,	\qquad \ell=1,2,3\,,
+\end{equation}
+%
+following the notation of figure~\ref{fig: AE_notation}. For this example, $L_{\rm AE}(\ell)$ in figure~\ref{fig: lossAE_higgs} would naively suggest
+that the underpinning structures are two-dimensional, instead of the zero- and one-dimensional loci in \eqref{eq: toy1_CM}.
+However, close inspection of the output of the encoder half of the autoencoder \eqref{eq: AE_architecture_higgs} for $\ell=2$ reveals
+that the data is cleanly separated into two distinct structures: one point and one (broken) line, as can be observed in 
+figure~\ref{fig: encoded_higgs}. In fact, filtering using the decoder to label the data corresponding to the isolated point in
+figure~\ref{fig: encoded_higgs}, it can be verified that they correspond to solutions in family 1. Filtering out these points,
+the analytical structure of the complementary set can in fact be found to by using the $\ell=1$ decoder as a non-linear function ... 
+\note{how were the details of this procedure?}
+%
+
+%
+\begin{figure}
+	\centering
+	\subfigure[]{
+		\label{fig: lossAE_higgs}	
+		\includegraphics[width=0.48\textwidth]{Figures/lossAE_higgs.png}
+	}
+	%
+	\subfigure[]{
+		\label{fig: encoded_higgs}
+		\includegraphics[width=0.48\textwidth]{Figures/encoded_Higgs_l2.png}
+	}
+	\caption{Loss function encoder output for the autoencoder \eqref{eq: AE_architecture_higgs} and the entire set of data in figure~\ref{fig: toy1_cloud}.}
+	\label{fig: AE_higgs}
+\end{figure}
+%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\paragraph{Scrambled Higgs potential}
+The example above was somewhat trivial given that one could immediately recognise 
+the relevant structure by glancing at figure~\ref{fig: toy1_cloud}, as the variables in which
+the solutions in \eqref{eq: toy1_CM} are most naturally expressed coincide with the variables
+that appear in the potential. In supergravity this will no longer be the case, and to exemplify
+how the autoencoder is useful in this context, let us consider the same potential as above,
+%
+\begin{equation}	\label{eq:toy2_V}
+	V(\tilde{x}^1,\tilde{x}^2,\tilde{x}^3,\tilde{x}^4) = \big[(\tilde{x}^1)^2+(\tilde{x}^2)^2-1\big]^2+(\tilde{x}^3)^2+(\tilde{x}^4)^2\,,
+\end{equation}
+%
+with the variables $\tilde{x}^i$ given by \note{need to decide a non-singular and bijective change of coordinates.}
+%
+\begin{equation}
+	\tilde{x}^1=\dots\,.
+\end{equation}
+%
+Constructing the conformal manifold in terms of $x^i$ results in a could for which the structure of the solutions is
+much less clear, as can be appreciated in figure~\ref{fig: toy2_cloud}. 
+However, the information in an autoencoder given again by \eqref{eq: AE_architecture_higgs} results in
+loss functions and encoded data in precise correspondence with figure~\ref{fig: AE_higgs}.
+
+%%%%%%%%%%%%%%%%
+\subsection{SO(8,4) supergravity}
+
+We have
+
+\begin{enumerate}
+	\item Looked at 3-, 5-, 7- and 13-parameter truncations.
+	\item There was qualitatively different behaviour when using logs vs exps.
+	\item There are spurious structures (forks) that the AE erases (why does it?).
+	\item The spurious structures can be also be broadened using random walks.
+\end{enumerate}
+
+
+
+%%%%%%%%%%%%%%%%
 \bibliography{references}
 
 
