@@ -1,0 +1,14 @@
+Naming Conventions:
+
+- Points_potential_number_timestamp.npy
+
+- Loss_potential_number_timestamp.npy
+
+- Comments_potential_number_timestamp.txt
+    - include optimizer details
+    - snapshots of the evolution
+
+
+Potential names = {
+    pot_7_param,    pot_13_param,    pot_expHiggs,    pot_sqrt_and_exp,    pot_x2Higgs_param
+}
