@@ -1,0 +1,58 @@
+File created on 2024_12_04_at_18_29_41
+
+Potential : pot_3_param_log
+Number of points: 10000
+Number of steps: 15000
+
+n_steps_opt: 200
+
+step_stop_opt: 1
+
+Optimizer:
+  - name : adam
+  - learning_rate : 0.0010000000474974513
+  - weight_decay : None
+  - clipnorm : None
+  - global_clipnorm : None
+  - clipvalue : None
+  - use_ema : False
+  - ema_momentum : 0.99
+  - ema_overwrite_frequency : None
+  - loss_scale_factor : None
+  - gradient_accumulation_steps : None
+  - beta_1 : 0.9
+  - beta_2 : 0.999
+  - epsilon : 1e-07
+  - amsgrad : False
+
+Evolution:
+  Step 0: ||∇V||^2 = 272421184.0
+  Step 500: ||∇V||^2 = 23764298.0
+  Step 1000: ||∇V||^2 = 7063335.5
+  Step 1500: ||∇V||^2 = 2949167.5
+  Step 2000: ||∇V||^2 = 1430291.5
+  Step 2500: ||∇V||^2 = 747886.5
+  Step 3000: ||∇V||^2 = 407450.9375
+  Step 3500: ||∇V||^2 = 226651.40625
+  Step 4000: ||∇V||^2 = 126643.1015625
+  Step 4500: ||∇V||^2 = 70228.4296875
+  Step 5000: ||∇V||^2 = 38308.51171875
+  Step 5500: ||∇V||^2 = 20406.7265625
+  Step 6000: ||∇V||^2 = 10526.103515625
+  Step 6500: ||∇V||^2 = 5237.994140625
+  Step 7000: ||∇V||^2 = 2539.429443359375
+  Step 7500: ||∇V||^2 = 1219.72802734375
+  Step 8000: ||∇V||^2 = 586.8099975585938
+  Step 8500: ||∇V||^2 = 284.3478088378906
+  Step 9000: ||∇V||^2 = 139.18234252929688
+  Step 9500: ||∇V||^2 = 68.67155456542969
+  Step 10000: ||∇V||^2 = 34.09231185913086
+  Step 10500: ||∇V||^2 = 17.178287506103516
+  Step 11000: ||∇V||^2 = 8.930092811584473
+  Step 11500: ||∇V||^2 = 4.863197326660156
+  Step 12000: ||∇V||^2 = 2.7658958435058594
+  Step 12500: ||∇V||^2 = 1.6499394178390503
+  Step 13000: ||∇V||^2 = 1.1538994312286377
+  Step 13500: ||∇V||^2 = 0.8587732315063477
+  Step 14000: ||∇V||^2 = 0.5860707759857178
+  Step 14500: ||∇V||^2 = 0.4161252975463867
