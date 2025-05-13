@@ -1,0 +1,269 @@
+%!TEX output_directory = aux
+
+\documentclass[11pt]{article}
+
+\usepackage[english]{babel}
+
+% ---- FONT & MICROTYPOGRAPHY ----
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{microtype}
+\usepackage{moresize}
+
+% ---- FORMATTING ----
+\usepackage{csquotes,textcase,xspace}
+
+% ---- PAGE LAYOUT ----
+\usepackage{geometry}
+\geometry{top=2.5cm,bottom=2cm,inner=2cm,outer=2cm,footnotesep=7mm plus 4pt minus 4pt}
+\usepackage{setspace}
+\setstretch{1.1}
+
+% ---- GRAPHIQUE ----
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[font=small,labelfont=bf,labelsep=space]{caption}
+\usepackage{subfigure}
+\captionsetup{width=0.9\textwidth,font={small,stretch=1.1}}
+\addto\captionsenglish{\renewcommand{\figurename}{Fig.}}
+\addto\captionsenglish{\renewcommand{\tablename}{Tab.}}
+\definecolor{JoliBleu}{rgb}{0,0.55,0.55}
+\definecolor{JoliVert}{rgb}{0.15,0.6,0}
+\definecolor{JoliRouge}{rgb}{0.86,0.08,0}
+\definecolor{JoliJaune}{rgb}{1,0.75,0}
+\definecolor{JoliGris}{rgb}{0.52,0.52,0.51}
+\definecolor{myblue}{RGB}{26, 77, 116}
+\definecolor{myorange}{RGB}{181, 116, 30}
+\definecolor{mydarkorange}{RGB}{166, 88, 0}
+\definecolor{mygreen}{RGB}{21, 124, 80}
+\definecolor{myblack}{RGB}{43, 65, 82}
+\definecolor{myred}{rgb}{0.5, 0.0, 0.13}
+
+% ---- SECTIONING ----
+\usepackage{titlesec}
+\titleformat{\section}[block]{\Large\boldmath\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}[block]{\large\boldmath\bfseries}{\thesubsection}{0.5em}{}
+\usepackage{appendix}
+\renewcommand{\setthesection}{\Alph{section}}
+\renewcommand{\restoreapp}{}
+\makeatletter
+\renewcommand{\theequation}{\thesection.\arabic{equation}}
+\@addtoreset{equation}{section}
+\makeatother
+
+% ---- FOOTERS HEADERS ----
+\usepackage[bottom]{footmisc}
+\usepackage{fancyhdr}
+
+% ---- TABLE OF CONTENTS ----
+\usepackage{titletoc}
+\setcounter{tocdepth}{3}
+
+% ---- BIBLIOGRAPHY ----
+\usepackage[nosort]{cite}
+\bibliographystyle{JHEP}
+\newcommand{\eprint}[1]{{\href{http://arxiv.org/abs/#1}{\texttt{[#1]}}}}
+\newcommand{\eprintN}[1]{{\href{http://arxiv.org/abs/#1}{\texttt{#1 [hep-th]}}}}
+\newcommand{\doi}[2]{\href{http://dx.doi.org/#2}{#1}}
+
+% ---- HYPER REF ----
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,
+        pdfstartview=FitV,
+        linkcolor= mydarkorange,
+        citecolor= mydarkorange, 
+        urlcolor= JoliGris!60!black,
+        hypertexnames=false,
+        linktoc=page}
+
+% ---- TIKZ ----
+\usepackage{tikz}
+\usetikzlibrary{calc}
+
+% ---- MATHS ----
+\usepackage{amsmath,amssymb,amsfonts,dsfont}
+\usepackage{mathrsfs}
+\usepackage{physics}
+\usepackage{ytableau}
+\ytableausetup{boxsize=1.1em,centertableaux}
+\usepackage{stmaryrd}
+\usepackage{nicefrac}
+\allowdisplaybreaks[1]
+% \usepackage{bbold}
+\usepackage{cases}
+\usepackage{bm}
+\usepackage{bbm}
+
+% ---- TABLES ----
+\usepackage{multirow}
+\usepackage{booktabs}
+\usepackage{pdflscape}
+\usepackage{array}
+\usepackage{arydshln}
+
+% ---- ENUMERATION ----
+\usepackage[shortlabels]{enumitem}
+
+% ---- MATHS COMMANDS ----
+\newcommand{\A}{\ensuremath{\mathcal{A}}\xspace}
+\newcommand{\F}{\ensuremath{\mathcal{F}}\xspace}
+\renewcommand{\H}{\ensuremath{\mathcal{H}}\xspace}
+\newcommand{\M}{\ensuremath{\mathcal{M}}\xspace}
+\renewcommand{\P}{\ensuremath{\mathcal{P}}\xspace}
+\newcommand{\J}{\ensuremath{\mathcal{J}}\xspace}
+\renewcommand{\d}{\ensuremath{\mathrm{d}}\xspace}
+\renewcommand{\H}{\ensuremath{\mathcal{H}}\xspace}
+\newcommand{\SO}{\ensuremath{\mathrm{SO}}\xspace}
+\renewcommand{\O}{\ensuremath{\mathrm{O}}\xspace}
+\newcommand{\SL}{\ensuremath{\mathrm{SL}}\xspace}
+\newcommand{\Odd}{\ensuremath{\mathrm{O}(d,d)}\xspace}
+\newcommand{\odd}{\ensuremath{\mathfrak{o}(d,d)}\xspace}
+\renewcommand{\Tr}[1]{\ensuremath{\mathrm{Tr}\left(#1\right)}\xspace}
+\newcommand{\vol}{{\,\rm vol}}
+\def\sst#1{{\scriptscriptstyle #1}}
+
+
+\def\0{{\sst{(0)}}}
+\def\1{{\sst{(1)}}}
+\def\2{{\sst{(2)}}}
+\def\3{{\sst{(3)}}}
+\def\4{{\sst{(4)}}}
+\def\5{{\sst{(5)}}}
+\def\6{{\sst{(6)}}}
+\def\7{{\sst{(7)}}}
+\def\8{{\sst{(8)}}}
+
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+
+% ---- COMMENTS ----
+\newcommand{\ce}[1]{\marginpar{\parbox{\marginparwidth}{\boldmath $\Longleftarrow$}}{\boldmath\bfseries (ce: #1)}}
+\newcommand{\gl}[1]{\marginpar{\parbox{\marginparwidth}{\boldmath $\Longleftarrow$}}{\boldmath\bfseries (gl: #1)}}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{document}
+
+\begin{titlepage}
+
+
+
+\begin{flushright}
+
+MI-HET-??? \\
+\today
+\end{flushright}
+
+
+\vspace{25pt}
+
+   
+   \begin{center}
+   \baselineskip=16pt
+
+
+   \begin{Large}
+
+\mbox{ \bfseries \boldmath  Notes: Machine learning flat directions}
+   \end{Large}
+
+
+   		
+\vspace{25pt}
+		
+
+{\large  Bastien Duboeuf$^{1}$, Camille Eloy$^{1}$ \,and\, Gabriel Larios$^{2}$}
+		
+\vspace{25pt}
+		
+		
+	\begin{small}
+
+	{\it $^{1}$ ENS de Lyon, Laboratoire de Physique\\
+	 ...}  \\
+
+
+	\vspace{10pt}
+	
+	{\it $^{2}$ Mitchell Institute for Fundamental Physics and Astronomy, \\
+	Texas A\&M University, College Station, TX, 77843, USA}     \\
+		
+	\end{small}
+		
+
+\vskip 50pt
+
+\end{center}
+
+
+\begin{center}
+\textbf{Abstract}
+\end{center}
+
+
+\begin{quote}
+
+...
+
+\end{quote}
+
+\vfill
+
+\end{titlepage}
+
+
+\tableofcontents
+
+
+
+\section{Introduction}
+
+\section{Supergravity setup}
+\begin{itemize}[label=\textbullet]
+	\item Context: 6d ${\rm AdS}_{3}\times S^{3}$, truncation to 3d, potential, conformal manifold.
+	\item Choice of truncation from 32 to 13 to 5 variables.
+\end{itemize}
+
+\section{Numerical analysis}
+	\subsection{Gradient descent and local analysis}
+	\begin{itemize}[label=\textbullet]
+		\item Gradient descent: implementation, sampling, time needed, loss.
+		\item Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least fex points in each direction).
+		\item Clusteting: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space.
+		\item After PCA and clustering we know that the points after the gradient descent sample a three-dimensional manifold.
+	\end{itemize}
+
+	\subsection{Annealed Importance Sampling for polynomial symbolic regression}
+	\begin{itemize}[label=\textbullet]
+		\item We can convert the potential to a polynomial by converting the variables that appear in exponentials to logs.
+		\item As the potential is a polynomial, the solutions satisfy polynomials equations. Discuss that fact that we could get polynomials directly by taking the gradient of the potential, but those will be to complicated to express the vacuum in a usable way.  We search those using Annealed Importance Sampling.
+		\item Annealed Importance Sampling: first explain general idea (construct density probability, role of temperature, links with Monte-Carlo), discuss $\beta$ to control exploration and exploitation phases.
+		\item Then more details: discuss hypotheses to compute the weights, choice of transformations, choice of $\beta$, choice of loss, prior, initial sampling, choice of representation for the polynomials.
+		\item Discuss the fact that we allow float coefficients even though we know the coefficients will be only integers of square roots of integers?
+		\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
+		\item Results for naive choices of parameters (numbers of itaration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.
+	\end{itemize}
+
+\section{Supergravity solutions}
+\begin{itemize}[label=\textbullet]
+	\item For each couple of candidate polynomials, we get the same expression for the solution, and it indeed defines a unique vacuum of the 3d SUGRA.
+	\item Discussion of the vacuum: gauge group, Zham. metric, change of variables, 3d spectrum (and stability), spin 2 spectrum on $S^{3}$, one parameter seems to be a gauge parameter, uplift?
+\end{itemize}
+
+\section{Conclusion}
+\begin{itemize}[label=\textbullet]
+	\item Conclusion: good prospects of improvement to be able to access higher dimensional cases. Classify flat directions.
+	\item Appendix with some details on the code?
+\end{itemize}
+
+
+
+\bibliography{references}
+
+
+\end{document}
