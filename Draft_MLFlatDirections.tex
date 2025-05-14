@@ -184,8 +184,7 @@ MI-HET-??? \\
 		
 	\begin{small}
 
-	{\it $^{1}$ ENS de Lyon, Laboratoire de Physique\\
-	 ...}  \\
+	{\it $^{1}$ ENS de Lyon, CNRS, LPENSL, UMR5672,\\ 69342, Lyon cedex 07, France}  \\
 
 
 	\vspace{10pt}
@@ -229,6 +228,64 @@ MI-HET-??? \\
 	\item Choice of truncation from 32 to 13 to 5 variables.
 \end{itemize}
 
+\paragraph{Potential}
+The 22 scalars of the theory can be parametrised by ($22 = 32 - 10$, with 10 scalars gauge fixed using translations in the gauge group)
+\begin{itemize}[label=\textbullet]
+	\item $m = \nu\nu^{T}\in{\rm GL}(3,\mathbb{R})$ parametrizing the coset ${\rm GL}(3,\mathbb{R})/{\rm SO}(3)$,
+	\item $\phi$ a $3\times3$ antisymmetric matrix,
+	\item $\xi$ a $3\times4$ matrix, and $\xi^{2} = \xi \xi^{T}$,
+	\item a dilaton $\tilde{\varphi}$.
+\end{itemize}
+We can further restrict ourselves to a set of 13 scalars (see ref.~\cite{Eloy:2021fhc}), with
+\begin{equation}
+	\begin{aligned}
+		\xi &= \begin{pmatrix}
+					0 & 0 & 0 & x_{1} \\
+					0 & 0 & 0 & x_{2} \\
+					0 & 0 & 0 & x_{3}
+				\end{pmatrix},
+		\quad
+		\phi = \begin{pmatrix}
+					0 & x_{4} & x_{5} \\
+					-x_{4} & 0 & x_{6} \\
+					-x_{5} & -x_{6} & 0
+				\end{pmatrix},
+		\quad
+		\tilde{\varphi} = x_{13} \\[5pt]
+		\nu &= e^{(6\,x_{7}+3\,x_{8}+\sqrt{3}\,x_{9})/6}
+				\begin{pmatrix}
+					1 & \frac{x_{10}}{\sqrt{2}} & \frac{x_{11}}{\sqrt{2}} + \frac{x_{10}x_{12}}{4} \\
+					0 & e^{-x_{8}} & \frac{e^{-x_{8}}\,x_{12}}{\sqrt{2}} \\
+					0 & 0 & e^{-(x_{8}+\sqrt{3}\,x_{9})/2}
+				\end{pmatrix}.
+	\end{aligned}
+\end{equation}
+Scalar potential from ref.~\cite{Eloy:2021fhc}:
+%
+\begin{equation} \label{eq:scalarpotential}
+	\begin{aligned}
+ 		V & = 4\,e^{-4\tilde\varphi}+2\,e^{-2\tilde\varphi}\Big[-\tr\left(m+m^{-1}\right)+\tr\left(\phi m^{-1}\phi\right) -2\,\tr\left(\phi m^{-1}\xi^{2}\right)-2\,\tr\left(\xi^{2}\right)\\
+ 		&\qquad\quad-\tr\left(\xi^{2}m^{-1}\xi^{2}\right)  +\frac{1}{2}\,\det\left(m^{-1}\right)\left(1-\tr\left(\phi^{2}\right)-\tr\left(\xi^{4}\right)+\tr\left(\xi^{2}\right)^{2}\right) \\
+ 		&\qquad\quad +\frac{1}{2}\,{\rm T}\left(m^{-1}(\xi^{2}-\phi),(\xi^{2}+\phi)m^{-1},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2}\right)\\
+ 		&\qquad\quad +\frac{1}{4}\,{\rm T}\left(m^{-1},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2}\right)\Big], 
+ 	\end{aligned}
+\end{equation}
+where ${\rm T}\left(A,B,C\right)=\varepsilon_{mnp}\,\varepsilon_{qrs}\,A^{mq}B^{nr}C^{ps}$.
+
+As a first simplified example we have considered only the parameters $x_{1}, x_{2}, x_{4}, x_{8}$ and $x_{10}$. The potential~\eqref{eq:scalarpotential} becomes
+\begin{equation} \label{eq:scalarpotential124810}
+	\begin{aligned}
+		V &= \frac{1}{8}\, e^{-2\,x_{8}} \bigg[4 + 4\,x_{1}^4 + e^{4\,x_{8}} \big(2 + x_{10}^2\big)^2 \big(1 + x_{2}^4\big)\\
+		  & \quad\qquad\qquad - 4\,e^{3\,x_{8}}\,\big(2 + x_{10}^2\big) \Big(2 - x_{1}^2 + \sqrt{2}\,x_{1} x_{10} x_{2}^3 + x_{2}^4 + 
+      			2\,x_{1} x_{2} x_{4} + x_{4}^2 - x_{2}^2 \big(1 - x_{1}^2 + x_{4}^2\big)\Big)\\
+        & \quad\qquad\qquad - 8\,e^{x_{8}}\,\Big(2 + x_{1}^4 + \sqrt{2}\,x_{1}^3 x_{10} x_{2} - x_{2}^2 - 2\,x_{1} x_{2} x_{4} + 
+      			x_{4}^2 - x_{1}^2 \big(1 - x_{2}^2 + x_{4}^2\big)\Big)\\
+        & \quad\qquad\qquad + 4\,e^{2\,x_{8}}\,\Big(2 - 4\,x_{1}^2 + x_{1}^4 - 4\,x_{2}^2 + 4\,x_{1}^2 x_{2}^2 + x_{2}^4
+        			+ x_{10}^2\big(1 + 3\,x_{1}^2 x_{2}^2\big) + 4\,x_{4}^2 + x_{4}^4\Big)\\
+        & \quad\qquad\qquad + 8\sqrt{2}\,x_{10}\,e^{2\,x_{8}}\,\Big(x_{1}^3 x_{2} + x_{1}^2 x_{4} - x_{2}^2 x_{4} + x_{1} \big(x_{2}^3 - x_{2} x_{4}^2\big)\Big)\bigg].
+	\end{aligned}
+\end{equation}
+
 \section{Numerical analysis}
 	\subsection{Gradient descent and local analysis}
 	\begin{itemize}[label=\textbullet]
@@ -246,14 +303,118 @@ MI-HET-??? \\
 		\item Then more details: discuss hypotheses to compute the weights, choice of transformations, choice of $\beta$, choice of loss, prior, initial sampling, choice of representation for the polynomials.
 		\item Discuss the fact that we allow float coefficients even though we know the coefficients will be only integers of square roots of integers?
 		\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
-		\item Results for naive choices of parameters (numbers of itaration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.
+		\item Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.
 	\end{itemize}
+
+
+	\paragraph{Results}
+	We have used the numerical analysis outlined in the previous sections to the search for extrema of the scalar potential~\eqref{eq:scalarpotential124810}. For 100 runs with parameters
+	\begin{equation}
+		\begin{gathered}
+			n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.5 - \frac{0.45}{1+\exp\big(10-20 i/n_{\rm iter}\big)}, \\
+			{\rm sample\ size = 10000},\quad p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+		\end{gathered}
+	\end{equation}
+	the code finds the 7 different following polynomials:
+	\begin{subequations} \label{eq:pols}
+    \begin{align}
+      p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}\tilde{x}_{8} + x_{2}\tilde{x}_{8}x_{10} - \sqrt{2}\,x_{2}x_{4}\tilde{x}_{8},\\
+      p_{2} &= 2\,x_{2} + 2\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}\tilde{x}_{8}x_{10}^{2},\\
+      p_{3} &= 2\,x_{2} - 2\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}\tilde{x}_{8}x_{10} + 2\,x_{1}x_{4}\tilde{x}_{8}
+      		- 2\,x_{2} x_{4}^{2}\tilde{x}_{8},\\
+      p_{4} &= \sqrt{2}\,x_{2} - \sqrt{2}\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}\,x_{4} + x_{1}\tilde{x}_{8}x_{10}
+      		- x_{2}x_{4}\tilde{x}_{8}x_{10},\\
+      p_{5} &= -2\,x_{1} - 2\,x_{2}x_{4}- 2\,x_{1}x_{4}^{2} + 2\,x_{1}\tilde{x}_{8} + \sqrt{2}\,x_{2}x_{10}
+      		+ x_{1}\tilde{x}_{8}x_{10}^{2},\\
+      p_{6} &= -2\,x_{2}x_{4} - 2\,x_{1}x_{4}^{2} + 2\,x_{2}x_{4}\tilde{x}_{8} + \sqrt{2}\,x_{2}x_{10} 
+      		- \sqrt{2}\,x_{2}\tilde{x}_{8}x_{10} +  x_{1}\tilde{x}_{8}x_{10}^{2},\\
+      p_{7} &= -\sqrt{2}\,x_{1}^{2}x_{4} + \sqrt{2}\,x_{2}^{2}x_{4} + \sqrt{2}\,x_{1}x_{2}x_{4}^{2} - x_{1}^{2}x_{10}
+      		- x_{2}^{2}x_{10},
+    \end{align}
+  \end{subequations}
+  where $\tilde{x}_{8} = e^{x_{8}}$, with the distribution:
+  \begin{equation}
+  	\begin{tabular}{l|cccccccc}
+  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+  		Distribution & 59\% & 25\% & 5\% & 9\% & 2\% & 4\% & 2\% & 13\%
+  	\end{tabular}
+  \end{equation}
+  The sum of the percentages is higher than 100\% because some runs find more than one polynomials. The code fails to find any polynomial in 13\% of the time. The averaged time needed for a single run on a PC in $\sim 1400\,{\rm s}$.
 
 \section{Supergravity solutions}
 \begin{itemize}[label=\textbullet]
 	\item For each couple of candidate polynomials, we get the same expression for the solution, and it indeed defines a unique vacuum of the 3d SUGRA.
 	\item Discussion of the vacuum: gauge group, Zham. metric, change of variables, 3d spectrum (and stability), spin 2 spectrum on $S^{3}$, one parameter seems to be a gauge parameter, uplift?
 \end{itemize}
+
+For every couples $(p_{i},p_{j})$ of polynomials in eq.~\eqref{eq:pols}, the system
+\begin{equation}
+	\begin{cases}
+		p_{i} = 0, \\
+		p_{j} = 0,
+	\end{cases}
+\end{equation}
+gives the same solution
+\begin{equation}
+	\begin{cases}
+		\displaystyle x_{1} = \frac{x_{2}}{\sqrt{2}}\,\frac{e^{x_{8}/2}}{e^{x_{8}}-1}\,\Big(-x_{5}\,e^{x_{8}/2} + \sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}\Big),\\[8pt]
+		\displaystyle x_{4} = \frac{e^{-x_{8}/2}}{\sqrt{2}}\,\sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}.
+	\end{cases}
+\end{equation}
+We checked that this defines a 3-parameter solution of three-dimensional half-maximal supergravity. Equivalently:
+\begin{equation}
+	\begin{cases}
+		\displaystyle \tilde{x}_{8} = \frac{x_{1}^{2}+x_{2}^{2}}{x_{2}^{2} + \big(x_{1}-x_{2}x_{4}\big)^{2}},\\[10pt]
+		\displaystyle x_{10} = \sqrt{2}\,x_{4}\,\frac{x_{2}^{2} - x_{1}^{2}+x_{1}x_{2}x_{4}}{x_{1}^{2}+x_{2}^{2}}.
+	\end{cases}
+\end{equation}
+The solution preserves a ${\rm U}(1)\times{\rm U}(1)$ gauged symmetry.
+
+\paragraph{Moduli space}
+The $(x_{1},x_{2},x_{4})$ moduli space is most nicely parametrised using the change of coordinates
+\begin{equation}
+	x_{1} = r\cos(\theta)\cos(\Phi), \quad x_{2} = r\cos(\theta)\sin(\Phi) \quad {\rm and} \quad x_{4} = r\sin(\theta),
+\end{equation}
+for which the Zamolodchikov metric reads
+\begin{equation}
+	\d^{2}s_{\rm Zam.} = -\,\d r^{2} - r^{2}\,\bigg(\d \theta^{2} - r\cos(\theta)\,\d \theta\d\Phi + \sin(\theta)\,\d r\d\Phi + \frac{1}{2}\,\big(3+r^{2}-\cos(2\theta)\big)\,\d\Phi^{2} \bigg).
+\end{equation}
+\ce{Tests other change of variables? Test choices of variables other than $(x_{1},x_{2},x_{4})$?}
+
+\paragraph{Bosonic spectrum}
+Vector fields:
+\begin{equation}
+ \begin{aligned}	
+	m_{\sst{(1)}}\ell_{\rm AdS}:\quad &
+	0\ [2],	\quad
+	-2\ [5],	\quad
+	2\ [1],	\\[5pt]
+	&	-1\pm\sqrt{\left(1+r^2\right)^2-2\,r^2\,\cos(2\theta)}\ [2+2],	\\[5pt]
+	&	1\pm\sqrt{1+4\,r^2+r^{4}}\ [2+2].
+ \end{aligned}
+\end{equation}
+The integers between square brackets indicate the multiplicity of each eigenvalue. The spectrum includes two massless vectors corresponding to the unbroken ${\rm U}(1)\times {\rm U}(1)$ gauge symmetry, although in three dimensions they are non-propagating.
+
+
+Scalars:
+\begin{equation}
+ \begin{aligned}	
+	\left(m_{\sst{(0)}}\ell_{\rm AdS}\right)^2:\quad&
+	0\ [5],	\quad
+	8\ [1],	\quad
+	r^{2}\,\left(4+r^2\right)\ [8],	\\[5pt]
+	&	2r\,\Big(3\,r+r^{3}\pm(2+r^{2})\,\sqrt{2+r^2-2\,\cos(2\theta)}-r\cos(2\theta)\Big)\ [2+2].
+ \end{aligned}
+\end{equation}
+
+Gravitini:
+\begin{equation}
+	m_{{(\nicefrac32)}}\ell_{\rm AdS}:\quad 
+	\quad \dfrac1{2}\bigg[1\pm\sqrt{4+2\,r^{2}+r^{4}-2r^{2}\cos(2\theta)}\bigg]\ [4+4],
+\end{equation}
+no SUSY enhancements other than $r=0$.
+
+No dependence on $\Phi$.
 
 \section{Conclusion}
 \begin{itemize}[label=\textbullet]
