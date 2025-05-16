@@ -1,0 +1,13 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
+\contentsline {section}{\numberline {2}Supergravity setup}{1}{section.2}%
+\contentsline {paragraph}{Potential}{1}{paragraph*.3}%
+\contentsline {section}{\numberline {3}Numerical analysis}{2}{section.7}%
+\contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{2}{subsection.8}%
+\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{5}{subsection.16}%
+\contentsline {paragraph}{Results}{7}{paragraph*.18}%
+\contentsline {section}{\numberline {4}Supergravity solutions}{8}{section.29}%
+\contentsline {paragraph}{Moduli space}{9}{paragraph*.33}%
+\contentsline {paragraph}{Bosonic spectrum}{9}{paragraph*.36}%
+\contentsline {section}{\numberline {5}Conclusion}{9}{section.40}%
+\contentsfinish 

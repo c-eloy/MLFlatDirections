@@ -290,17 +290,85 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	\subsection{Gradient descent and local analysis}
 	\begin{itemize}[label=\textbullet]
 		\item Gradient descent: implementation, sampling, time needed, loss.
+		
+		In order to look for flat direction in this potential, we will use numerical tools. The path we will follow is the following : first we will sample the underlying manifold, then we will use numerical tools to exctract analytics information on this cloud of points. Therefore the first step is to sample the manifold. To do so, we choose to do a basic gradient descent. We start by randomly uniformy initializing points in an hypercube of length $[-2,2]$. This will be important latter to have points which are not only in $[-1,1]$. We choose to have $10^5$ points. For this example. This number is motivated by the dimensionality of our problem. If all possible directions are going to be populated, and if wen want $\mathcal{O}(10)$ points in each direction, then we need  $\mathcal{O}(10^5)$ points. As the true internal dimension of the manifold is lesser or equal than 5, this number provides an upper bound for the number of points needed to sufficiently sample the manifold.  We then perfom a gradient descent on the point using the automatic differentiation method of tensorflow. For the loss function, we use 
+		\begin{equation}
+			\mathcal{L} = \sum_{i = 1}^{n_{points}} |\nabla V(\vec{x}_i)|^2
+		\end{equation}
+		with $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. We choose to use the Adam optimizer and use a learning rate of $10^{-2}$. We run the gradient descent for $10000$ epochs to make sure of convergence. 
+%		\begin{figure}
+%			\includegraphics[scale = 0.5]{imagefile} % add loss history 
+%		\end{figure}
+		As a first visualisation, we show a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This shows all possible $2d$ projections of the data as well as the $1d$ histograms of the data after the gradient descent. 
+		\begin{figure}
+			\centering
+			\includegraphics[scale = 0.25]{Figures/triangular_plot_1_2_4_8_10.png} %names need to be changed.
+			\caption{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent}
+			\label{triangular_plot_1_2_4_8_10}
+		\end{figure}
+		
+		Comments :
+		\begin{enumerate}
+			\item We see some non trivial correlation between the data. Note however that some features we see can be caused by the fact that some places may be greater basin of attractions (this is for example what happend in the $x_1/x_2$ plot). However, the structure we see in the $x_4/x_8$ or $x_4/x_{10}$ is a remnant of true features of the manifold
+			\item All directions seems to be well populated 
+			\item A great majority of the points fall in the $\vec{0}$ point. This is not too surprising. This just means that the round sphere solution has a greater basin of attraction. Even so, those points are going to be sufficiently good for the rest of the analysis, and we do not try to move the points along flat directions (to depopulate the origin et repopulate the rest).
+		\end{enumerate}
 		\item Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least fex points in each direction).
+		
+		Once the gradient descent is done and we sampled the flat direction, it remains to determine what is the underlying manifolds. We would like to obtain some analytics expression for this, not only a numerical solution. Before proceeding to any sort of symbolic regression and look for such an analytic expression, there is a few things we can do to gain so understanding on the data, such as determining the dimensionality of the manifold, and wheter it a one piece or several pieces manifolds (like 2 intersecting hyperplane or so). To do so, we run a local Principal Component Analysis (PCA) algorithm. For each point, we select the $k$ nearest neighboors, and we run a PCA analysis on thos points. This allows to determine how many directions are needed to explain a given percentage of the spreding of the data, call it $\epsilon$. In other words, this allows to determine what is the local dimension around each point. We ran such an algorithm for a number of $k$ nearest neighboors equal to $[5,10,20,50,100]$, and for $\epsilon = 0.99$. The results are shown in \ref{local_pca}.
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.5]{Figures/Local_PCA.png}
+			\caption{Results of the local PCA analysis. On the $x$-axis is the dimension found by the algorithm, and on the $y$-axis the proportion of points. The different curves are for different $k$-nearest neighboors.}
+			\label{local_pca}
+		\end{figure} 
+		
+		We see that, for every choice of nearest neighboor, a peak at $d=3$, which indicates an underlying dimension of 3 for the manifold. We also see that for $k=5$, that a number a point seems to indicate a dimensionality of 2. However, if the dimension is indeed 3, then 5 points may not be enough to sufficiently populate the three directions, explaining the failure of the algorithm to find 3. We also see that for $k\le20$, that there is more and more points indicating a dimension equals to 4 or 5. This can be explained by the fact that we increasing the number of neighboors, we are doing a rougher coarse graining, loosing information on the localilty. A too large number of neighboors implies including points which are not really local anymore, artificially increasing the local dimension. We conclude that the dimension of the manifold we are looking at is 3. 
+		
 		\item Clusteting: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space.
-		\item After PCA and clustering we know that the points after the gradient descent sample a three-dimensional manifold.
+		
+		Something that might happen, is that we have several manifolds of dimesion 3, and the dimension 4 points we saw above are actually the intersection of those manifolds. If we indeed picture the intersection of two lines, then at the intersection point, the local dimension found by the previous algorithm should be 2. To exclude such a scenario, we run a clustering algorithm, based on local density. For this, we use the HDBSAN algorithm. (details on how it works?). We choose a minimal cluster size of 10 points. Out of the 100000, the algorithm finds 3 cluster : one on dimension 10, one of dimension 91747 and a last one of dimension 6849 (not a total of 100000??). The last cluster are just the points that the algorithm did not managed to fit into any cluster. For the first one, we interpret it as some fluctuation in our data, making some region of different density as the other, but we do not believe this is some real result, more an artefact. Therefore, what the algorithm tells us, is that there seems to be on cluster with more than $90\%$ of the data. We show on \ref{3dplots} three-dimensional projections of the data. 
+		
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.4]{Figures/3d_plot_x4_x8_x10.png}
+			\includegraphics[scale=0.4]{Figures/3d_plot_x2_x4_x8.png}
+			\caption{3d plot of $x_4$, $x_8$ and $x_{10}$}
+			\label{3dplots}
+		\end{figure}
+		On these scatter plots, the turquoise points are those belonging to the main cluster, and the purple are those for which the algorithm failed to give them a cluster. On of the two plot, we can see some few yellow points which correspond to the small cluster with 10 points. We can see, from what we can tell with those plots, that all points that could not be assigned to a cluster are on the boarder of the data. Therefore, we interpret the fact that those point could not be assigned, not because there are part of another cluster, and a manifold, but because of the lack of points around them due to the fact they are on the boundary of our data. We conclude from this analysis, that we possess here a sampling of a unique 3 dimensional manifold. 
+		
+		%\item After PCA and clustering we know that the points after the gradient descent sample a three-dimensional manifold.
 	\end{itemize}
 
 	\subsection{Annealed Importance Sampling for polynomial symbolic regression}
 	\begin{itemize}[label=\textbullet]
 		\item We can convert the potential to a polynomial by converting the variables that appear in exponentials to logs.
 		\item As the potential is a polynomial, the solutions satisfy polynomials equations. Discuss that fact that we could get polynomials directly by taking the gradient of the potential, but those will be to complicated to express the vacuum in a usable way.  We search those using Annealed Importance Sampling.
+		
+		Now we have sampled the manifold and exctrated some basic information about it (namely its dimension and the fact that it is made of one block), we would like to see if we can exctract some analytic formula to caracterise it. What we have at the moment, are points on a 3-dimensional manifold, which are embedded in a 5-dimensional space. Therefore we can conclude that, in order to caracterise the manifold, we need two constraints on the embedding coordinates $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. If we have a look at the form of the potential \eqref{eq:scalarpotential124810}, we see that if we use $\tilde{x_{8}} = e^{x_8}$, that this potential is actually a polynomial of the embedding coordinates. Therefore, the components of $|\nabla V|$ are also polynomials in those variables. We conclude that the constraints on the embedding coordinates we are looking for are polynomial constraints of the form $p(\vec{x}) = 0$, and that there are two of those. Of course if one takes directly the gradient of \eqref{eq:scalarpotential124810}, one ends up with such conditions, but none are usable directly to solve for two of the variables in terms of the others. The problem we are facing here is therefore a problem of symbolic regression : we are looking for analytic expressions (polynomial) that vanish once evaluated on our data points. There are a number of way one can deal with it, using already existing methods such as AI Feynman methods, or ..., or by doing rough gradient descent on the most general polynomial with arbitrary coefficients and trying to minimize its value once evaluated on the data points. In the spirit of trying to build a generalisable method, we develop here our own method, which is based on symbolic regression using an Annealing Importance Sampling method. 
+
 		\item Annealed Importance Sampling: first explain general idea (construct density probability, role of temperature, links with Monte-Carlo), discuss $\beta$ to control exploration and exploitation phases.
+		
+		In the realm of symbolic regression, the objective is to uncover interpretable mathematical expressions that best describe a given dataset. In the problem discussed in this paper, we are looking for polynomial expressions such that $p(data) = 0$. This task involves navigating a vast, discrete, and often rugged search space of possible symbolic models, which poses significant challenges for traditional sampling methods. Markov Chain Monte Carlo (MCMC) techniques, while widely used, can struggle with poor mixing and getting trapped in local optima, especially in high-dimensional or multimodal spaces.
+		
+		To address these challenges, we employ an Annealed Importance Sampling (AIS) combined with Sequential Monte Carlo (SMC) methods. AIS constructs a sequence of intermediate distributions that smoothly transition from an initial, tractable distribution (e.g., a prior over symbolic expressions) to the complex target posterior distribution. This annealing process is guided by a temperature-like parameter that gradually emphasizes the data likelihood, allowing for more efficient exploration of the probability landscape.
+		
+		SMC enhances this procedure by propagating a population of particles—each representing a candidate symbolic expression—through the sequence of distributions. At each step, particles are reweighted based on the incremental change in the distribution, resampled to focus computational effort on high-probability regions, and mutated via operations. This combination of importance sampling, resampling, and mutation maintains diversity among the particles and prevents premature convergence to suboptimal models.
+		
+		These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous. 
+		
 		\item Then more details: discuss hypotheses to compute the weights, choice of transformations, choice of $\beta$, choice of loss, prior, initial sampling, choice of representation for the polynomials.
+		
+		Let us now explain in more details how does this procedure goes. The goal is to reconstruct some distribution function $p(z)$, where here $z$ in going to be some polynomial. We will try to reconstruct this density function by a serie of density function $\pi_n(z_n) = \gamma_n(z_n)/Z_n$ with $n = 1,\dots,N$ is going to be the number of annealing steps, $\pi_n$ is defined in terms of an unnormalized density $\gamma_n$ and we have the normalizing constant $Z_n = \int \gamma_n(z) \mathrm{dz}$. We also assume we have a sequence of inverse temperature constants $\beta_n$, where $0 = \beta_1 < \beta_2 <\dots< \beta_N = 1$. We then define the unnormalized density at level $n$ in terms of a prior distribution $p_0(z)$ over the hypothesis space and an Loss function $L(z)$
+		\begin{equation}
+			\gamma_n(z) := p_0(z) \: \exp \left( -\beta_n L(z) \right)
+		\end{equation} 
+		
+		At each step, we have a set of particles $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and walculate the new unnormalized importance weight $w_n^k$. 
+		
+		Let us first focus on how we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ given $z_{n-1}^k$. To do so, we choose $q(z_n | z_{n-1})$ to be a Markov kernel 
+		
 		\item Discuss the fact that we allow float coefficients even though we know the coefficients will be only integers of square roots of integers?
 		\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
 		\item Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.
