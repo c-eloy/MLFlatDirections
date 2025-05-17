@@ -293,9 +293,9 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 		
 		In order to look for flat direction in this potential, we will use numerical tools. The path we will follow is the following : first we will sample the underlying manifold, then we will use numerical tools to exctract analytics information on this cloud of points. Therefore the first step is to sample the manifold. To do so, we choose to do a basic gradient descent. We start by randomly uniformy initializing points in an hypercube of length $[-2,2]$. This will be important latter to have points which are not only in $[-1,1]$. We choose to have $10^5$ points. For this example. This number is motivated by the dimensionality of our problem. If all possible directions are going to be populated, and if wen want $\mathcal{O}(10)$ points in each direction, then we need  $\mathcal{O}(10^5)$ points. As the true internal dimension of the manifold is lesser or equal than 5, this number provides an upper bound for the number of points needed to sufficiently sample the manifold.  We then perfom a gradient descent on the point using the automatic differentiation method of tensorflow. For the loss function, we use 
 		\begin{equation}
-			\mathcal{L} = \sum_{i = 1}^{n_{points}} |\nabla V(\vec{x}_i)|^2
+			\mathcal{L} = \sum_{i = 1}^{n_{points}} |\nabla V(\vec{x}^{\,i})|^2
 		\end{equation}
-		with $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. We choose to use the Adam optimizer and use a learning rate of $10^{-2}$. We run the gradient descent for $10000$ epochs to make sure of convergence. 
+		with $\vec{x}^{\,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ are the data points. We choose to use the Adam optimizer and use a learning rate of $10^{-2}$. We run the gradient descent for $10000$ epochs to make sure of convergence. 
 %		\begin{figure}
 %			\includegraphics[scale = 0.5]{imagefile} % add loss history 
 %		\end{figure}

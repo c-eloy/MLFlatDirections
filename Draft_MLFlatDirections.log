@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  16 MAY 2025 17:18
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  16 MAY 2025 19:08
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1142,11 +1142,11 @@ Package rerunfilecheck Info: File `Draft_MLFlatDirections.out' has not changed.
 (rerunfilecheck)             Checksum: 671CA53B2BAB7B4E971F15D6829B8D22;1257.
  ) 
 Here is how much of TeX's memory you used:
- 29712 strings out of 476025
- 541075 string characters out of 5790017
+ 29706 strings out of 476025
+ 541027 string characters out of 5790017
  1875388 words of memory out of 5000000
  49344 multiletter control sequences out of 15000+600000
- 545305 words of font info for 220 fonts, out of 8000000 for 9000
+ 545140 words of font info for 217 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,16n,80p,1873b,700s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pf
@@ -1174,7 +1174,7 @@ e/2023/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb></usr/local/texlive/
 exmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2023/tex
 mf-dist/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf
 -dist/fonts/type1/public/cm-super/sfti1000.pfb>
-Output written on Draft_MLFlatDirections.pdf (10 pages, 927924 bytes).
+Output written on Draft_MLFlatDirections.pdf (10 pages, 927967 bytes).
 PDF statistics:
  283 PDF objects out of 1000 (max. 8388607)
  209 compressed objects within 3 object streams
