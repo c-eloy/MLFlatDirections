@@ -429,14 +429,7 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	\end{itemize}
 	
 	\paragraph{Results}
-	We have used the numerical analysis outlined in the previous sections to the search for extrema of the scalar potential~\eqref{eq:scalarpotential124810}. For 100 runs with parameters \ce{\texttt{max degree} is 4, \texttt{max num monomials} is 6.}
-	\begin{equation}
-		\begin{gathered}
-			n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.5 - \frac{0.45}{1+\exp\big(10-20 i/n_{\rm iter}\big)}, \\
-			{\rm sample\ size = 10000},\quad p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
-		\end{gathered}
-	\end{equation}
-	the code finds the 7 different following polynomials: \ce{Mention that we ``rounded'' the coefficients to integer and square root of them.}
+	We have used the numerical analysis outlined in the previous sections to the search for extrema of the scalar potential~\eqref{eq:scalarpotential124810}. The code finds the 7 different following polynomials: \ce{Mention that we ``rounded'' the coefficients to integer and square root of them.}
 	\begin{subequations} \label{eq:pols}
     \begin{align}
       p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}\tilde{x}_{8} + x_{2}\tilde{x}_{8}x_{10} - \sqrt{2}\,x_{2}x_{4}\tilde{x}_{8},\\
@@ -453,14 +446,73 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
       		- x_{2}^{2}x_{10},
     \end{align}
   \end{subequations}
-  where $\tilde{x}_{8} = e^{x_{8}}$, with the distribution: \ce{It's not a distribution, how to name it? Frequency?}
-  \begin{equation}
-  	\begin{tabular}{l|cccccccc}
-  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
-  		Distribution & 59\% & 25\% & 5\% & 9\% & 2\% & 4\% & 2\% & 13\%
-  	\end{tabular}
-  \end{equation}
-  The sum of the percentages is higher than 100\% because some runs find more than one polynomials. The code fails to find any polynomial in 13\% of the time. The averaged time needed for a single run on a PC in $\sim 1400\,{\rm s}$. \ce{This timing is with \texttt{analysis}, it may be less without.}
+  where $\tilde{x}_{8} = e^{x_{8}}$. They are found with different frequencies, depending on the chosen parameters.
+
+  \begin{enumerate}
+  		\item For 100 runs with parameters
+		\begin{equation}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.5 - \frac{0.45}{1+\exp\big(10-20 i/n_{\rm iter}\big)}, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 59\% & 25\% & 5\% & 9\% & 2\% & 4\% & 2\% & 13\%
+	  	\end{tabular}
+	  \end{equation}
+	  The sum of the percentages is higher than 100\% because some runs find more than one polynomials. The code fails to find any polynomial in 13\% of the time. The averaged time needed for a single run on a PC in $\sim 700\,{\rm s}$. \ce{This timing is with \texttt{analysis}, it may be less without.}
+
+	  Averaged number of particles reproducing a target in a successful run: $931$
+
+	  Mean loss with regularisation for particles reproducing a target: $597.0$
+
+	  Mean loss without regularisation for particles reproducing a target: $345.0$
+  		\item For 100 runs with parameters
+		\begin{equation}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.1, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 69\% & 11\% & 7\% & 12\% & 0\% & 4\% & 0\% & 13\%
+	  	\end{tabular}
+	  \end{equation}
+	  Averaged number of particles reproducing a target in a successful run: $960$
+
+	  Mean loss with regularisation for particles reproducing a target: $605.8$
+
+	  Mean loss without regularisation for particles reproducing a target: $358.8$
+	  \item For 100 runs with parameters
+		\begin{equation}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{3}, \quad \sigma = 0.1, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 76\% & 18\% & 10\% & 6\% & 4\% & 1\% & 2\% & 6\%
+	  	\end{tabular}
+	  \end{equation}
+	  Averaged number of particles reproducing a target in a successful run: $973$
+
+	  Mean loss with regularisation for particles reproducing a target: $854.2$
+
+	  Mean loss without regularisation for particles reproducing a target: $602.5$
+  \end{enumerate}
+	
 
   \ce{Draw histograms of the polynomials distribution to discuss runs with multiple outputs?}
 
