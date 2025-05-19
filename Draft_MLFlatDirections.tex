@@ -292,15 +292,23 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 \section{Numerical analysis}
 	\subsection{Gradient descent and local analysis}
 		\paragraph{Gradient descent: implementation, sampling, time needed, loss}
-		In order to look for flat direction in this potential, we will use numerical tools. The path we will follow is the following : first we will sample the underlying manifold, then we will use numerical tools to exctract analytics information on this cloud of points. Therefore the first step is to sample the manifold. To do so, we choose to do a basic gradient descent. We start by randomly uniformy initializing points in an hypercube of length $[-2,2]$. This will be important latter to have points which are not only in $[-1,1]$. We choose to have $10^5$ points. For this example. This number is motivated by the dimensionality of our problem. If all possible directions are going to be populated, and if wen want $\mathcal{O}(10)$ points in each direction, then we need  $\mathcal{O}(10^5)$ points. As the true internal dimension of the manifold is lesser or equal than 5, this number provides an upper bound for the number of points needed to sufficiently sample the manifold.  We then perfom a gradient descent on the point using the automatic differentiation method of tensorflow. For the loss function, we use 
+
+		To identify the flat directions in the potential, we will use numerical tools. The procedure is as follows: first, we sample the underlying manifold, and then we use numerical techniques to extract analytical information from the resulting cloud of points. The first step is thus to sample the manifold.
+		
+		To do so, we perform a basic gradient descent. We begin by randomly and uniformly initializing points within a hypercube of range $[-2,2]$. This choice is important to ensure that points are not restricted to the inner range $[-1,1]$. For this example, we choose to generate $10^5$ points. This number is motivated by the dimensionality of our problem. If we aim to populate all possible directions and want approximately $\mathcal{O}(10)$ points per direction, then we require $\mathcal{O}(10^5)$ points. Given that the true intrinsic dimensionality of the manifold is less than or equal to 5, this value serves as a conservative upper bound for the number of points needed to adequately sample the manifold.
+		
+		We then perform gradient descent on the points using TensorFlow’s automatic differentiation. The loss function is defined as:
 		\begin{equation}
-			\mathcal{L} = \sum_{i = 1}^{n_{points}} |\nabla V(\vec{x}^{\,i})|^2
+			\mathcal{L} = \sum_{i = 1}^{n_{points}} || \nabla V(\vec{x}^{,i})||^2
 		\end{equation}
-		with $\vec{x}^{\,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ are the data points. We choose to use the Adam optimizer and use a learning rate of $10^{-2}$. We run the gradient descent for $10000$ epochs to make sure of convergence. 
-%		\begin{figure}
-%			\includegraphics[scale = 0.5]{imagefile} % add loss history 
-%		\end{figure}
-		As a first visualisation, we show a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This shows all possible $2d$ projections of the data as well as the $1d$ histograms of the data after the gradient descent. 
+		where $\vec{x}^{\,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ denotes the data points. We use the Adam optimizer with a learning rate of $10^{-2}$ and run the gradient descent for $10,000$ epochs to ensure convergence.
+		
+		% \begin{figure}
+			% \includegraphics[scale = 0.5]{imagefile} % add loss history
+			% \end{figure}
+		
+		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
+		
 		\begin{figure}[t]
 			\centering
 			\includegraphics[scale = 0.25]{Figures/triangular_plot_1_2_4_8_10.png} %names need to be changed.
@@ -308,39 +316,54 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 			\label{triangular_plot_1_2_4_8_10}
 		\end{figure}
 		
-		Comments :
-		\begin{enumerate}
-			\item We see some non trivial correlation between the data. Note however that some features we see can be caused by the fact that some places may be greater basin of attractions (this is for example what happend in the $x_1/x_2$ plot). However, the structure we see in the $x_4/x_8$ or $x_4/x_{10}$ is a remnant of true features of the manifold
-			\item All directions seems to be well populated 
-			\item A great majority of the points fall in the $\vec{0}$ point. This is not too surprising. This just means that the round sphere solution has a greater basin of attraction. Even so, those points are going to be sufficiently good for the rest of the analysis, and we do not try to move the points along flat directions (to depopulate the origin et repopulate the rest).
-		\end{enumerate}
+		We can make a few comments on those plots. First, we observe non-trivial correlations in the data. Some of these may result from larger basins of attraction, such as in the $x_1/x_2$ plot. However, the structures seen in the $x_4/x_8$ or $x_4/x_{10}$ plots likely reflect genuine features of the manifold, and will show latter that this is indeed the case. We also note that alll directions appear to be well populated. Furthermore, we can notice that a large majority of the points converge to the origin $\vec{0}$. This is not surprising, as this just mean that the round sphere solution has a larger basin of attraction, which sounds reasonable. We do not however attempt to shift the points along flat directions to depopulate the origin or repopulate other regions.
 
 		\paragraph{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least fex points in each direction)}
+
+		Once the gradient descent has been completed and the flat direction sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we can first perform some exploratory analyses to better understand the data. Specifically, we aim to determine the dimensionality of the manifold and whether it consists of a single connected component or multiple disjoint components (e.g., two intersecting hyperplanes).
 		
-		Once the gradient descent is done and we sampled the flat direction, it remains to determine what is the underlying manifolds. We would like to obtain some analytics expression for this, not only a numerical solution. Before proceeding to any sort of symbolic regression and look for such an analytic expression, there is a few things we can do to gain so understanding on the data, such as determining the dimensionality of the manifold, and wheter it a one piece or several pieces manifolds (like 2 intersecting hyperplane or so). To do so, we run a local Principal Component Analysis (PCA) algorithm. For each point, we select the $k$ nearest neighboors, and we run a PCA analysis on thos points. This allows to determine how many directions are needed to explain a given percentage of the spreding of the data, call it $\epsilon$. In other words, this allows to determine what is the local dimension around each point. We ran such an algorithm for a number of $k$ nearest neighboors equal to $[5,10,20,50,100]$, and for $\epsilon = 0.99$. The results are shown in \ref{local_pca}.
+		To this end, we apply a local Principal Component Analysis (PCA). For each point, we identify its $k$ nearest neighbors and perform a PCA on that local neighborhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point.
+		
+		We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in Fig. \ref{local_pca}.
+		
 		\begin{figure}
 			\centering
 			\includegraphics[scale=0.5]{Figures/Local_PCA.png}
-			\caption{Results of the local PCA analysis. On the $x$-axis is the dimension found by the algorithm, and on the $y$-axis the proportion of points. The different curves are for different $k$-nearest neighboors.}
+			\caption{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbors.}
 			\label{local_pca}
-		\end{figure} 
+		\end{figure}
 		
-		We see that, for every choice of nearest neighboor, a peak at $d=3$, which indicates an underlying dimension of 3 for the manifold. We also see that for $k=5$, that a number a point seems to indicate a dimensionality of 2. However, if the dimension is indeed 3, then 5 points may not be enough to sufficiently populate the three directions, explaining the failure of the algorithm to find 3. We also see that for $k\le20$, that there is more and more points indicating a dimension equals to 4 or 5. This can be explained by the fact that we increasing the number of neighboors, we are doing a rougher coarse graining, loosing information on the localilty. A too large number of neighboors implies including points which are not really local anymore, artificially increasing the local dimension. We conclude that the dimension of the manifold we are looking at is 3. 
+		We observe that for every choice of $k$, there is a prominent peak at $d = 3$, suggesting that the underlying manifold is three-dimensional. For $k = 5$, a noticeable fraction of points are assigned a dimensionality of 2. This can be attributed to the fact that if the true dimension is 3, then selecting only 5 neighbours may not sufficiently populate all three directions, leading the algorithm to underestimate the dimensionality.
+		
+		Additionally, for $k \geq 20$, we observe an increasing number of points being assigned dimensionalities of 4 or 5. This behavior can be explained by the loss of locality when the number of neighbours becomes too large: increasing $k$ results in a coarser approximation, and the algorithm may then incorporate points that are no longer truly local. This artificial enlargement of the neighborhood can cause the estimated local dimensionality to rise.
+		
+		We thus conclude that the manifold under investigation has an intrinsic dimension of 3.
 		
 		\paragraph{Clusteting: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}
-		Something that might happen, is that we have several manifolds of dimesion 3, and the dimension 4 points we saw above are actually the intersection of those manifolds. If we indeed picture the intersection of two lines, then at the intersection point, the local dimension found by the previous algorithm should be 2. To exclude such a scenario, we run a clustering algorithm, based on local density. For this, we use the HDBSAN algorithm. (details on how it works?). We choose a minimal cluster size of 10 points. Out of the 100000, the algorithm finds 3 cluster : one on dimension 10, one of dimension 91747 and a last one of dimension 6849 (not a total of 100000?? Clustering only on the point with 3d neighbourhood to avoid intersections). The last cluster are just the points that the algorithm did not managed to fit into any cluster. For the first one, we interpret it as some fluctuation in our data, making some region of different density as the other, but we do not believe this is some real result, more an artefact. Therefore, what the algorithm tells us, is that there seems to be on cluster with more than $90\%$ of the data. We show on \ref{3dplots} three-dimensional projections of the data. 
+		
+		One possible scenario is that our data actually consists of several distinct three-dimensional manifolds, and the points previously identified with dimension $4$ may lie at the intersections of these manifolds. To illustrate, consider the intersection of two lines: at the intersection point, the local dimensionality estimated by the previous PCA algorithm would be 2. To rule out this possibility, we apply a clustering algorithm based on local density, where we only select the points of dimension 3. This, way, we remove the possible intersection points with dimension 4. For the purpose of the clustering, we use the HDBSCAN algorithm\footnote{Details of the algorithm can be found in the original HDBSCAN paper or documentation. Briefly, it is a density-based clustering method that extends DBSCAN by converting it into a hierarchical clustering algorithm and then extracting a flat clustering based on the stability of clusters.}.
+		
+		We set the minimum cluster size to 10 points. Out of the 986,060 3-dimensional points, the algorithm identifies three clusters: one of size 10, one of size 91,747, and one of size 6,849.
+		
+		The smallest cluster (10 points) is likely an artifact of local fluctuations in the data density and is not interpreted as physically meaningful. The last group, comprising 6,849 points, consists of points that the algorithm could not assign to any cluster. We interpret these as outliers or edge points rather than representatives of a separate manifold.
+		
+		What the algorithm does indicate, however, is that over 90\% of the data belongs to a single dominant cluster. In Fig.~\ref{3dplots}, we show 3D projections of the data to visualize the clustering.
 		
 		\begin{figure}
 			\centering
 			\includegraphics[scale=0.4]{Figures/3d_plot_x4_x8_x10.png}
 			\includegraphics[scale=0.4]{Figures/3d_plot_x2_x4_x8.png}
-			\caption{3d plot of $x_4$, $x_8$ and $x_{10}$}
+			\caption{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.}
 			\label{3dplots}
 		\end{figure}
-		On these scatter plots, the turquoise points are those belonging to the main cluster, and the purple are those for which the algorithm failed to give them a cluster. On of the two plot, we can see some few yellow points which correspond to the small cluster with 10 points. We can see, from what we can tell with those plots, that all points that could not be assigned to a cluster are on the boarder of the data. Therefore, we interpret the fact that those point could not be assigned, not because there are part of another cluster, and a manifold, but because of the lack of points around them due to the fact they are on the boundary of our data. We conclude from this analysis, that we possess here a sampling of a unique 3 dimensional manifold. 
 		
+		In these scatter plots, turquoise points belong to the main cluster, while purple points are those that the algorithm failed to assign. In one of the plots, a few yellow points can be seen; these correspond to the smallest cluster of 10 points. From visual inspection, it appears that the unassigned (purple) points lie mostly on the boundary of the sampled region. We therefore interpret their unassigned status not as evidence of belonging to another manifold, but rather as a result of insufficient local density near the edges of the dataset.
 		
-		After PCA and clustering we know that the points after the gradient descent sample a three-dimensional manifold.
+		From this analysis, we conclude that the gradient descent procedure has produced a sampling of a single, connected, three-dimensional manifold.
+		
+		\vspace{0.5em}
+		
+		After performing both PCA and clustering, we thus confirm that the data obtained after gradient descent samples a three-dimensional manifold.
 
 	\subsection{Annealed Importance Sampling for polynomial symbolic regression}
 	\begin{itemize}[label=\textbullet]
@@ -366,16 +389,45 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 			\gamma_n(z) := p_0(z) \: \exp \left( -\beta_n L(z) \right)
 		\end{equation} 
 		
-		At each step, we have a set of particles $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and walculate the new unnormalized importance weight $w_n^k$. 
+		At each step, we have a set of particles $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and walculate the new unnormalized importance weight $w_n^k$. The latter are updated using the formula 
+		\begin{equation}
+			w_n^k = w_{n-1}^k \times \alpha_{n}^k
+		\end{equation}
+		where $\alpha_n^k$ is the incremental importance weight. The standard form for $\alpha_n^k$, which requires introducing an auxiliary backward transition kernel $q(z_{n-1} | z_n)$, is:
+		\begin{equation}
+			\alpha_n^k = \frac{ \gamma_n(z_n^k) q(z_{n-1}^k | z_n^k) }{ \gamma_{n-1}(z_{n-1}^k) q(z_n^k | z_{n-1}^k) } 
+		\end{equation}
+		The weights are finally normalized and we get $w_n^k \rightarrow \frac{w_n^k}{\sum_j w_n^j}$.
 		
-		Let us first focus on how we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ given $z_{n-1}^k$. To do so, we choose $q(z_n | z_{n-1})$ to be a Markov kernel 
+		Let's us now focus on the forward ($q(z_n^k | z_{n-1}^k)$) and backward propagation kernel ($q(z_{n-1}^k | z_n^k)$). The forward propagation kernel defines how we generate the state at time $n$ given the state at time $n-1$. It gives the probability to transition from $z_{n-1}$ to $z_n$. The backward kernel: It represents a hypothetical probability of transitioning back from state $z_n$ to state $z_{n-1}$. The purpose of $q$ is to give a proposition for $z_n$ given $z_{n-1}$. For the implementation of the two, we decide to implement an AIS-style MCMC code : we make some move in the space of polynomials, and then accept or reject those new polynomials based on an acceptance rate. So we first need to choose what are the available moves in the space of polynomials. Here are the choices we have made for our symbolic regression task : 
+		\begin{itemize}
+			\item Coefficient pertubation. Given a polynomial $z_{n-1}$, we choose randomly one of his coefficient and modify it by a random noise from the guassian distribution $\mathcal{N}(0,\sigma^2)$. So for eg : $2 x + 3 y^2 \rightarrow  2.1 x + 3 y^2$.
+			\item Variable multiplication. Given a polynomial $z_{n-1}$, we choose randomly one of his monomial, and multiply it by one of the available variable. So for eg : $2 x + 3 y^2 \rightarrow  2 x y + 3 y^2$.
+			\item Variable division. Given a polynomial $z_{n-1}$, we choose randomly one of his monomial, and divide it by one of its variable. So for eg : $2 x + 3 y^2 \rightarrow  2 x y + 3 y^2$.
+		\end{itemize}
+		This implementation allows us to straightforwardly calculate the forward and backward propagation kernel.  For example, the case of the coefficient pertubation is symmetric. Therefore $q(z_n^k | z_{n-1}^k) = q(z_{n-1}^k | z_n^k)$, which allows to simplify the calculation of the incremental importance weight. 
 		
+		The acceptance ration for the MCMC algorithm is given by : 
+		\begin{equation}
+			A(z_n,z_{n-1}) = \mathrm{min} \left(1,\frac{ \gamma_n(z_n^k) q(z_{n-1}^k | z_n^k) }{ \gamma_{n-1}(z_{n-1}^k) q(z_n^k | z_{n-1}^k) }  \right)
+		\end{equation}
+		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
+		
+		Before closing the section, we need to discuss what is the Loss function we choose. It is recquired to compute the unormalized distribution $\gamma_n$. Assume that we have $z = \sum_k c_k X_k$, where $c_k$ are the coefficients of the polynomials, and $X_k$ is a short notations for all the possible monomials up to a given degree (so if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_k$ are $1, x, y, x^2, y^2, x y$). For the Loss function, we decided to take : 
+		\begin{equation}
+			L(z) = \sum_{i} z(x_i)^2 + \frac{\lambda}{\sum_k c_k}
+		\end{equation}
+		So the first term is just the sum of the squared of the polynomial evaluated on the data. We want to make this 0 so we find polynomial that annihilates our data. The second part is a regularisation factor : it prevents the algorithm to send all the coefficient to 0, which would give a trivial solution to the problem. We typically take $\lambda \sim \mathcal{O}(1000)$.
+
 		\item Discuss the fact that we allow float coefficients even though we know the coefficients will be only integers of square roots of integers?
+		
 		\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
+		
+		Once the Annealing loop is over, we end up with a total of $n_{sample}$ particles, which in principle should be close to annihilate our data, but whose coefficient may need some more fine tuning. To deal with it, we ran a quick exploitation phase, where, for each polynomial, we now only modify its coefficients, with a pertubation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, and keep the new particle, only if the Loss function is now getting smaller. This allow to fine-tune the coefficients. 
+		
 		\item Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.
 	\end{itemize}
-
-
+	
 	\paragraph{Results}
 	We have used the numerical analysis outlined in the previous sections to the search for extrema of the scalar potential~\eqref{eq:scalarpotential124810}. For 100 runs with parameters \ce{\texttt{max degree} is 4, \texttt{max num monomials} is 6.}
 	\begin{equation}
@@ -388,7 +440,7 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	\begin{subequations} \label{eq:pols}
     \begin{align}
       p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}\tilde{x}_{8} + x_{2}\tilde{x}_{8}x_{10} - \sqrt{2}\,x_{2}x_{4}\tilde{x}_{8},\\
-      p_{2} &= 2\,x_{2} + 2\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}\tilde{x}_{8}x_{10}^{2},\\
+      p_{2} &= 2\,x_{2} - 2\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}\tilde{x}_{8}x_{10}^{2},\\
       p_{3} &= 2\,x_{2} - 2\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}\tilde{x}_{8}x_{10} + 2\,x_{1}x_{4}\tilde{x}_{8}
       		- 2\,x_{2} x_{4}^{2}\tilde{x}_{8},\\
       p_{4} &= \sqrt{2}\,x_{2} - \sqrt{2}\,x_{2}\tilde{x}_{8} + \sqrt{2}\,x_{1}\,x_{4} + x_{1}\tilde{x}_{8}x_{10}

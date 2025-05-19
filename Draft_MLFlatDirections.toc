@@ -4,10 +4,13 @@
 \contentsline {paragraph}{Potential}{1}{paragraph*.3}%
 \contentsline {section}{\numberline {3}Numerical analysis}{2}{section.7}%
 \contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{2}{subsection.8}%
-\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{5}{subsection.16}%
-\contentsline {paragraph}{Results}{7}{paragraph*.18}%
-\contentsline {section}{\numberline {4}Supergravity solutions}{8}{section.29}%
-\contentsline {paragraph}{Moduli space}{9}{paragraph*.33}%
-\contentsline {paragraph}{Bosonic spectrum}{9}{paragraph*.36}%
-\contentsline {section}{\numberline {5}Conclusion}{9}{section.40}%
+\contentsline {paragraph}{Gradient descent: implementation, sampling, time needed, loss}{2}{paragraph*.9}%
+\contentsline {paragraph}{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least fex points in each direction)}{3}{paragraph*.12}%
+\contentsline {paragraph}{Clusteting: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}{5}{paragraph*.14}%
+\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{6}{subsection.17}%
+\contentsline {paragraph}{Results}{9}{paragraph*.23}%
+\contentsline {section}{\numberline {4}Supergravity solutions}{9}{section.34}%
+\contentsline {paragraph}{Moduli space}{10}{paragraph*.38}%
+\contentsline {paragraph}{Bosonic spectrum}{10}{paragraph*.41}%
+\contentsline {section}{\numberline {5}Conclusion}{11}{section.45}%
 \contentsfinish 
