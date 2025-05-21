@@ -494,9 +494,9 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 
 	  Averaged number of particles reproducing a target in a successful run: $931 \pm 230$
 
-	  Mean loss with regularisation for particles reproducing a target: $285 \pm 108$
+	  Mean loss with regularisation for particles reproducing a target: $597 \pm 264$
 
-	  Mean loss without regularisation for particles reproducing a target: $33 \pm 24$
+	  Mean loss without regularisation for particles reproducing a target: $345 \pm 246$
   		\item For 100 runs with parameters
 		\begin{equation}
 			\begin{gathered}
@@ -516,9 +516,9 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 
 	  Averaged number of particles reproducing a target in a successful run: $960 \pm 175$
 
-	  Mean loss with regularisation for particles reproducing a target: $282 \pm 91$
+	  Mean loss with regularisation for particles reproducing a target: $606 \pm 257$
 
-	  Mean loss without regularisation for particles reproducing a target: $35 \pm 24$
+	  Mean loss without regularisation for particles reproducing a target: $359 \pm 244$
 
 	  \begin{figure}[h!]
 	  	\centering
@@ -551,9 +551,9 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 
 	  Averaged number of particles reproducing a target in a successful run: $973 \pm 103$
 
-	  Mean loss with regularisation for particles reproducing a target: $310 \pm 115$
+	  Mean loss with regularisation for particles reproducing a target: $854 \pm 427$
 
-	  Mean loss without regularisation for particles reproducing a target: $58 \pm 40$
+	  Mean loss without regularisation for particles reproducing a target: $602 \pm 417$
 
 	  \begin{figure}[h!]
 	  	\centering
@@ -563,8 +563,43 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_19_at_06_01_21_detailed.pdf}};
 	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
 	  	\end{tikzpicture}
-	  	\caption{Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
 	  	\label{fig:sample10000beta3}
+	  \end{figure}
+
+	  \item For 100 runs with parameters
+		\begin{equation} \label{eq:sample10000beta3sigmavar}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{3}, \quad \sigma = 0.5 - \frac{0.45}{1+\exp\big(10-20 i/n_{\rm iter}\big)}, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 68\% & 17\% & 6\% & 9\% & 2\% & 1\% & 1\% & 11\%
+	  	\end{tabular}
+	  \end{equation}
+	  The dynamics of the appearance of the target polynomials is plotted in fig.~\ref{fig:sample10000beta3sigmavar}.
+
+	  Averaged number of particles reproducing a target in a successful run: $966 \pm 115$
+
+	  Mean loss with regularisation for particles reproducing a target: $837 \pm 438$
+
+	  Mean loss without regularisation for particles reproducing a target: $609 \pm 430$
+
+	  \begin{figure}[h!]
+	  	\centering
+	  	\begin{tikzpicture}
+	  		\draw (0,0) node (fig1) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_21_at_11_52_46.pdf}};
+	  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_21_at_11_52_46_detailed.pdf}};
+	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+	  	\end{tikzpicture}
+	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3sigmavar}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\label{fig:sample10000beta3sigmavar}
 	  \end{figure}
 
 	  \item For 100 runs with parameters
@@ -598,7 +633,7 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf}};
 	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
 	  	\end{tikzpicture}
-	  	\caption{Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
 	  	\label{fig:sample1000}
 	  \end{figure}
   \end{enumerate}
