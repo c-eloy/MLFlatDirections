@@ -5,12 +5,12 @@
 \contentsline {section}{\numberline {3}Numerical analysis}{2}{section.7}%
 \contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{2}{subsection.8}%
 \contentsline {paragraph}{Gradient descent: implementation, sampling, time needed, loss}{2}{paragraph*.9}%
-\contentsline {paragraph}{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least few points in each direction)}{3}{paragraph*.13}%
-\contentsline {paragraph}{Clustering: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}{4}{paragraph*.15}%
-\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{7}{subsection.18}%
-\contentsline {paragraph}{Results}{10}{paragraph*.24}%
-\contentsline {section}{\numberline {4}Supergravity solutions}{13}{section.48}%
-\contentsline {paragraph}{Moduli space}{15}{paragraph*.52}%
-\contentsline {paragraph}{Bosonic spectrum}{15}{paragraph*.55}%
-\contentsline {section}{\numberline {5}Conclusion}{16}{section.59}%
+\contentsline {paragraph}{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least few points in each direction)}{4}{paragraph*.14}%
+\contentsline {paragraph}{Clustering: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}{5}{paragraph*.16}%
+\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{8}{subsection.19}%
+\contentsline {paragraph}{Results}{11}{paragraph*.25}%
+\contentsline {section}{\numberline {4}Supergravity solutions}{13}{section.49}%
+\contentsline {paragraph}{Moduli space}{16}{paragraph*.53}%
+\contentsline {paragraph}{Bosonic spectrum}{16}{paragraph*.56}%
+\contentsline {section}{\numberline {5}Conclusion}{17}{section.60}%
 \contentsfinish 

@@ -312,15 +312,25 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 		
 		Although this strategy introduces the risk of desampling certain regions in favor of others, we did not observe any such issue in the remainder of our analysis.
 		
-		The Adam optimizer was used throughout the gradient descent process. We reinitialized it at steps \{250,500,750\}, and fixing the learning rate at $10^{-2}$. Then we reinitialized the optimizer at step 1000 but fix the learning rate at $10^{-3}$. Finally we reinitialize the optimizer at step 1500 with learning rate $10^{-4}$ and let it run for 1000 more epochs. At the end of the run, we found that all points sit close to the value $-4$, and that x\% of the data points are lying at a value with an error of xx. Similarly, we found that x\% of the data has a gradient smaller than xx.
-
+		\begin{figure}
+			\centering
+			\includegraphics[scale=0.35]{Figures/nabla_V_thres.png}
+			\quad
+			\includegraphics[scale=0.35]{Figures/V_values_thres.png}
+			\caption{Left panel: Number of data points with gradient norm smaller than the threshold indicated on the x-axis. Right panel: Number of data points whose value deviates from $-4$ by less than the threshold shown on the x-axis.}
+			\label{fig:Analyze_V_points}
+		\end{figure}
+		
+		The Adam optimizer was employed throughout the gradient descent procedure. It was reinitialized at iterations {250, 500, 750}, with the learning rate fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialized once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialization was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 1000 epochs.
+		
+		Upon completion, it was observed that all data points converged to values close to $-4$. Specifically, nearly all data points attained values within an absolute error of $10^{-4}$, with the exception of four points whose deviations were on the order of $10^{-3}$. Similarly, 99,739 out of 100,000 data points exhibited gradient norms smaller than $10^{-3}$. These results are summarized in Figure~\ref{fig:Analyze_V_points}.
+		
 		\begin{figure}
 			\centering
 			\includegraphics[scale = 0.5]{Figures/Loss_grad_des.png}
-			\caption{Loss function for the gradient descent as well as the learning rate schedule, both in log scale. The red dashed lines correspond to epochs when the optimizer is reinitialized.}
+			\caption{Evolution of the loss function during gradient descent and corresponding learning rate schedule, both plotted on a logarithmic scale. Red dashed lines indicate epochs at which the optimizer was reinitialized.}
 			\label{fig:loss_grad_des}
 		\end{figure}
-		
 		
 		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
 		
@@ -331,7 +341,8 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 			\label{triangular_plot_1_2_4_8_10}
 		\end{figure}
 		
-		We can make a few comments on those plots. First, we observe non-trivial correlations in the data. Some of these may result from larger basins of attraction, such as in the $x_1/x_2$ plot. However, the structures seen in the $x_4/x_8$ or $x_4/x_{10}$ plots likely reflect genuine features of the manifold, and will show latter that this is indeed the case. We also note that alll directions appear to be well populated. Furthermore, we can notice that a large majority of the points converge to the origin $\vec{0}$. This is not surprising, as this just mean that the round sphere solution has a larger basin of attraction, which sounds reasonable. We do not however attempt to shift the points along flat directions to depopulate the origin or repopulate other regions.
+		We can make a few comments on those plots. First, we observe non-trivial correlations in the data. Some of these may result from larger basins of attraction, such as in the $x_1/x_2$ plot. However, the structures seen in the $x_4/x_8$ or $x_4/x_{10}$ plots likely reflect genuine features of the manifold, and will show latter that this is indeed the case. We also note that alll directions appear to be well populated. 
+		%Furthermore, we can notice that a large majority of the points converge to the origin $\vec{0}$. This is not surprising, as this just mean that the round sphere solution has a larger basin of attraction, which sounds reasonable. We do not however attempt to shift the points along flat directions to depopulate the origin or repopulate other regions.
 
 		\paragraph{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least few points in each direction)}
 
