@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  21 MAY 2025 09:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  21 MAY 2025 13:31
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1103,46 +1103,49 @@ LaTeX Warning: Citation `Eloy:2021fhc' on page 1 undefined on input line 262.
 
 LaTeX Warning: Marginpar on page 2 moved.
 
-
-LaTeX Warning: Citation `loshchilov2017sgdrstochasticgradientdescent' on page 2
- undefined on input line 303.
-
-
-LaTeX Warning: Reference `label' on page 2 undefined on input line 303.
-
 [2]
-<Figures/triangular_plot_1_2_4_8_10.png, id=85, 1452.42625pt x 1411.2725pt>
+
+LaTeX Warning: Citation `loshchilov2017sgdrstochasticgradientdescent' on page 3
+ undefined on input line 305.
+
+<Figures/Loss_grad_des.png, id=85, 661.47125pt x 577.15625pt>
+File: Figures/Loss_grad_des.png Graphic file (type png)
+<use Figures/Loss_grad_des.png>
+Package pdftex.def Info: Figures/Loss_grad_des.png  used on input line 319.
+(pdftex.def)             Requested size: 330.73482pt x 288.57741pt.
+<Figures/triangular_plot_1_2_4_8_10.png, id=88, 1452.42625pt x 1411.2725pt>
 File: Figures/triangular_plot_1_2_4_8_10.png Graphic file (type png)
 <use Figures/triangular_plot_1_2_4_8_10.png>
 Package pdftex.def Info: Figures/triangular_plot_1_2_4_8_10.png  used on input 
-line 315.
+line 329.
 (pdftex.def)             Requested size: 363.10567pt x 352.81726pt.
- [3 <./Figures/triangular_plot_1_2_4_8_10.png>]
-<Figures/Local_PCA.png, id=96, 597.23125pt x 577.15625pt>
+[3]
+<Figures/Local_PCA.png, id=97, 597.23125pt x 577.15625pt>
 File: Figures/Local_PCA.png Graphic file (type png)
 <use Figures/Local_PCA.png>
-Package pdftex.def Info: Figures/Local_PCA.png  used on input line 332.
+Package pdftex.def Info: Figures/Local_PCA.png  used on input line 346.
 (pdftex.def)             Requested size: 298.61488pt x 288.57741pt.
- [4 <./Figures/Local_PCA.png>]
-<Figures/3d_plot_x4_x8_x10.png, id=106, 505.89pt x 505.89pt>
+ [4 <./Figures/Loss_grad_des.png>]
+<Figures/3d_plot_x4_x8_x10.png, id=109, 505.89pt x 505.89pt>
 File: Figures/3d_plot_x4_x8_x10.png Graphic file (type png)
 <use Figures/3d_plot_x4_x8_x10.png>
-Package pdftex.def Info: Figures/3d_plot_x4_x8_x10.png  used on input line 355.
+Package pdftex.def Info: Figures/3d_plot_x4_x8_x10.png  used on input line 369.
 
 (pdftex.def)             Requested size: 202.3524pt x 202.3524pt.
-<Figures/3d_plot_x2_x4_x8.png, id=107, 505.89pt x 505.89pt>
+<Figures/3d_plot_x2_x4_x8.png, id=110, 505.89pt x 505.89pt>
 File: Figures/3d_plot_x2_x4_x8.png Graphic file (type png)
 <use Figures/3d_plot_x2_x4_x8.png>
-Package pdftex.def Info: Figures/3d_plot_x2_x4_x8.png  used on input line 356.
+Package pdftex.def Info: Figures/3d_plot_x2_x4_x8.png  used on input line 370.
 (pdftex.def)             Requested size: 202.3524pt x 202.3524pt.
- [5 <./Figures/3d_plot_x4_x8_x10.png> <./Figures/3d_plot_x2_x4_x8.png>]
+ [5 <./Figures/triangular_plot_1_2_4_8_10.png>] [6 <./Figures/Local_PCA.png> <.
+/Figures/3d_plot_x4_x8_x10.png> <./Figures/3d_plot_x2_x4_x8.png>]
 
-LaTeX Warning: Citation `Udrescu:2019mnk' on page 6 undefined on input line 374
+LaTeX Warning: Citation `Udrescu:2019mnk' on page 7 undefined on input line 388
 .
 
-[6] [7] [8]
+[7] [8] [9]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 4
-56.
+70.
  (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
@@ -1151,75 +1154,75 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10.95> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 468.
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 482.
 
-[9]
-<Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf, id=160, 442.05101pt x 2
+[10]
+<Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf, id=169, 442.05101pt x 2
 97.511pt>
 File: Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf Graphic file (type 
 pdf)
 <use Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf>
 Package pdftex.def Info: Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf 
- used on input line 501.
+ used on input line 515.
 (pdftex.def)             Requested size: 331.53745pt x 223.13269pt.
-<Figures/Count_beta_history_2025_05_18_at_06_28_32_detailed.pdf, id=161, 442.05
+<Figures/Count_beta_history_2025_05_18_at_06_28_32_detailed.pdf, id=170, 442.05
 101pt x 297.511pt>
 File: Figures/Count_beta_history_2025_05_18_at_06_28_32_detailed.pdf Graphic fi
 le (type pdf)
 <use Figures/Count_beta_history_2025_05_18_at_06_28_32_detailed.pdf>
 Package pdftex.def Info: Figures/Count_beta_history_2025_05_18_at_06_28_32_deta
-iled.pdf  used on input line 503.
+iled.pdf  used on input line 517.
 (pdftex.def)             Requested size: 331.53745pt x 223.13269pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-<Figures/Count_beta_history_2025_05_19_at_06_01_21.pdf, id=165, 442.05101pt x 2
+<Figures/Count_beta_history_2025_05_19_at_06_01_21.pdf, id=174, 442.05101pt x 2
 97.511pt>
 File: Figures/Count_beta_history_2025_05_19_at_06_01_21.pdf Graphic file (type 
 pdf)
 <use Figures/Count_beta_history_2025_05_19_at_06_01_21.pdf>
 Package pdftex.def Info: Figures/Count_beta_history_2025_05_19_at_06_01_21.pdf 
- used on input line 536.
+ used on input line 550.
 (pdftex.def)             Requested size: 331.53745pt x 223.13269pt.
-<Figures/Count_beta_history_2025_05_19_at_06_01_21_detailed.pdf, id=166, 442.05
+<Figures/Count_beta_history_2025_05_19_at_06_01_21_detailed.pdf, id=175, 442.05
 101pt x 297.511pt>
 File: Figures/Count_beta_history_2025_05_19_at_06_01_21_detailed.pdf Graphic fi
 le (type pdf)
 <use Figures/Count_beta_history_2025_05_19_at_06_01_21_detailed.pdf>
 Package pdftex.def Info: Figures/Count_beta_history_2025_05_19_at_06_01_21_deta
-iled.pdf  used on input line 538.
+iled.pdf  used on input line 552.
 (pdftex.def)             Requested size: 331.53745pt x 223.13269pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[10]
-<Figures/Count_beta_history_2025_05_20_at_08_01_44.pdf, id=186, 442.05101pt x 2
+[11]
+<Figures/Count_beta_history_2025_05_20_at_08_01_44.pdf, id=194, 442.05101pt x 2
 97.511pt>
 File: Figures/Count_beta_history_2025_05_20_at_08_01_44.pdf Graphic file (type 
 pdf)
 <use Figures/Count_beta_history_2025_05_20_at_08_01_44.pdf>
 Package pdftex.def Info: Figures/Count_beta_history_2025_05_20_at_08_01_44.pdf 
- used on input line 571.
+ used on input line 585.
 (pdftex.def)             Requested size: 331.53745pt x 223.13269pt.
-<Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf, id=187, 442.05
+<Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf, id=195, 442.05
 101pt x 297.511pt>
 File: Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf Graphic fi
 le (type pdf)
 <use Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf>
 Package pdftex.def Info: Figures/Count_beta_history_2025_05_20_at_08_01_44_deta
-iled.pdf  used on input line 573.
+iled.pdf  used on input line 587.
 (pdftex.def)             Requested size: 331.53745pt x 223.13269pt.
 
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[11 <./Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf> <./Figures/Count_
-beta_history_2025_05_18_at_06_28_32_detailed.pdf>] [12 <./Figures/Count_beta_hi
+[12 <./Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf> <./Figures/Count_
+beta_history_2025_05_18_at_06_28_32_detailed.pdf>] [13 <./Figures/Count_beta_hi
 story_2025_05_19_at_06_01_21.pdf> <./Figures/Count_beta_history_2025_05_19_at_0
-6_01_21_detailed.pdf>] [13 <./Figures/Count_beta_history_2025_05_20_at_08_01_44
+6_01_21_detailed.pdf>] [14 <./Figures/Count_beta_history_2025_05_20_at_08_01_44
 .pdf> <./Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf>]
-[14] (./Draft_MLFlatDirections.bbl) [15] (./Draft_MLFlatDirections.aux)
+[15] (./Draft_MLFlatDirections.bbl) [16] (./Draft_MLFlatDirections.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1228,14 +1231,14 @@ LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `Draft_MLFlatDirections.out' has not changed.
 
-(rerunfilecheck)             Checksum: 081AE0CBED8A39BB793395238A7456B9;1257.
+(rerunfilecheck)             Checksum: 4529A3BA49278CAFF2E885891E8B4EA3;1257.
  ) 
 Here is how much of TeX's memory you used:
- 29957 strings out of 476025
- 547356 string characters out of 5790017
+ 29966 strings out of 476025
+ 547590 string characters out of 5790017
  1876388 words of memory out of 5000000
- 49508 multiletter control sequences out of 15000+600000
- 552475 words of font info for 254 fonts, out of 8000000 for 9000
+ 49514 multiletter control sequences out of 15000+600000
+ 552461 words of font info for 254 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,16n,80p,1909b,913s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pf
@@ -1269,10 +1272,10 @@ st/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-dist
 onts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/fon
 ts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2023/texmf-dist/fonts
 /type1/public/cm-super/sftt1095.pfb>
-Output written on Draft_MLFlatDirections.pdf (16 pages, 1231160 bytes).
+Output written on Draft_MLFlatDirections.pdf (17 pages, 1259480 bytes).
 PDF statistics:
- 449 PDF objects out of 1000 (max. 8388607)
- 349 compressed objects within 4 object streams
- 75 named destinations out of 1000 (max. 500000)
- 65143 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 457 PDF objects out of 1000 (max. 8388607)
+ 354 compressed objects within 4 object streams
+ 77 named destinations out of 1000 (max. 500000)
+ 65148 words of extra memory for PDF output out of 74296 (max. 10000000)
 

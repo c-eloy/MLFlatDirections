@@ -300,13 +300,27 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 		\begin{equation}
 			\mathcal{L} = \sum_{i = 1}^{n_{points}} || \nabla V(\vec{x}^{,i})||^2
 		\end{equation}
-		where $\vec{x}^{\,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ denotes the data points. To do the gradient descent, we have noted throught trial en error that reinitializing the optimizer after a periodic amount of steps were significantly speeding up the convergence. This is similar to what has been proposed in \cite{loshchilov2017sgdrstochasticgradientdescent} where they do warm restarts. However, we have noted that by doing so, the convergence was slower than just reinitializing the optimizer. We interpret this by arguying that when we reinitialize the optimizer, it forgets about its passed. Therefore, the effective learning rate used by the optimizer is truly the one passed, and not one adjusted by the optimizer. The loss function as well as the learning rate history are presented in Fig. \ref{label}
-		%We use the Adam optimizer with a learning rate of $10^{-2}$ and run the gradient descent for $10,000$ epochs to ensure convergence.
+		where $\vec{x}^{,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ denotes the data points.
+
+		Through trial and error, we observed that periodically reinitializing the optimizer significantly improved the convergence rate. This technique bears similarity to the concept of warm restarts introduced in \cite{loshchilov2017sgdrstochasticgradientdescent}. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence.
 		
-%		\begin{figure}
-%			\includegraphics[scale = 0.5]{imagefile}
-%			\caption{Loss function for the gradient descent as well as the learning rate schedule, fixed with \texttt{tf.keras.optimizers.schedules.CosineDecayRestarts}, with parameters \texttt{initial_learning_rate = 0.01}, \texttt{first_decay_steps = 400}, \texttt{t_mul = 1.0} , \texttt{m_mul = 1.0}}
-%		\end{figure}
+		We interpret this as follows: when the optimizer is reinitialized, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case. 
+		
+		The evolution of the loss function, along with the learning rate schedule, is shown in Fig.~\ref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is reinitialized. We also observe that, following the last few reinitializations, the loss exhibits a small bump immediately after the restart.
+		
+		We interpret this behavior as a consequence of the increased learning rate: some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence.
+		
+		Although this strategy introduces the risk of desampling certain regions in favor of others, we did not observe any such issue in the remainder of our analysis.
+		
+		The Adam optimizer was used throughout the gradient descent process. We reinitialized it at steps \{250,500,750\}, and fixing the learning rate at $10^{-2}$. Then we reinitialized the optimizer at step 1000 but fix the learning rate at $10^{-3}$. Finally we reinitialize the optimizer at step 1500 with learning rate $10^{-4}$ and let it run for 1000 more epochs. At the end of the run, we found that all points sit close to the value $-4$, and that x\% of the data points are lying at a value with an error of xx. Similarly, we found that x\% of the data has a gradient smaller than xx.
+
+		\begin{figure}
+			\centering
+			\includegraphics[scale = 0.5]{Figures/Loss_grad_des.png}
+			\caption{Loss function for the gradient descent as well as the learning rate schedule, both in log scale. The red dashed lines correspond to epochs when the optimizer is reinitialized.}
+			\label{fig:loss_grad_des}
+		\end{figure}
+		
 		
 		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
 		
