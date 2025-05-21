@@ -139,8 +139,7 @@
 % ---- COMMENTS ----
 \newcommand{\ce}[1]{\marginpar{\parbox{\marginparwidth}{\boldmath $\Longleftarrow$}}{\boldmath\bfseries (ce: #1)}}
 \newcommand{\gl}[1]{\marginpar{\parbox{\marginparwidth}{\boldmath $\Longleftarrow$}}{\boldmath\bfseries (gl: #1)}}
-
-
+\newcommand{\bd}[1]{\marginpar{\parbox{\marginparwidth}{\boldmath $\Longleftarrow$}}{\boldmath\bfseries (bd: #1)}}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -301,11 +300,13 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 		\begin{equation}
 			\mathcal{L} = \sum_{i = 1}^{n_{points}} || \nabla V(\vec{x}^{,i})||^2
 		\end{equation}
-		where $\vec{x}^{\,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ denotes the data points. We use the Adam optimizer with a learning rate of $10^{-2}$ and run the gradient descent for $10,000$ epochs to ensure convergence.
+		where $\vec{x}^{\,i} = (x^i_1,x^i_2,x^i_4,x^i_8,x^i_{10})$ denotes the data points. To do the gradient descent, we have noted throught trial en error that reinitializing the optimizer after a periodic amount of steps were significantly speeding up the convergence. This is similar to what has been proposed in \cite{loshchilov2017sgdrstochasticgradientdescent} where they do warm restarts. However, we have noted that by doing so, the convergence was slower than just reinitializing the optimizer. We interpret this by arguying that when we reinitialize the optimizer, it forgets about its passed. Therefore, the effective learning rate used by the optimizer is truly the one passed, and not one adjusted by the optimizer. The loss function as well as the learning rate history are presented in Fig. \ref{label}
+		%We use the Adam optimizer with a learning rate of $10^{-2}$ and run the gradient descent for $10,000$ epochs to ensure convergence.
 		
-		% \begin{figure}
-			% \includegraphics[scale = 0.5]{imagefile} % add loss history
-			% \end{figure}
+%		\begin{figure}
+%			\includegraphics[scale = 0.5]{imagefile}
+%			\caption{Loss function for the gradient descent as well as the learning rate schedule, fixed with \texttt{tf.keras.optimizers.schedules.CosineDecayRestarts}, with parameters \texttt{initial_learning_rate = 0.01}, \texttt{first_decay_steps = 400}, \texttt{t_mul = 1.0} , \texttt{m_mul = 1.0}}
+%		\end{figure}
 		
 		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
 		
@@ -522,27 +523,41 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	\item Discussion of the vacuum: gauge group, Zham. metric, change of variables, 3d spectrum (and stability), spin 2 spectrum on $S^{3}$, one parameter seems to be a gauge parameter, uplift?
 \end{itemize}
 
-For every couples $(p_{i},p_{j})$ of polynomials in eq.~\eqref{eq:pols}, the system
-\begin{equation}
-	\begin{cases}
-		p_{i} = 0, \\
-		p_{j} = 0,
-	\end{cases}
+%For every couples $(p_{i},p_{j})$ of polynomials in eq.~\eqref{eq:pols}, the system
+%\begin{equation}
+%	\begin{cases}
+%		p_{i} = 0, \\
+%		p_{j} = 0,
+%	\end{cases}
+%\end{equation}
+%gives the same solution \ce{That's not true! For example, $x_{1}=x_{2}=0$ solves all polynomials but is not a sugra solution. Mention tests on the sugra?}
+
+In the previous section, we introduced a numerical method that enabled symbolic regression, yielding a set of polynomials that vanish on our dataset, as presented in Eq.~\ref{eq:pols}. We can now solve the system
+\begin{equation}\label{eq:solvepol}
+	p_i = 0, \quad \forall i \in {1,\dots,7}
 \end{equation}
-gives the same solution \ce{That's not true! For example, $x_{1}=x_{2}=0$ solves all polynomials but is not a sugra solution. Mention tests on the sugra?}
+which leads to the following expressions:
 \begin{equation}
 	\begin{cases}
 		\displaystyle x_{1} = \frac{x_{2}}{\sqrt{2}}\,\frac{e^{x_{8}/2}}{e^{x_{8}}-1}\,\Big(-x_{5}\,e^{x_{8}/2} + \sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}\Big),\\[8pt]
 		\displaystyle x_{4} = \frac{e^{-x_{8}/2}}{\sqrt{2}}\,\sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}.
 	\end{cases}
 \end{equation}
-We checked that this defines a 3-parameter solution of three-dimensional half-maximal supergravity. Equivalently:
-\begin{equation}
+
+Alternatively, the system can be recast as:
+\begin{equation}\label{eq:rulex8x10}
 	\begin{cases}
-		\displaystyle \tilde{x}_{8} = \frac{x_{1}^{2}+x_{2}^{2}}{x_{2}^{2} + \big(x_{1}-x_{2}x_{4}\big)^{2}},\\[10pt]
-		\displaystyle x_{10} = \sqrt{2}\,x_{4}\,\frac{x_{2}^{2} - x_{1}^{2}+x_{1}x_{2}x_{4}}{x_{1}^{2}+x_{2}^{2}}.
+		\displaystyle \tilde{x}{8} = \frac{x{1}^{2}+x_{2}^{2}}{x_{2}^{2} + \big(x_{1}-x_{2}x_{4}\big)^{2}},\\[10pt]
+		\displaystyle x_{10} = \sqrt{2},x_{4},\frac{x_{2}^{2} - x_{1}^{2}+x_{1}x_{2}x_{4}}{x_{1}^{2}+x_{2}^{2}}.
 	\end{cases}
 \end{equation}
+
+As anticipated, this defines a three-parameter solution corresponding to a three-dimensional slice of the half-maximal supergravity scalar potential.
+
+Let us make a few remarks at this stage. First, it is possible to find solutions to Eq.~\ref{eq:solvepol} which, however, are not solutions of $\nabla V = 0$. For instance $x_1 = x_2 = 0$; such cases are excluded, as they do not satisfy the stationarity condition and therefore do not correspond to valid physical solutions.
+
+Secondly, one might argue that only two of the seven polynomials are sufficient to fully characterize the solution. That is, choosing any pair $(i,j) \in {1, \dots, 7}$ may suffice to extract a complete description. In practice, this is not entirely accurate. While such a pair can yield partial constraints—for example, recovering Eq.\ref{eq:rulex8x10}—it may also produce alternative (and potentially less general) parameterizations. Upon inspection, all such partial rules are found to be consistent with, and included in, the most general expressions given in Eq.\ref{eq:rulex8x10}.
+
 The solution preserves a ${\rm U}(1)\times{\rm U}(1)$ gauged symmetry.
 
 \paragraph{Moduli space}
