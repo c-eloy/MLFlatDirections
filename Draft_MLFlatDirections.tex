@@ -475,64 +475,9 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
   where $\tilde{x}_{8} = e^{x_{8}}$. They are found with different frequencies, depending on the chosen parameters.
 
   \begin{enumerate}
-  		\item For 100 runs with parameters
-		\begin{equation} \label{eq:sample10000beta5}
-			\begin{gathered}
-				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
-				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.5 - \frac{0.45}{1+\exp\big(10-20 i/n_{\rm iter}\big)}, \\
-				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
-			\end{gathered}
-		\end{equation}
-		the polynomials are found at the following frequencies
-	  \begin{equation}
-	  	\begin{tabular}{l|cccccccc}
-	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
-	  		Frequency & 59\% & 25\% & 5\% & 9\% & 2\% & 4\% & 2\% & 13\%
-	  	\end{tabular}
-	  \end{equation}
-	  The sum of the percentages is higher than 100\% because some runs find more than one polynomials. The code fails to find any polynomial in 13\% of the time. The averaged time needed for a single run on a PC in $\sim 700\,{\rm s}$. \ce{This timing is with \texttt{analysis}, it may be less without.}
+  		\item {\bfseries \boldmath $\beta$ in power $3$, $\sigma = 0.1$, $\texttt{sample size} = 10000$}
 
-	  Averaged number of particles reproducing a target in a successful run: $931 \pm 230$
-
-	  Mean loss with regularisation for particles reproducing a target: $597 \pm 264$
-
-	  Mean loss without regularisation for particles reproducing a target: $345 \pm 246$
-  		\item For 100 runs with parameters
-		\begin{equation}
-			\begin{gathered}
-				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
-				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.1, \\
-				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
-			\end{gathered}
-		\end{equation}
-		the polynomials are found at the following frequencies
-	  \begin{equation}
-	  	\begin{tabular}{l|cccccccc}
-	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
-	  		Frequency & 69\% & 11\% & 7\% & 12\% & 0\% & 4\% & 0\% & 13\%
-	  	\end{tabular}
-	  \end{equation}
-	  The dynamics of the appearance of the target polynomials is plotted in fig.~\ref{fig:sample10000beta5}.
-
-	  Averaged number of particles reproducing a target in a successful run: $960 \pm 175$
-
-	  Mean loss with regularisation for particles reproducing a target: $606 \pm 257$
-
-	  Mean loss without regularisation for particles reproducing a target: $359 \pm 244$
-
-	  \begin{figure}[h!]
-	  	\centering
-	  	\begin{tikzpicture}
-	  		\draw (0,0) node (fig1) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf}};
-	  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
-	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_18_at_06_28_32_detailed.pdf}};
-	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
-	  	\end{tikzpicture}
-	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta5}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
-	  	\label{fig:sample10000beta5}
-	  \end{figure}
-
-	  \item For 100 runs with parameters
+	  For 100 runs with parameters
 		\begin{equation} \label{eq:sample10000beta3}
 			\begin{gathered}
 				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
@@ -563,11 +508,160 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_19_at_06_01_21_detailed.pdf}};
 	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
 	  	\end{tikzpicture}
-	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\caption{{\bfseries \boldmath $\beta$ in power $3$, $\sigma = 0.1$, $\texttt{sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
 	  	\label{fig:sample10000beta3}
 	  \end{figure}
 
-	  \item For 100 runs with parameters
+	  After the AIS, we performed an exploitation phase to fine tune the coefficients. The distributions of the particles with respect to their loss (without regularisation), is plotted in fig.~\ref{fig:distlocalsearch}. The fine tuning (with \texttt{local\_search}) is made using the loss with regularisation.
+
+	  \begin{figure}[h!]
+	  	\centering
+	  	\includegraphics[scale=0.75]{Figures/Local_search_2025_05_19_at_06_01_21.pdf}
+	  	\caption{{\bfseries \boldmath $\beta$ in power $3$, $\sigma = 0.1$, $\texttt{sample size} = 10000$} Distributions of all the 100,000 particles with respect to their loss (without regularisation) (a) directly after AIS with parameters~\eqref{eq:sample10000beta3} and (b) after 200 steps of \texttt{local\_search}. The fine tuning (with \texttt{local\_search}) is made using the loss with regularisation.}
+	  	\label{fig:distlocalsearch}
+	  \end{figure}
+
+	  We list below, for each polynomials in eq.~\eqref{eq:pols}, one example of representing particles directly after AIS and after the fine tuning, and the associated losses (without regularisation):
+	  \begin{align}
+	  	p_{1}:&\quad
+	  	\begin{aligned}
+	  		&-1.939\,x_{1} + 2.120\,x_{1}\tilde{x}_{8} + x_{10}x_{2}\tilde{x}_{8} - 2.266\, x_{2}x_{4}\tilde{x}_{8} + 0.029\,x_{2}^{2}x_{4},\quad L^{(\lambda = 0)} \simeq 754, \\
+			&-1.416\,x_{1} + 1.414\, x_{1}\tilde{x}_{8} + x_{10}x_{2}\tilde{x}_{8} - 1.414\,x_{2}x_{4}\tilde{x}_{8} + 0.00001\,x_{2}^{2}x_{4},\quad L^{(\lambda = 0)} \simeq 0.0040,
+	  	\end{aligned} \\[7pt]
+	  	p_{2}:&\quad
+	  	\begin{aligned}
+	  		&2.213\,x_{2} - 2.075\,x_{2}\tilde{x}_{8} + 1.674\,x_{1}x_{10} + 2.015\,x_{1}x_{4} - x_{10}^{2}x_{2}\tilde{x}_{8},\quad L^{(\lambda = 0)} \simeq 244, \\
+			&2.002\,x_{2} - 2.002\,x_{2}\tilde{x}_{8} + 1.417\,x_{1}x_{10} + 2.001\,x_{1}x_{4} - x_{10}^{2}x_{2}\tilde{x}_{8},\quad L^{(\lambda = 0)} \simeq 0.015,
+	  	\end{aligned} \\[7pt]
+	  	p_{3}:&\quad
+	  	\begin{aligned}
+	  		&2\,x_{2} - 1.808\,x_{2}\tilde{x}_{8} + 1.168\,x_{1}\tilde{x}_{8}x_{10} + 1.828\,x_{1}x_{4}\tilde{x}_{8} - 1.864\,x_{2}x_{4}^{2}\tilde{x}_{8},\quad L^{(\lambda = 0)} \simeq 180, \\
+			&2\,x_{2} - 1.998\,x_{2}\tilde{x}_{8} + 1.412\,x_{1}\tilde{x}_{8}x_{10} + 1.998\,x_{1}x_{4}\tilde{x}_{8} - 1.998\,x_{2}x_{4}^{2}\tilde{x}_{8},\quad L^{(\lambda = 0)} \simeq 0.016,
+	  	\end{aligned} \\[7pt]
+	  	p_{4}:&\quad
+	  	\begin{aligned}
+	  		&1.458\,x_{2} - 1.341\,x_{2}\tilde{x}_{8} + 1.497\,x_{1}x_{4} + x_{1}\tilde{x}_{8}x_{10} - 1.008\,x_{2}x_{4}\tilde{x}_{8}x_{10} + 0.020 x_{2}^{2}x_{4}\tilde{x}_{8},\quad L^{(\lambda = 0)} \simeq 218, \\
+			&1.419\,x_{2} - 1.418\,x_{2}\tilde{x}_{8} + 1.416\,x_{1}x_{4} + x_{1}\tilde{x}_{8}x_{10} - 1.001\,x_{2}x_{4}\tilde{x}_{8}x_{10} - 0.0003\,x_{2}^{2}x_{4}\tilde{x}_{8},\quad L^{(\lambda = 0)} \simeq 0.074,
+	  	\end{aligned} \\[7pt]
+	  	p_{5}:&\quad
+	  	\begin{aligned}
+	  		&-2.179\,x_{1} - 1.571\,x_{2}x_{4} - 1.953\,x_{1}x_{4}^{2} + 1.983\,x_{1}\tilde{x}_{8} + 1.530\,x_{2}x_{10} + x_{1}\tilde{x}_{8}x_{10}^{2},\quad L^{(\lambda = 0)} \simeq 210, \\
+			&-2.008\,x_{1} - 2.001\,x_{2}x_{4} - 1.999\,x_{1}x_{4}^{2} + 1.995\,x_{1}\tilde{x}_{8} + 1.412\,x_{2}x_{10} + x_{1}\tilde{x}_{8}x_{10}^{2},\quad L^{(\lambda = 0)} \simeq 0.228,
+	  	\end{aligned} \\[7pt]
+	  	p_{6}:&\quad
+	  	\begin{aligned}
+	  		&- 2.856\,x_{2}x_{4} - 2.499\,x_{1}x_{4}^{2} + 2.721\,x_{2}x_{4}\tilde{x}_{8} + 1.677\,x_{2}x_{10} - 1.187\,x_{2}\tilde{x}_{8}x_{10} + x_{1}\tilde{x}_{8}x_{10}^{2} ,\quad L^{(\lambda = 0)} \simeq 202, \\
+			&- 2.043\,x_{2}x_{4} - 2.005\,x_{1}x_{4}^{2} + 2.030\,x_{2}x_{4} \tilde{x}_{8} + 1.393\,x_{2}x_{10} - 1.401\,x_{2}\tilde{x}_{8}x_{10} + x_{1}\tilde{x}_{8}x_{10}^2 ,\quad L^{(\lambda = 0)} \simeq 1.28,
+	  	\end{aligned} \\[7pt]
+	  	p_{7}:&\quad
+	  	\begin{aligned}
+	  		&- 1.354\,x_{1}^{2}x_{4} + 1.243\,x_{2}^{2}x_{4} + 1.304\,x_{1}x_{2}x_{4}^{2} - 1.053\,x_{1}^{2}x_{10} - x_{2}^{2}x_{10} + 0.052\,x_{2}x_{4}^{2}x_{10} ,\quad L^{(\lambda = 0)} \simeq 373, \\
+			&- 1.413\,x_{1}^{2}x_{4} + 1.415\,x_{2}^{2}x_{4} + 1.413\,x_{1}x_{2}x_{4}^{2} - 0.997\,x_{1}^{2}x_{10} - x_{2}^{2}x_{10} + 0.0003\,x_{2}x_{4}^{2}x_{10} ,\quad L^{(\lambda = 0)} \simeq 0.038.
+	  	\end{aligned}
+	  \end{align}
+
+	  \item {\bfseries \boldmath $\beta$ in power $4$, $\sigma = 0.1$, $\texttt{sample size} = 10000$}
+
+	  For 100 runs with parameters
+		\begin{equation} \label{eq:sample10000beta4}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{4}, \quad \sigma = 0.1, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 74\% & 17\% & 7\% & 8\% & 2\% & 0\% & 2\% & 6\%
+	  	\end{tabular}
+	  \end{equation}
+	  The dynamics of the appearance of the target polynomials is plotted in fig.~\ref{fig:sample10000beta4}.
+
+	  Averaged number of particles reproducing a target in a successful run: $951 \pm 200$
+
+	  Mean loss with regularisation for particles reproducing a target: $709 \pm 320$
+
+	  Mean loss without regularisation for particles reproducing a target: $452 \pm 309$
+
+	  \begin{figure}[h!]
+	  	\centering
+	  	\begin{tikzpicture}
+	  		\draw (0,0) node (fig1) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_22_at_08_48_38.pdf}};
+	  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_22_at_08_48_38_detailed.pdf}};
+	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+	  	\end{tikzpicture}
+	  	\caption{{\bfseries \boldmath $\beta$ in power $4$, $\sigma = 0.1$, $\texttt{sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta4}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\label{fig:sample10000beta4}
+	  \end{figure}
+
+	  \item {\bfseries \boldmath $\beta$ in power $5$, $\sigma = 0.1$, $\texttt{sample size} = 10000$}
+
+  		For 100 runs with parameters
+		\begin{equation}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.1, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 69\% & 11\% & 7\% & 12\% & 0\% & 4\% & 0\% & 13\%
+	  	\end{tabular}
+	  \end{equation}
+	  The dynamics of the appearance of the target polynomials is plotted in fig.~\ref{fig:sample10000beta5}.
+
+	  Averaged number of particles reproducing a target in a successful run: $960 \pm 175$
+
+	  Mean loss with regularisation for particles reproducing a target: $606 \pm 257$
+
+	  Mean loss without regularisation for particles reproducing a target: $359 \pm 244$
+
+	  \begin{figure}[h!]
+	  	\centering
+	  	\begin{tikzpicture}
+	  		\draw (0,0) node (fig1) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_18_at_06_28_32.pdf}};
+	  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_18_at_06_28_32_detailed.pdf}};
+	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+	  	\end{tikzpicture}
+	  	\caption{{\bfseries \boldmath $\beta$ in power $5$, $\sigma = 0.1$, $\texttt{sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta5}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\label{fig:sample10000beta5}
+	  \end{figure}
+
+  		\item {\bfseries \boldmath $\beta$ in power $5$, $\sigma$ varying, $\texttt{sample size} = 10000$}
+
+  		For 100 runs with parameters
+		\begin{equation} \label{eq:sample10000beta5}
+			\begin{gathered}
+				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
+				\texttt{sample size} = 10000, \quad {\rm reg} = 10^{3}, \quad \beta = 10^{-10} + \left(\frac{i}{n_{\rm iter}}\right)^{5}, \quad \sigma = 0.5 - \frac{0.45}{1+\exp\big(10-20 i/n_{\rm iter}\big)}, \\
+				p_{\rm add} = 0, \quad p_{\rm remove} = 0, \quad p_{\rm modify} = 0.5, \quad p_{\rm multiply} = 0.25, \quad p_{\rm divide} = 0.25,
+			\end{gathered}
+		\end{equation}
+		the polynomials are found at the following frequencies
+	  \begin{equation}
+	  	\begin{tabular}{l|cccccccc}
+	  		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $\varnothing$ \\\hline\hline
+	  		Frequency & 59\% & 25\% & 5\% & 9\% & 2\% & 4\% & 2\% & 13\%
+	  	\end{tabular}
+	  \end{equation}
+	  The sum of the percentages is higher than 100\% because some runs find more than one polynomials. The code fails to find any polynomial in 13\% of the time. The averaged time needed for a single run on a PC in $\sim 700\,{\rm s}$. \ce{This timing is with \texttt{analysis}, it may be less without.}
+
+	  Averaged number of particles reproducing a target in a successful run: $931 \pm 230$
+
+	  Mean loss with regularisation for particles reproducing a target: $597 \pm 264$
+
+	  Mean loss without regularisation for particles reproducing a target: $345 \pm 246$
+
+	  \item {\bfseries \boldmath $\beta$ in power $3$, $\sigma$ varying, $\texttt{sample size} = 10000$}
+
+	  For 100 runs with parameters
 		\begin{equation} \label{eq:sample10000beta3sigmavar}
 			\begin{gathered}
 				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
@@ -598,11 +692,13 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_21_at_11_52_46_detailed.pdf}};
 	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
 	  	\end{tikzpicture}
-	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3sigmavar}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\caption{{\bfseries \boldmath $\beta$ in power $3$, $\sigma$ varying, $\texttt{sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample10000beta3sigmavar}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
 	  	\label{fig:sample10000beta3sigmavar}
 	  \end{figure}
 
-	  \item For 100 runs with parameters
+	  \item {\bfseries \boldmath $\beta$ in power $5$, $\sigma=0.1$, $\texttt{sample size} = 1000$}
+
+	  For 100 runs with parameters
 		\begin{equation} \label{eq:sample1000}
 			\begin{gathered}
 				\texttt{max degree} = 4, \quad \texttt{max num monomials} = 6, \quad n_{\rm iter} = 1000, \quad n_{\rm particles} = 1000, \\
@@ -633,7 +729,7 @@ As a first simplified example we have considered only the parameters $x_{1}, x_{
 	  		\draw (0,-8) node (fig2) {\includegraphics[scale=0.75]{Figures/Count_beta_history_2025_05_20_at_08_01_44_detailed.pdf}};
 	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
 	  	\end{tikzpicture}
-	  	\caption{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
+	  	\caption{{\bfseries \boldmath $\beta$ in power $5$, $\sigma=0.1$, $\texttt{sample size} = 1000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma$ deviation for the parameters~\eqref{eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta$ at that moment.}
 	  	\label{fig:sample1000}
 	  \end{figure}
   \end{enumerate}
