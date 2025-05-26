@@ -1,0 +1,17 @@
+\providecommand{\href}[2]{#2}\begingroup\raggedright\begin{thebibliography}{1}
+
+\bibitem{Eloy:2021fhc}
+C.~Eloy, G.~Larios, and H.~Samtleben, {\it {Triality and the consistent
+  reductions on AdS$_{3}\times S^{3}$}},  {\em JHEP} {\bf 01} (2022) 055,
+  [\href{http://arxiv.org/abs/2111.01167}{{\tt arXiv:2111.01167}}].
+
+\bibitem{loshchilov2017sgdrstochasticgradientdescent}
+I.~Loshchilov and F.~Hutter, {\it Sgdr: Stochastic gradient descent with warm
+  restarts},  \href{http://arxiv.org/abs/1608.03983}{{\tt arXiv:1608.03983}}.
+
+\bibitem{Udrescu:2019mnk}
+S.-M. Udrescu and M.~Tegmark, {\it {AI Feynman: a Physics-Inspired Method for
+  Symbolic Regression}},  {\em Sci. Adv.} {\bf 6} (2020), no.~16 eaay2631,
+  [\href{http://arxiv.org/abs/1905.11481}{{\tt arXiv:1905.11481}}].
+
+\end{thebibliography}\endgroup

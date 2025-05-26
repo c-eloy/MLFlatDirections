@@ -17,49 +17,64 @@
 \providecommand\HyField@AuxAddToCoFields[2]{}
 \bibstyle{JHEP}
 \babel@aux{english}{}
-\citation{Eloy:2021fhc}
-\citation{Eloy:2021fhc}
 \@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {2}Supergravity setup}{1}{section.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Potential}{1}{paragraph*.3}\protected@file@percent }
-\newlabel{eq:scalarpotential}{{2.2}{2}{Potential}{equation.5}{}}
-\newlabel{eq:scalarpotential124810}{{2.3}{2}{Potential}{equation.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {3}Numerical analysis}{2}{section.7}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{2}{subsection.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Gradient descent: implementation, sampling, time needed, loss}{2}{paragraph*.9}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {2}Supergravity setup}{2}{section.2}\protected@file@percent }
+\newlabel{eq: lagrangian_rephrased}{{2.1}{2}{Supergravity setup}{equation.3}{}}
+\newlabel{eq: embtensor_rephrased}{{2.2}{2}{Supergravity setup}{equation.4}{}}
+\newlabel{eq: scalarcoset_rephrased}{{2.3}{2}{Supergravity setup}{equation.5}{}}
+\newlabel{eq:so84gen_rephrased}{{2.5}{2}{Supergravity setup}{equation.7}{}}
+\citation{Eloy:2021fhc}
+\newlabel{eq: scalarpot_rephrased}{{2.8}{3}{Supergravity setup}{equation.10}{}}
+\newlabel{eq: gl3gradingbar}{{2.9}{3}{Supergravity setup}{equation.11}{}}
+\newlabel{eq: Paulieta}{{2.10}{3}{Supergravity setup}{equation.12}{}}
+\newlabel{eq:SO84embeddings}{{2.11}{3}{Supergravity setup}{equation.13}{}}
+\citation{Eloy:2021fhc}
+\newlabel{eq: scalarmatrix}{{2.13}{4}{Supergravity setup}{equation.15}{}}
+\newlabel{eq:scalarpotential}{{2.14}{4}{Supergravity setup}{equation.16}{}}
 \citation{loshchilov2017sgdrstochasticgradientdescent}
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Left panel: Number of data points with gradient norm smaller than the threshold indicated on the x-axis. Right panel: Number of data points whose value deviates from $-4$ by less than the threshold shown on the x-axis.\relax }}{3}{figure.caption.11}\protected@file@percent }
+\newlabel{eq:scalarpotential124810}{{2.16}{5}{Supergravity setup}{equation.18}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Numerical analysis}{5}{section.19}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{5}{subsection.20}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.\relax }}{6}{figure.caption.22}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:Analyze_V_points}{{1}{3}{Left panel: Number of data points with gradient norm smaller than the threshold indicated on the x-axis. Right panel: Number of data points whose value deviates from $-4$ by less than the threshold shown on the x-axis.\relax }{figure.caption.11}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Evolution of the loss function during gradient descent and corresponding learning rate schedule, both plotted on a logarithmic scale. Red dashed lines indicate epochs at which the optimizer was reinitialized.\relax }}{4}{figure.caption.12}\protected@file@percent }
-\newlabel{fig:loss_grad_des}{{2}{4}{Evolution of the loss function during gradient descent and corresponding learning rate schedule, both plotted on a logarithmic scale. Red dashed lines indicate epochs at which the optimizer was reinitialized.\relax }{figure.caption.12}{}}
-\@writefile{toc}{\contentsline {paragraph}{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least few points in each direction)}{4}{paragraph*.14}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }}{5}{figure.caption.13}\protected@file@percent }
-\newlabel{triangular_plot_1_2_4_8_10}{{3}{5}{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }{figure.caption.13}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }}{6}{figure.caption.15}\protected@file@percent }
-\newlabel{local_pca}{{4}{6}{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }{figure.caption.15}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }}{7}{figure.caption.18}\protected@file@percent }
-\newlabel{3dplots}{{5}{7}{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }{figure.caption.18}{}}
-\@writefile{toc}{\contentsline {paragraph}{Clustering: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}{7}{paragraph*.16}\protected@file@percent }
+\newlabel{fig:Analyze_V_points}{{1}{6}{Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.\relax }{figure.caption.22}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Evolution of the loss function during gradient descent and corresponding learning rate schedule, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.\relax }}{7}{figure.caption.23}\protected@file@percent }
+\newlabel{fig:loss_grad_des}{{2}{7}{Evolution of the loss function during gradient descent and corresponding learning rate schedule, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.\relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }}{8}{figure.caption.24}\protected@file@percent }
+\newlabel{triangular_plot_1_2_4_8_10}{{3}{8}{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }{figure.caption.24}{}}
 \citation{Udrescu:2019mnk}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{8}{subsection.19}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Results}{11}{paragraph*.25}\protected@file@percent }
-\newlabel{eq:pols}{{3.7}{11}{Results}{equation.26}{}}
-\newlabel{eq:sample10000beta5}{{3.8}{11}{Results}{equation.35}{}}
-\newlabel{eq:sample10000beta3}{{3.12}{12}{Results}{equation.42}{}}
-\newlabel{eq:sample1000}{{3.14}{12}{Results}{equation.46}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample10000beta5}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{13}{figure.caption.40}\protected@file@percent }
-\newlabel{fig:sample10000beta5}{{6}{13}{(a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample10000beta5}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.40}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Supergravity solutions}{13}{section.49}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{14}{figure.caption.44}\protected@file@percent }
-\newlabel{fig:sample10000beta3}{{7}{14}{Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.44}{}}
-\newlabel{eq:solvepol}{{4.1}{14}{Supergravity solutions}{equation.50}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{15}{figure.caption.48}\protected@file@percent }
-\newlabel{fig:sample1000}{{8}{15}{Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.48}{}}
-\newlabel{eq:rulex8x10}{{4.3}{16}{Supergravity solutions}{equation.52}{}}
-\@writefile{toc}{\contentsline {paragraph}{Moduli space}{16}{paragraph*.53}\protected@file@percent }
-\@writefile{toc}{\contentsline {paragraph}{Bosonic spectrum}{16}{paragraph*.56}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }}{9}{figure.caption.25}\protected@file@percent }
+\newlabel{local_pca}{{4}{9}{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }}{10}{figure.caption.27}\protected@file@percent }
+\newlabel{3dplots}{{5}{10}{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{10}{subsection.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Results}{13}{paragraph*.35}\protected@file@percent }
+\newlabel{eq:pols}{{3.8}{13}{Results}{equation.36}{}}
+\newlabel{eq:sample10000beta3}{{3.9}{14}{Results}{equation.45}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces {\bfseries  \boldmath  $\beta $ in power $3$, $\sigma = 0.1$, $\texttt  {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{15}{figure.caption.47}\protected@file@percent }
+\newlabel{fig:sample10000beta3}{{6}{15}{{\bfseries \boldmath $\beta $ in power $3$, $\sigma = 0.1$, $\texttt {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample10000beta3}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.47}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces {\bfseries  \boldmath  $\beta $ in power $3$, $\sigma = 0.1$, $\texttt  {sample size} = 10000$} Distributions of all the 100,000 particles with respect to their loss (without regularisation) (a) directly after AIS with parameters~\eqref  {eq:sample10000beta3} and (b) after 200 steps of \texttt  {local\_search}. The fine tuning (with \texttt  {local\_search}) is made using the loss with regularisation.\relax }}{16}{figure.caption.48}\protected@file@percent }
+\newlabel{fig:distlocalsearch}{{7}{16}{{\bfseries \boldmath $\beta $ in power $3$, $\sigma = 0.1$, $\texttt {sample size} = 10000$} Distributions of all the 100,000 particles with respect to their loss (without regularisation) (a) directly after AIS with parameters~\eqref {eq:sample10000beta3} and (b) after 200 steps of \texttt {local\_search}. The fine tuning (with \texttt {local\_search}) is made using the loss with regularisation.\relax }{figure.caption.48}{}}
+\newlabel{eq:sample10000beta4}{{3.18}{16}{Results}{equation.57}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces {\bfseries  \boldmath  $\beta $ in power $4$, $\sigma = 0.1$, $\texttt  {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample10000beta4}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{17}{figure.caption.59}\protected@file@percent }
+\newlabel{fig:sample10000beta4}{{8}{17}{{\bfseries \boldmath $\beta $ in power $4$, $\sigma = 0.1$, $\texttt {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample10000beta4}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.59}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces {\bfseries  \boldmath  $\beta $ in power $5$, $\sigma = 0.1$, $\texttt  {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample10000beta5}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{18}{figure.caption.63}\protected@file@percent }
+\newlabel{fig:sample10000beta5}{{9}{18}{{\bfseries \boldmath $\beta $ in power $5$, $\sigma = 0.1$, $\texttt {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample10000beta5}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.63}{}}
+\newlabel{eq:sample10000beta5}{{3.22}{19}{Results}{equation.65}{}}
+\newlabel{eq:sample10000beta3sigmavar}{{3.24}{19}{Results}{equation.68}{}}
+\newlabel{eq:sample1000}{{3.26}{19}{Results}{equation.72}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {10}{\ignorespaces {\bfseries  \boldmath  $\beta $ in power $3$, $\sigma $ varying, $\texttt  {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample10000beta3sigmavar}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{20}{figure.caption.70}\protected@file@percent }
+\newlabel{fig:sample10000beta3sigmavar}{{10}{20}{{\bfseries \boldmath $\beta $ in power $3$, $\sigma $ varying, $\texttt {sample size} = 10000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample10000beta3sigmavar}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.70}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {11}{\ignorespaces {\bfseries  \boldmath  $\beta $ in power $5$, $\sigma =0.1$, $\texttt  {sample size} = 1000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref  {eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }}{21}{figure.caption.74}\protected@file@percent }
+\newlabel{fig:sample1000}{{11}{21}{{\bfseries \boldmath $\beta $ in power $5$, $\sigma =0.1$, $\texttt {sample size} = 1000$} (a) Evolution of the mean numbers of particles reproducing a target polynomials and its $1\sigma $ deviation for the parameters~\eqref {eq:sample1000}. (b) Evolution of the mean numbers of particles reproducing each targets polynomial. The vertical lines indicate when there are an average 5 particles reproducing a given polynomial, and the value of $\beta $ at that moment.\relax }{figure.caption.74}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Supergravity solutions}{22}{section.75}\protected@file@percent }
+\newlabel{eq:solvepol}{{4.1}{22}{Supergravity solutions}{equation.76}{}}
+\newlabel{eq:rulex8x10}{{4.3}{22}{Supergravity solutions}{equation.78}{}}
+\@writefile{toc}{\contentsline {paragraph}{Bosonic spectrum}{23}{paragraph*.81}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{23}{section.85}\protected@file@percent }
 \bibdata{references}
-\@writefile{toc}{\contentsline {section}{\numberline {5}Conclusion}{17}{section.60}\protected@file@percent }
+\bibcite{Eloy:2021fhc}{1}
+\bibcite{loshchilov2017sgdrstochasticgradientdescent}{2}
+\bibcite{Udrescu:2019mnk}{3}
 \ttl@finishall
-\gdef \@abspage@last{18}
+\gdef \@abspage@last{25}
