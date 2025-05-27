@@ -268,7 +268,7 @@ However, the explicit characterization of these flat directions presents formida
 
 The emergence of machine learning techniques in theoretical physics offers new avenues for tackling such problems. Rather than attempting to solve the full symbolic system directly, we can leverage numerical methods to sample the solution space and then employ symbolic regression to extract analytical patterns from the resulting data. This hybrid approach potentially circumvents the computational bottlenecks that plague purely symbolic methods while maintaining the goal of obtaining exact analytical expressions.
 
-In this work, we demonstrate the viability of this machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of three-dimensional chiral $\mathcal{N} = (2,0)$ supergravity arising from $AdS_3 \times S^3$ compactification from 6d supergravity, or from the compactification of type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with a novel annealed importance sampling algorithm for polynomial symbolic regression. We show that this approach successfully identifies the underlying three-dimensional conformal manifold and automatically discovers the polynomial constraints that characterize it analytically.
+In this work, we demonstrate the viability of this machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of three-dimensional chiral $\mathcal{N} = (1,1)$ supergravity arising from $AdS_3 \times S^3$ compactification from 6d supergravity, or from the compactification of type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with a novel annealed importance sampling algorithm for polynomial symbolic regression. We show that this approach successfully identifies the underlying three-dimensional conformal manifold and automatically discovers the polynomial constraints that characterize it analytically.
 
 The paper is organized as follows. Section 2 establishes the supergravity setup, presenting the scalar potential in its full complexity and motivating the truncation to five fields. Section 3 details our numerical methodology, covering both the gradient descent sampling procedure and the annealed importance sampling approach to symbolic regression. Section 4 analyzes the discovered supergravity solutions, including their geometric interpretation and spectrum analysis. Finally, Section 5 concludes with prospects for extending this approach to higher-dimensional cases and its broader implications for systematic studies of conformal manifolds in holographic theories.
 
@@ -339,40 +339,7 @@ The scalar potential can be expressed in terms of the embedding tensor component
 		\end{aligned}
 	\end{equation}
 }
-In order to describe the $\mathcal{N} = (2,0)$ theory, it is useful to break the SO(8,4) group as 
-
-\begin{equation}	\label{eq: gl3gradingbar}
-	\begin{aligned}
-		\text{SO}(8,4)	&\longrightarrow	\enspace \text{GL}(3,\mathbb{R})\times\text{SO}(1,1)\times\text{SO}(4)_{\rm global}\,,	\\
-		X^{\bM}		&\longrightarrow	\quad \{X^{\bar m},\; X_{\bar m},\; X^\bzero,\; X_\bzero,\; X^\balpha\}\,,
-	\end{aligned}
-\end{equation}
-where $\bar m\in\llbracket1,3\rrbracket$ and $\balpha\in\llbracket9,12\rrbracket$ label the SL(3, $\mathbb{R}$) and SO(4)$_{\rm global}$ vector representations, respectively. In this basis, the SO(8,4)-invariant tensor reads
-%
-\begin{equation}	\label{eq: Paulieta}
-	\eta_{\bM\bN}=
-	\begin{pmatrix}
-		0 & \delta_{\bar m}{}^{\bar n} & 0 & 0 &0\\
-		\delta^{\bar m}{}_{\bar n} & 0 & 0 & 0 &0\\
-		0 & 0 & 0 & 1 & 0\\
-		0 & 0 & 1 & 0 & 0\\
-		0 & 0 & 0 & 0 & -\delta_{\balpha\bbeta}
-	\end{pmatrix}\,.
-\end{equation}
-The embedding tensor have the the following expression
-\begin{equation}{\label{eq:SO84embeddings}}
-		\theta_{\bar m \bar n \bar p\,\bzero}=-2\,\lambda\,\varepsilon_{\bar m \bar n \bar p}\,,		\qquad	\theta_{\bar m \bar n \bar p}{}^{\bzero}=\varepsilon_{\bar m \bar n \bar p}\,, \qquad	\theta_{\bar m \bar n}{}^{\bar p}{}_{\bzero}=\varepsilon_{\bar m \bar n \bar p}\,, 
-\end{equation}
-or equivalently
-
-\begin{equation}
-	X_{\bar m\bar n \bar p} = \varepsilon_{\bar m \bar n \bar p}\,,		\qquad
-	X_{\bar m}{}^{\bar n \bar p} = \varepsilon_{\bar m \bar n \bar p}\,,	\qquad
-	X^{\bar m}{}_{\bar n}{}^{\bar p} = \varepsilon_{\bar m \bar n \bar p}\,,	\qquad
-	X^{\bar m\bar n}{}_{\bar p} = \varepsilon_{\bar m \bar n \bar p}\,,
-\end{equation}
-	%item Choice of truncation from 32 to 13 to 5 variables.
-%\end{itemize}
+\bd{redo}
 Parametrizing the scalar matrix following \cite{Eloy:2021fhc}, we have for the scalar matrix 
 \begin{equation}	\label{eq: scalarmatrix}
 	M_{\bM\bN}
@@ -417,6 +384,8 @@ where ${\rm T}\left(A,B,C\right)=\varepsilon_{mnp}\,\varepsilon_{qrs}\,A^{mq}B^{
 				\end{pmatrix}.
 	\end{aligned}
 \end{equation}
+
+We note here that all dilaton fields are denoted with a tilde. This convention is adopted in anticipation of a later redefinition of the form \( x_i = e^{\tilde{x}_i} \) for these fields. By reserving the notation without tildes for the exponentiated variables, we maintain a clear and consistent distinction for use in subsequent expressions.
 
 As an initial simplification, we restrict our analysis to the scalar fields $x_{1}, x_{2}, x_{4}, \tilde{x}_{8}$, and $x_{10}$. This choice is made to facilitate a more tractable starting point for the investigation, and corresponds to a randomly selected subset of the original set of thirteen scalar fields. It is important to note that this subset no longer defines a consistent truncation of the full theory. Nevertheless, despite the fact that the effective theory defined by these five scalars may be formally ill-defined—due to potential higher-order interactions that could source the remaining scalar fields—the solutions we obtain remain valid solutions of the complete theory. This is because we compute the critical points of the scalar potential by first evaluating $\nabla V = 0$, and only then setting the remaining scalar fields to zero. By adopting this procedure—taking the gradient of the potential prior to truncation—we ensure that the resulting configurations satisfy the equations of motion and are thus genuine solutions of the full theory. Under this truncation, the scalar potential~\eqref{eq:scalarpotential} reduces to:
 \begin{equation} \label{eq:scalarpotential124810}
@@ -476,7 +445,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 		\begin{figure}
 			\centering
 			\includegraphics[scale = 0.5]{Figures/Loss_grad_des.png}
-			\caption{Evolution of the loss function during gradient descent and corresponding learning rate schedule, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.}
+			\caption{Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha$ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.}
 			\label{fig:loss_grad_des}
 		\end{figure}
 		
@@ -484,7 +453,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 		
 		\begin{figure}[t]
 			\centering
-			\includegraphics[scale = 0.3]{Figures/triangular_plot_1_2_4_8_10_new.png} %names need to be changed.
+			\includegraphics[scale = 0.3]{Figures/triangular_plot_1_2_4_8_10.png} %names need to be changed.
 			\caption{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent}
 			\label{triangular_plot_1_2_4_8_10}
 		\end{figure}

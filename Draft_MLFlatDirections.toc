@@ -1,11 +1,11 @@
 \babel@toc {english}{}\relax 
 \contentsline {section}{\numberline {1}Introduction}{1}{section.1}%
 \contentsline {section}{\numberline {2}Supergravity setup}{2}{section.2}%
-\contentsline {section}{\numberline {3}Numerical analysis}{5}{section.19}%
-\contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{5}{subsection.20}%
-\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{10}{subsection.28}%
-\contentsline {paragraph}{Results}{13}{paragraph*.35}%
-\contentsline {section}{\numberline {4}Supergravity solutions}{22}{section.75}%
-\contentsline {paragraph}{Bosonic spectrum}{23}{paragraph*.81}%
-\contentsline {section}{\numberline {5}Conclusion}{23}{section.85}%
+\contentsline {section}{\numberline {3}Numerical analysis}{5}{section.15}%
+\contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{5}{subsection.16}%
+\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{10}{subsection.24}%
+\contentsline {paragraph}{Results}{13}{paragraph*.31}%
+\contentsline {section}{\numberline {4}Supergravity solutions}{22}{section.71}%
+\contentsline {paragraph}{Bosonic spectrum}{23}{paragraph*.77}%
+\contentsline {section}{\numberline {5}Conclusion}{23}{section.81}%
 \contentsfinish 
