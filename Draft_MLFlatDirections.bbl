@@ -1,4 +1,151 @@
-\providecommand{\href}[2]{#2}\begingroup\raggedright\begin{thebibliography}{1}
+\providecommand{\href}[2]{#2}\begingroup\raggedright\begin{thebibliography}{10}
+
+\bibitem{Maldacena:1997re}
+J.~M. Maldacena, {\it {The Large $N$ limit of superconformal field theories and
+  supergravity}},  {\em Adv. Theor. Math. Phys.} {\bf 2} (1998) 231--252,
+  [\href{http://arxiv.org/abs/hep-th/9711200}{{\tt hep-th/9711200}}].
+
+\bibitem{Ooguri:2016pdq}
+H.~Ooguri and C.~Vafa, {\it {Non-supersymmetric AdS and the Swampland}},  {\em
+  Adv. Theor. Math. Phys.} {\bf 21} (2017) 1787--1801,
+  [\href{http://arxiv.org/abs/1610.01533}{{\tt arXiv:1610.01533}}].
+
+\bibitem{Palti:2019pca}
+E.~Palti, {\it {The Swampland: Introduction and Review}},  {\em Fortsch. Phys.}
+  {\bf 67} (2019), no.~6 1900037, [\href{http://arxiv.org/abs/1903.06239}{{\tt
+  arXiv:1903.06239}}].
+
+\bibitem{Giambrone:2021wsm}
+A.~Giambrone, A.~Guarino, E.~Malek, H.~Samtleben, C.~Sterckx, and M.~Trigiante,
+  {\it {Holographic evidence for nonsupersymmetric conformal manifolds}},  {\em
+  Phys. Rev. D} {\bf 105} (2022), no.~6 066018,
+  [\href{http://arxiv.org/abs/2112.11966}{{\tt arXiv:2112.11966}}].
+
+\bibitem{Aharony:2001dp}
+O.~Aharony, M.~Berkooz, and E.~Silverstein, {\it {Nonlocal string theories on
+  AdS(3) x S**3 and stable nonsupersymmetric backgrounds}},  {\em Phys. Rev. D}
+  {\bf 65} (2002) 106007, [\href{http://arxiv.org/abs/hep-th/0112178}{{\tt
+  hep-th/0112178}}].
+
+\bibitem{Dong:2014tsa}
+X.~Dong, D.~Z. Freedman, and Y.~Zhao, {\it {Explicitly Broken Supersymmetry
+  with Exactly Massless Moduli}},  {\em JHEP} {\bf 06} (2016) 090,
+  [\href{http://arxiv.org/abs/1410.2257}{{\tt arXiv:1410.2257}}].
+
+\bibitem{Eloy:2024lwn}
+C.~Eloy and G.~Larios, {\it {Charting the Conformal Manifold of Holographic
+  CFT$_2$'s}},  \href{http://arxiv.org/abs/2405.17542}{{\tt arXiv:2405.17542}}.
+
+\bibitem{Comsa:2019rcz}
+I.~M. Comsa, M.~Firsching, and T.~Fischbacher, {\it {SO(8) Supergravity and the
+  Magic of Machine Learning}},  {\em JHEP} {\bf 08} (2019) 057,
+  [\href{http://arxiv.org/abs/1906.00207}{{\tt arXiv:1906.00207}}].
+
+\bibitem{Berman:2022jqn}
+D.~Berman, T.~Fischbacher, G.~Inverso, B.~Scellier, and B.~Scellier, {\it
+  {Vacua of \ensuremath{\omega}-deformed SO(8) supergravity}},  {\em JHEP} {\bf
+  06} (2022) 133, [\href{http://arxiv.org/abs/2201.04173}{{\tt
+  arXiv:2201.04173}}].
+
+\bibitem{Ashmore:2019wzb}
+A.~Ashmore, Y.-H. He, and B.~A. Ovrut, {\it {Machine Learning
+  Calabi\textendash{}Yau Metrics}},  {\em Fortsch. Phys.} {\bf 68} (2020),
+  no.~9 2000068, [\href{http://arxiv.org/abs/1910.08605}{{\tt
+  arXiv:1910.08605}}].
+
+\bibitem{Berman:2021mcw}
+D.~S. Berman, Y.-H. He, and E.~Hirst, {\it {Machine learning Calabi-Yau
+  hypersurfaces}},  {\em Phys. Rev. D} {\bf 105} (2022), no.~6 066002,
+  [\href{http://arxiv.org/abs/2112.06350}{{\tt arXiv:2112.06350}}].
+
+\bibitem{Larfors:2022nep}
+M.~Larfors, A.~Lukas, F.~Ruehle, and R.~Schneider, {\it {Numerical metrics for
+  complete intersection and Kreuzer\textendash{}Skarke Calabi\textendash{}Yau
+  manifolds}},  {\em Mach. Learn. Sci. Tech.} {\bf 3} (2022), no.~3 035014,
+  [\href{http://arxiv.org/abs/2205.13408}{{\tt arXiv:2205.13408}}].
+
+\bibitem{Berglund:2022gvm}
+P.~Berglund, G.~Butbaia, T.~H\"uubsch, V.~Jejjala, D.~Mayorga Pe\~na,
+  C.~Mishra, and J.~Tan, {\it {Machine-learned Calabi\textendash{}Yau metrics
+  and curvature}},  {\em Adv. Theor. Math. Phys.} {\bf 27} (2023), no.~4
+  1107--1158, [\href{http://arxiv.org/abs/2211.09801}{{\tt arXiv:2211.09801}}].
+
+\bibitem{Jejjala:2020wcc}
+V.~Jejjala, D.~K. Mayorga~Pena, and C.~Mishra, {\it {Neural network
+  approximations for Calabi-Yau metrics}},  {\em JHEP} {\bf 08} (2022) 105,
+  [\href{http://arxiv.org/abs/2012.15821}{{\tt arXiv:2012.15821}}].
+
+\bibitem{Douglas:2006rr}
+M.~R. Douglas, R.~L. Karp, S.~Lukic, and R.~Reinbacher, {\it {Numerical
+  Calabi-Yau metrics}},  {\em J. Math. Phys.} {\bf 49} (2008) 032302,
+  [\href{http://arxiv.org/abs/hep-th/0612075}{{\tt hep-th/0612075}}].
+
+\bibitem{Larfors:2021pbb}
+M.~Larfors, A.~Lukas, F.~Ruehle, and R.~Schneider, {\it {Learning Size and
+  Shape of Calabi-Yau Spaces}},  \href{http://arxiv.org/abs/2111.01436}{{\tt
+  arXiv:2111.01436}}.
+
+\bibitem{He:2018jtw}
+Y.-H. He, {\em {The Calabi\textendash{}Yau Landscape: From Geometry, to
+  Physics, to Machine Learning}}.
+\newblock Lecture Notes in Mathematics. 5, 2021.
+
+\bibitem{He:2017aed}
+Y.-H. He, {\it {Deep-Learning the Landscape}},
+  \href{http://arxiv.org/abs/1706.02714}{{\tt arXiv:1706.02714}}.
+
+\bibitem{Carifio:2017bov}
+J.~Carifio, J.~Halverson, D.~Krioukov, and B.~D. Nelson, {\it {Machine Learning
+  in the String Landscape}},  {\em JHEP} {\bf 09} (2017) 157,
+  [\href{http://arxiv.org/abs/1707.00655}{{\tt arXiv:1707.00655}}].
+
+\bibitem{Ruehle:2017mzq}
+F.~Ruehle, {\it {Evolving neural networks with genetic algorithms to study the
+  String Landscape}},  {\em JHEP} {\bf 08} (2017) 038,
+  [\href{http://arxiv.org/abs/1706.07024}{{\tt arXiv:1706.07024}}].
+
+\bibitem{Chen:2020dxg}
+H.-Y. Chen, Y.-H. He, S.~Lal, and M.~Z. Zaz, {\it {Machine Learning Etudes in
+  Conformal Field Theories}},  \href{http://arxiv.org/abs/2006.16114}{{\tt
+  arXiv:2006.16114}}.
+
+\bibitem{Brady:2025zzi}
+N.~Brady, D.~Tennyson, and T.~Vandermeulen, {\it {Machine Learning the 6d
+  Supergravity Landscape}},  \href{http://arxiv.org/abs/2505.16131}{{\tt
+  arXiv:2505.16131}}.
+
+\bibitem{Krishnan:2020sfg}
+C.~Krishnan, V.~Mohan, and S.~Ray, {\it {Machine Learning ${\cal N}=8, D=5$
+  Gauged Supergravity}},  {\em Fortsch. Phys.} {\bf 68} (2020), no.~5 2000027,
+  [\href{http://arxiv.org/abs/2002.12927}{{\tt arXiv:2002.12927}}].
+
+\bibitem{Hashimoto:2018ftp}
+K.~Hashimoto, S.~Sugishita, A.~Tanaka, and A.~Tomiya, {\it {Deep learning and
+  the AdS/CFT correspondence}},  {\em Phys. Rev. D} {\bf 98} (2018), no.~4
+  046019, [\href{http://arxiv.org/abs/1802.08313}{{\tt arXiv:1802.08313}}].
+
+\bibitem{Ruehle:2020jrk}
+F.~Ruehle, {\it {Data science applications to string theory}},  {\em Phys.
+  Rept.} {\bf 839} (2020) 1--117.
+
+\bibitem{He:2023csq}
+Y.-H. He, E.~Heyes, and E.~Hirst, {\it {Machine learning in physics and
+  geometry}},  {\em Handbook of Statistics} {\bf 49} (2023) 47--81,
+  [\href{http://arxiv.org/abs/2303.12626}{{\tt arXiv:2303.12626}}].
+
+\bibitem{Bao:2021auj}
+J.~Bao, Y.-H. He, E.~Hirst, J.~Hofscheier, A.~Kasprzyk, and S.~Majumder, {\it
+  {Hilbert series, machine learning, and applications to physics}},  {\em Phys.
+  Lett. B} {\bf 827} (2022) 136966,
+  [\href{http://arxiv.org/abs/2103.13436}{{\tt arXiv:2103.13436}}].
+
+\bibitem{neal1998annealedimportancesampling}
+R.~M. Neal, {\it Annealed importance sampling},  1998.
+
+\bibitem{del2006sequential}
+P.~Del~Moral, A.~Doucet, and A.~Jasra, {\it Sequential monte carlo samplers},
+  {\em Journal of the Royal Statistical Society Series B: Statistical
+  Methodology} {\bf 68} (2006), no.~3 411--436.
 
 \bibitem{Eloy:2021fhc}
 C.~Eloy, G.~Larios, and H.~Samtleben, {\it {Triality and the consistent

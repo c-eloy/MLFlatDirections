@@ -9,11 +9,13 @@ Reallocated glb_str_ptr (elt_size=8) to 10 items from 0.
 Reallocated global_strs (elt_size=200001) to 10 items from 0.
 Reallocated glb_str_end (elt_size=8) to 10 items from 0.
 Database file #1: references.bib
+Warning--empty publisher in He:2018jtw
 
 Here's how much of BibTeX's memory you used:
- Cites:                 3 out of 750
- Fields:               66 out of 5000
- Hash table:       199843 out of 200000
- Strings:             532 out of 200000
- Free string pool:   3912 out of 65000
+ Cites:                32 out of 750
+ Fields:              849 out of 5000
+ Hash table:       199827 out of 200000
+ Strings:             729 out of 200000
+ Free string pool:   8615 out of 65000
  Wizard functions:   2195 out of 3000
+(There was 1 warning)
