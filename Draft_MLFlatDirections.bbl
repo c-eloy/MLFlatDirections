@@ -156,9 +156,40 @@ C.~Eloy, G.~Larios, and H.~Samtleben, {\it {Triality and the consistent
 I.~Loshchilov and F.~Hutter, {\it Sgdr: Stochastic gradient descent with warm
   restarts},  \href{http://arxiv.org/abs/1608.03983}{{\tt arXiv:1608.03983}}.
 
-\bibitem{Udrescu:2019mnk}
-S.-M. Udrescu and M.~Tegmark, {\it {AI Feynman: a Physics-Inspired Method for
-  Symbolic Regression}},  {\em Sci. Adv.} {\bf 6} (2020), no.~16 eaay2631,
-  [\href{http://arxiv.org/abs/1905.11481}{{\tt arXiv:1905.11481}}].
+\bibitem{koza1994genetic}
+J.~R. Koza, {\it Genetic programming as a means for programming computers by
+  natural selection},  {\em Statistics and computing} {\bf 4} (1994) 87--112.
+
+\bibitem{randall2022bingo}
+D.~L. Randall, T.~S. Townsend, J.~D. Hochhalter, and G.~F. Bomarito, {\it
+  Bingo: a customizable framework for symbolic regression with genetic
+  programming},  in {\em Proceedings of the Genetic and Evolutionary
+  Computation Conference Companion}, pp.~2282--2288, 2022.
+
+\bibitem{burlacu2019parsimony}
+B.~Burlacu, G.~Kronberger, M.~Kommenda, and M.~Affenzeller, {\it Parsimony
+  measures in multi-objective genetic programming for symbolic regression},  in
+  {\em Proceedings of the genetic and evolutionary computation conference
+  companion}, pp.~338--339, 2019.
+
+\bibitem{petersen2019deep}
+B.~K. Petersen, M.~Landajuela, T.~N. Mundhenk, C.~P. Santiago, S.~K. Kim, and
+  J.~T. Kim, {\it Deep symbolic regression: Recovering mathematical expressions
+  from data via risk-seeking policy gradients},  {\em arXiv preprint
+  arXiv:1912.04871} (2019).
+
+\bibitem{kamienny2022end}
+P.-A. Kamienny, S.~d'Ascoli, G.~Lample, and F.~Charton, {\it End-to-end
+  symbolic regression with transformers},  {\em Advances in Neural Information
+  Processing Systems} {\bf 35} (2022) 10269--10281.
+
+\bibitem{valipour2021symbolicgpt}
+M.~Valipour, B.~You, M.~Panju, and A.~Ghodsi, {\it Symbolicgpt: A generative
+  transformer model for symbolic regression},  {\em arXiv preprint
+  arXiv:2106.14131} (2021).
+
+\bibitem{bastiani2025diffusion}
+Z.~Bastiani, R.~M. Kirby, J.~Hochhalter, and S.~Zhe, {\it Diffusion-based
+  symbolic regression},  {\em arXiv preprint arXiv:2505.24776} (2025).
 
 \end{thebibliography}\endgroup

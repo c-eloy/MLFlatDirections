@@ -4,6 +4,7 @@
 
 \usepackage[english]{babel}
 
+
 % ---- FONT & MICROTYPOGRAPHY ----
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -21,6 +22,7 @@
 
 % ---- GRAPHIQUE ----
 \usepackage{graphicx}
+\usepackage{adjustbox} 
 \usepackage{xcolor}
 \usepackage[font=small,labelfont=bf,labelsep=space]{caption}
 \usepackage{subfigure}
@@ -257,17 +259,17 @@ MI-HET-??? \\
 
 The AdS/CFT correspondence \cite{Maldacena:1997re} stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between gravitational theories in Anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries. This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. 
 
-Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. Studying the CFT side is very interesting : CFT play a crucial role in statistical physics where they are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow an this is this latter point that is our interest in this paper. An interesting question is indeed to know wether those CFT are isolated fixed points of RG flows, or belong to a continous family of CFT's. If this is the case, the space of deformations that takes from one CFT to another is called the conformal manifold. They are parametrized by exactely marginal operator, or in other words operators whose $\beta$ functions exactly vanish. 
+Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. Studying the CFT side is very interesting : CFT play a crucial role in statistical physics where they are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow and this is this latter point that is our interest in this paper. An interesting question is indeed to know wether those CFT are isolated fixed points of RG flows, or belong to a continous family of CFT's. If this is the case, the space of deformations that takes from one CFT to another is called the conformal manifold. They are parametrized by exactely marginal operator, or in other words operators whose $\beta$ functions exactly vanish. 
 
 From this perspective, the AdS/CFT correspondence relates conformal manifolds on the boundary theory to flat directions in the scalar potential of the dual supergravity theory. Along these directions, the scalar field configurations vary continuously while the cosmological constant remains fixed. In general, supersymmetry is believed to be necessary for the existence of holographic conformal manifolds, as non-supersymmetric AdS solutions are typically considered unstable \cite{Ooguri:2016pdq,Palti:2019pca}. However, recent investigations \cite{Giambrone:2021wsm} have identified AdS$_4$ configurations that appear to evade this requirement, with no evidence of standard decay channels—neither perturbative nor non-perturbative—being present. In the context of AdS$_3$/CFT$_2$, the situation may be even richer. A well-known counterexample has existed for some time \cite{Aharony:2001dp,Dong:2014tsa}, which is well understood from both the field theory and gravitational perspectives. More generally, within the supergravity approximation, continuous deformations correspond to classically marginal operators. These operators become exactly marginal only if their marginality persists at finite values of both the rank N and the CFT coupling. Recent work \cite{Eloy:2024lwn} has demonstrated the existence of families of marginal deformations that are perturbatively stable, using the framework of Exceptional Field Theory (ExFT).
 
-In this work, we propose a novel approach, where we study directly the scalar potential of supergravity. As already mentionned, the marginal deformation of CFT's in the large N limit, are in correspondance with the flat directions in the potential, i.e. when $\nabla V = 0$. However, the explicit characterization of these flat directions presents formidable technical challenges. Supergravity scalar potentials, even in truncated models, typically involve dozens of scalar fields with intricate non-linear interactions. The resulting expressions for critical points—where all first derivatives vanish—quickly become too complex for traditional symbolic manipulation, rendering analytical approaches computationally intractable. This complexity paradox is particularly frustrating given that physically meaningful solutions often admit relatively simple parametric descriptions once discovered. 
+In this work, we propose a novel approach, where we study directly the scalar potential of supergravity. As already mentionned, the marginal deformation of CFT's in the large N limit, are in correspondance with the flat directions in the potential, i.e. when there is a continuous set a scalar fields such that $\nabla V = 0$. However, the explicit characterization of these flat directions presents formidable technical challenges. Supergravity scalar potentials, even in truncated models, typically involve dozens of scalar fields with intricate non-linear interactions. The resulting expressions for critical points—where all first derivatives vanish—quickly become too complex for traditional symbolic manipulation, rendering analytical approaches computationally intractable. This complexity paradox is particularly frustrating given that physically meaningful solutions often admit relatively simple parametric descriptions once discovered. 
 
 The emergence of machine learning techniques in theoretical physics opens new avenues for addressing such complex problems. Instead of solving the full symbolic system analytically from the outset, one can employ numerical methods to sample the solution space and subsequently apply symbolic regression to extract analytical patterns from the data. This hybrid approach has the potential to bypass the computational bottlenecks inherent in purely symbolic methods, while still aiming to uncover exact analytical expressions.
 
 Similar strategies have previously been applied to identify new isolated vacua in $\mathrm{SO}(8)$ supergravity \cite{Comsa:2019rcz,Berman:2022jqn}. More broadly, there has been increasing interest in applying machine learning and numerical techniques across various domains of high-energy physics. This includes, for instance, the characterization of Calabi–Yau metrics and hypersurfaces \cite{Ashmore:2019wzb,Berman:2021mcw,Larfors:2022nep,Berglund:2022gvm,Jejjala:2020wcc,Douglas:2006rr,Larfors:2021pbb,He:2018jtw}, as well as broader efforts to explore the string theory landscape using machine learning techniques \cite{He:2017aed,Carifio:2017bov,Ruehle:2017mzq}. Additional applications include studies in CFT \cite{Chen:2020dxg}, investigations of the supergravity landscape \cite{Brady:2025zzi,Krishnan:2020sfg}, and explorations of the AdS/CFT correspondence \cite{Hashimoto:2018ftp}. More generally, machine learning has found utility in the study of string theory, geometry, and fundamental physics \cite{Ruehle:2020jrk,He:2023csq,Bao:2021auj}.
 
-In this work, we demonstrate the viability of the aformentionned machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of three-dimensional chiral $\mathcal{N} = (1,1)$  supergravity arising from $AdS_3 \times S^3$ compactification from 6d supergravity, or from the compactification of type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with an annealed importance sampling algorithm (AIS) \cite{neal1998annealedimportancesampling} for polynomial symbolic regression. In this paper, we will study a 5 parameter truncation, which is itself coming from a 13 parameter consistent truncation of $\mathcal{N} = (1,1)$ 6-dimensional supergravity. 
+In this work, we demonstrate the viability of the aformentionned machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of three-dimensional chiral $\mathcal{N} = (1,1)$  supergravity arising from $AdS_3 \times S^3$ compactification from 6d supergravity, or from the compactification of type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with some symbolic regression technique. There exist a large litterature on symbolic regression, using methods from genetic programming \cite{koza1994genetic,randall2022bingo,burlacu2019parsimony}, to deep machine learning \cite{petersen2019deep,kamienny2022end}, generative modelling \cite{valipour2021symbolicgpt} and diffusion models \cite{bastiani2025diffusion}. However, in the spirit of trying to build a generalisable method, we develop here our own algorithm, which is based on symbolic regression using an Annealing Importance Sampling method (AIS) \cite{neal1998annealedimportancesampling}. In this paper, we will study a 5 parameter truncation, which is itself coming from a 13 parameter consistent truncation of $\mathcal{N} = (1,1)$ 6-dimensional supergravity. 
 
 The study of this 5 dimensional parameter potentiel is separated into several parts. We first use the gradient descent to efficiently sample the underlying conformal manifold. Combined with numerical analysis, such as principal component analysis and clustering, we can identify the existence of a 3-dimensional continuous family. We then use an AIS technique combined with a sequential Monte Carlo approach (SMC) \cite{del2006sequential} in order to do symbolic regression. As we will indeed demonstrate in the paper, there exist polynomial constraints on the 5 parameters, viewed as embedding coordinates, that projects them on the 3 dimensional manifolds. We manage to identify 8 of those constraints on the data, not all independent, which once solved gives that two of the embedding coordinates can be expressed in terms of the others. This provides an explicit family of 3 dimensional parameters family 
 
@@ -442,19 +444,11 @@ An additional advantage of this approach is its broader applicability. In scenar
 		
 		We then perform gradient descent on the points using TensorFlow’s automatic differentiation. The loss function is defined as:
 		\begin{equation}
-			\mathcal{L} = \sum_{i = 1}^{n_{points}} ||\left.\nabla V(\vec{X}^{\,i})\right|_{\vec{y}=0}||^2
+			\mathcal{L} = \sum_{i = 1}^{n_{points}} ||\left.\nabla V(\vec{X}^{\,i})\,\right|_{\vec{y}=0}||^2
 		\end{equation}
-		where $\vec{X}^{\,i} = (x^i_1,\dots,x^i_6,\tilde{x}^i_7,\tilde{x}^i_8,\tilde{x}^i_9,x^i_{10},\dots,x^i_{12},\tilde{x}^i_{13})$ and $\vec{y}^{\,i} = (x^i_3,x^i_5,x^i_6,\tilde{x}^i_7,\tilde{x}^i_9,x^i_{11},x^i_{12},\tilde{x}^i_{11})$ denotes the data points. As already mentionned above, we use the analytic formula for $\nabla V$, but we could have perform the gradient descent by fully using automatic differenciation. 
+		where $\vec{X}^{\,i} = (x^i_1,\dots,x^i_6,\tilde{x}^i_7,\tilde{x}^i_8,\tilde{x}^i_9,x^i_{10},\dots,x^i_{12},\tilde{x}^i_{13})$ and $\vec{y}^{\,i} = (x^i_3,x^i_5,x^i_6,\tilde{x}^i_7,\tilde{x}^i_9,x^i_{11},x^i_{12},\tilde{x}^i_{11})$ denotes the data points. As already mentionned above, we use the analytic formula for $\nabla V$, but we could have perform the gradient descent by fully using automatic differentiation. 
 
-		Through trial and error, we observed that periodically reinitializing the optimizer significantly improved the convergence rate. This technique bears similarity to the concept of warm restarts introduced in \cite{loshchilov2017sgdrstochasticgradientdescent}. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence.
-		
-		We interpret this as follows: when the optimizer is reinitialized, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case. 
-		
-		The evolution of the loss function, along with the learning rate schedule, is shown in Fig.~\eqref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is reinitialized. We also observe that, following the last few reinitializations, the loss exhibits a small bump immediately after the restart.
-		
-		We interpret this behavior as a consequence of the increased learning rate: some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence.
-		
-		Although this strategy introduces the risk of desampling certain regions in favor of others, they correspond to low convergence regions. As we are anyway not interested in those places, but rather real flat directions, this is not a problem for us. 
+		Through trial and error, we observed that periodically reinitializing the optimizer significantly improved the convergence rate. This technique bears similarity to the concept of warm restarts introduced in \cite{loshchilov2017sgdrstochasticgradientdescent}. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence. We interpret this as follows: when the optimizer is reinitialized, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case.  The evolution of the loss function, along with the learning rate schedule, is shown in Fig.~\eqref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is reinitialized. We also observe that, following the last few reinitializations, the loss exhibits a small bump immediately after the restart. We interpret this behavior as a consequence of the increased learning rate: some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence. Although this strategy introduces the risk of desampling certain regions in favor of others, they correspond to low convergence regions. As we are anyway not interested in those places, but rather real flat directions, this is not a problem for us. 
 		
 		\begin{figure}
 			\centering
@@ -465,7 +459,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\label{fig:Analyze_V_points}
 		\end{figure}
 		
-		The Adam optimizer was employed throughout the gradient descent procedure. It was reinitialized at iterations {250, 500, 750}, with the learning rate fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialized once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialization was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 1000 epochs.
+		The Adam optimizer was employed throughout the gradient descent procedure. It was reinitialized at iterations {250, 500, 750}, with the learning rate fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialized once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialization was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 500 epochs.
 		
 		Upon completion, it was observed that all data points converged to values close to $-4$. Specifically, nearly all data points attained values within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were on the order of $10^{-3}$. Similarly, 99,739 out of 100,000 data points exhibited gradient norms smaller than $10^{-3}$. These results are summarized in Figure~\ref{fig:Analyze_V_points}.
 		
@@ -477,23 +471,17 @@ An additional advantage of this approach is its broader applicability. In scenar
 		\end{figure}
 		
 		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
-		
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale = 0.3]{Figures/triangular_plot_1_2_4_8_10.png} %names need to be changed.
 			\caption{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent}
 			\label{triangular_plot_1_2_4_8_10}
 		\end{figure}
-		
 		We can make a few comments on those plots. First, we observe non-trivial correlations in the data. Some of these may result from larger basins of attraction, such as in the $x_1/x_2$ plot. However, the structures seen in the $x_4/\tilde{x}_8$ or $x_4/x_{10}$ plots likely reflect genuine features of the manifold, and will show latter that this is indeed the case. We also note that all directions appear to be well populated. 
 		%Furthermore, we can notice that a large majority of the points converge to the origin $\vec{0}$. This is not surprising, as this just mean that the round sphere solution has a larger basin of attraction, which sounds reasonable. We do not however attempt to shift the points along flat directions to depopulate the origin or repopulate other regions.
-
 		%\paragraph{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least few points in each direction)}
-
 		Once the gradient descent has been completed and the flat direction sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we can first perform some exploratory analyses to better understand the data. Specifically, we aim to determine the dimensionality of the manifold and wether it consists of a single connected component or multiple disjoint components (e.g., two intersecting hyperplanes).
-		
 		To this end, we apply a local Principal Component Analysis (PCA). For each point, we identify its $k$ nearest neighbours and perform a PCA on that local neighbourhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point.
-		
 		We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in Fig. \ref{local_pca}.
 		
 		\begin{figure}[h!]
@@ -504,21 +492,15 @@ An additional advantage of this approach is its broader applicability. In scenar
 		\end{figure}
 		
 		We observe that for every choice of $k$, there is a prominent peak at $d = 3$, suggesting that the underlying manifold is three-dimensional. For $k = 5$, a noticeable fraction of points are assigned a dimensionality of 2. This can be attributed to the fact that if the true dimension is 3, then selecting only 5 neighbours may not sufficiently populate all three directions, leading the algorithm to underestimate the dimensionality for a fraction of the points. 
-		
 		Additionally, for $k \geq 20$, we observe an increasing number of points being assigned dimensionalities of 4 or 5. This behavior can be explained by the loss of locality when the number of neighbours becomes too large: increasing $k$ results in a coarser approximation, and the algorithm may then incorporate points that are no longer truly local. This artificial enlargement of the neighbourhood can cause the estimated local dimensionality to rise.
-		
 		We thus conclude that the manifold under investigation has an intrinsic dimension of 3.
 		
 		%\paragraph{Clustering: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}
 		
 		One possible scenario is that our data actually consists of several distinct three-dimensional manifolds, and the points previously identified with dimension $4$ may lie at the intersections of these manifolds. To illustrate, consider the intersection of two lines: at the intersection point, the local dimensionality estimated by the previous PCA algorithm would be 2. To rule out this possibility, we apply a clustering algorithm based on local density, where we only select the points of dimension 3. This, way, we remove the possible intersection points with dimension 4 or 5. For the purpose of the clustering, we use the HDBSCAN algorithm\footnote{Details of the algorithm can be found in the original HDBSCAN paper or documentation. Briefly, it is a density-based clustering method that extends DBSCAN by converting it into a hierarchical clustering algorithm and then extracting a flat clustering based on the stability of clusters.}.
-		
 		We set the minimum cluster size to 10 points. Out of the 98,606 3-dimensional points, the algorithm identifies three clusters: one of size 10, one of size 91,747, and one of size 6,849. 
-		
 		The smallest cluster (10 points) is likely an artefact of local fluctuations in the data density and is not interpreted as physically meaningful. The last group, comprising 6,849 points, consists of points that the algorithm could not assign to any cluster. We interpret these as outliers or edge points rather than representatives of a separate manifold.
-		
-		What the algorithm does indicate, however, is that over 90\% of the data belongs to a single dominant cluster. In Fig.~\ref{3dplots}, we show 3D projections of the data to visualize the clustering.
-		
+		What the algorithm does indicate, however, is that over 90\% of the data belongs to a single dominant cluster. In Fig.~\ref{3dplots}, we show 3D projections of the data to visualize the clustering. 
 		\begin{figure}[h!]
 			\centering
 			\hspace{-2cm}
@@ -527,7 +509,6 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\caption{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.}
 			\label{3dplots}
 		\end{figure}
-		
 		In these scatter plots, turquoise points belong to the main cluster, while purple points are those that the algorithm failed to assign. In one of the plots, a few yellow points can be seen; these correspond to the smallest cluster of 10 points. From visual inspection, it appears that the unassigned (purple) points lie mostly on the boundary of the sampled region. We therefore interpret their unassigned status not as evidence of belonging to another manifold, but rather as a result of insufficient local density near the edges of the dataset.
 		
 		From this analysis, we conclude that the gradient descent procedure has produced a sampling of a single, connected, three-dimensional manifold.
@@ -541,7 +522,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 		%\item We can convert the potential to a polynomial by converting the variables that appear in exponentials to logs.
 	%\item As the potential is a polynomial, the solutions satisfy polynomials equations. Discuss that fact that we could get polynomials directly by taking the gradient of the potential, but those will be to complicated to express the vacuum in a usable way.  We search those using Annealed Importance Sampling.
 		
-		Now we have sampled the manifold and extracted some basic information about it (namely its dimension and the fact that it is made of one block), we would like to see if we can extract some analytic formula to characterise it. What we have at the moment, are points on a 3-dimensional manifold, which are embedded in a 5-dimensional space. Therefore we can conclude that, in order to characterise the manifold, we need two independent constraints on the embedding coordinates $\vec{x} = (x_1,x_2,x_4,\tilde{x}_8,x_{10})$. If we have a look at the form of the potential, we can observe that if we use $x_{8} = e^{\tilde{x}_8}$, that, up to some potential global factor of the dilaton of the form $e^{\tilde{x}_8}$, this potential is actually a polynomial of the embedding coordinates. Therefore, the components of $|\nabla V|$ are also polynomials in those variables. We conclude that the constraints on the embedding coordinates we are looking for are polynomial constraints of the form $p(\vec{x}) = 0$, and that there should be at least two of those. Note that we are now taking $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. Of course if one takes directly the gradient of \eqref{eq:scalarpotential}, one ends up with such conditions, but none are usable directly to solve for two of the variables in terms of the others. The problem we are facing here is therefore a problem of symbolic regression: we are looking for analytic expressions (polynomial) that vanish once evaluated on our data points. There are a number of way one can deal with it, using already existing methods such as AI Feynman methods~\cite{Udrescu:2019mnk}, or ... \bd{litterature review}. In the spirit of trying to build a generalisable method, we develop here our own method, which is based on symbolic regression using an Annealing Importance Sampling method. 
+		Now we have sampled the manifold and extracted some basic information about it (namely its dimension and the fact that it is made of one block), we would like to see if we can extract some analytic formula to characterise it. What we have at the moment, are points on a 3-dimensional manifold, which are embedded in a 5-dimensional space. Therefore we can conclude that, in order to characterise the manifold, we need two independent constraints on the embedding coordinates $\vec{x} = (x_1,x_2,x_4,\tilde{x}_8,x_{10})$. If we have a look at the form of the potential, we can observe that if we use $x_{8} = e^{\tilde{x}_8}$, that, up to some potential global factor of the dilaton of the form $e^{\tilde{x}_8}$, this potential is actually a polynomial of the embedding coordinates. Therefore, the components of $|\nabla V|$ are also polynomials in those variables. We conclude that the constraints on the embedding coordinates we are looking for are polynomial constraints of the form $p(\vec{x}) = 0$, and that there should be at least two of those. Note that we are now taking $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. Of course if one takes directly the gradient of \eqref{eq:scalarpotential}, one ends up with such conditions, but none are usable directly to solve for two of the variables in terms of the others. The problem we are facing here is therefore a problem of symbolic regression: we are looking for analytic expressions (polynomial) that vanish once evaluated on our data points. 
 
 		%\item Annealed Importance Sampling: first explain general idea (construct density probability, role of temperature, links with Monte-Carlo), discuss $\beta$ to control exploration and exploitation phases.
 		
@@ -658,7 +639,14 @@ This strategy was determined empirically through trial and error; a systematic a
 	&\texttt{max\_num\_monomials} = 6.
 \end{aligned}
 \end{equation}
-The main results are presented in Fig.\eqref{fig:evolutionoftargetreproduction}. The frequencies with which each of the polynomials in Eq.~\eqref{eq:pols} was recovered are reported in the table below:
+The main results are presented in Fig.\eqref{fig:evolutionoftargetreproduction} and the losses of the run are shown in Fig. \ref{fig:losses_ASMC}. 
+%\begin{figure}
+%	\centering
+%	\includegraphics[scale=0.35]{Figures/Loss_all_ASMC.png}
+%	\caption{Losses of all the 1000 runs in shaded blue and the average loss over all run in brown.}
+%	\label{fig:losses_ASMC}
+%\end{figure}
+The frequencies with which each of the polynomials in Eq.~\eqref{eq:pols} was recovered are reported in the table below:
   \begin{equation}
   	\label{table:results}
 	\begin{tabular}{l|ccccccccc}
@@ -669,19 +657,27 @@ The main results are presented in Fig.\eqref{fig:evolutionoftargetreproduction}.
 
 With this approach, the average number of particles reproducing one of the target polynomials at the end of a run is 882, with a standard deviation of 200. Moreover, the algorithm typically identifies an average of 2.24 distinct polynomials per run, demonstrating its capacity to uncover multiple solutions simultaneously. Finally the algorithm failed at finding a solution in only 3 runs, demonstrating the robustness of the technique. 
 
-\begin{figure}[htbp]
+\begin{figure}[h!]
 	\centering
-	\begin{minipage}[t]{0.48\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Count_beta_adaptative_temp_indiv}
-		\caption*{(a)}
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.48\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Count_good_pol_all}
-		\caption*{(b)}
-	\end{minipage}
+	\begin{adjustbox}{width=20cm,center}
+		\begin{minipage}[t]{0.31\paperwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figures/Count_beta_adaptative_temp_indiv}
+			\caption*{(a)}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}[t]{0.31\paperwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figures/Count_good_pol_all}
+			\caption*{(b)}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}[t]{0.31\paperwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figures/Loss_all_ASMC.png}
+			\caption*{(c)}
+		\end{minipage}
+	\end{adjustbox}
 	\caption{{\bfseries \boldmath \texttt{acceptance\_ratio} = 0.8 - 0.5 $\times$ (\texttt{epoch}/\texttt{n\_epochs})} (a) Evolution of the mean number of particles reproducing each target polynomial (log scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma$ deviation, for the parameters described in~\eqref{eq:sample10000adaptativetemp}.}
 	\label{fig:evolutionoftargetreproduction}
 \end{figure}
