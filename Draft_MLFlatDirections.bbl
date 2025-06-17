@@ -139,23 +139,6 @@ J.~Bao, Y.-H. He, E.~Hirst, J.~Hofscheier, A.~Kasprzyk, and S.~Majumder, {\it
   Lett. B} {\bf 827} (2022) 136966,
   [\href{http://arxiv.org/abs/2103.13436}{{\tt arXiv:2103.13436}}].
 
-\bibitem{neal1998annealedimportancesampling}
-R.~M. Neal, {\it Annealed importance sampling},  1998.
-
-\bibitem{del2006sequential}
-P.~Del~Moral, A.~Doucet, and A.~Jasra, {\it Sequential monte carlo samplers},
-  {\em Journal of the Royal Statistical Society Series B: Statistical
-  Methodology} {\bf 68} (2006), no.~3 411--436.
-
-\bibitem{Eloy:2021fhc}
-C.~Eloy, G.~Larios, and H.~Samtleben, {\it {Triality and the consistent
-  reductions on AdS$_{3}\times S^{3}$}},  {\em JHEP} {\bf 01} (2022) 055,
-  [\href{http://arxiv.org/abs/2111.01167}{{\tt arXiv:2111.01167}}].
-
-\bibitem{loshchilov2017sgdrstochasticgradientdescent}
-I.~Loshchilov and F.~Hutter, {\it Sgdr: Stochastic gradient descent with warm
-  restarts},  \href{http://arxiv.org/abs/1608.03983}{{\tt arXiv:1608.03983}}.
-
 \bibitem{koza1994genetic}
 J.~R. Koza, {\it Genetic programming as a means for programming computers by
   natural selection},  {\em Statistics and computing} {\bf 4} (1994) 87--112.
@@ -191,5 +174,33 @@ M.~Valipour, B.~You, M.~Panju, and A.~Ghodsi, {\it Symbolicgpt: A generative
 \bibitem{bastiani2025diffusion}
 Z.~Bastiani, R.~M. Kirby, J.~Hochhalter, and S.~Zhe, {\it Diffusion-based
   symbolic regression},  {\em arXiv preprint arXiv:2505.24776} (2025).
+
+\bibitem{neal1998annealedimportancesampling}
+R.~M. Neal, {\it Annealed importance sampling},  1998.
+
+\bibitem{del2006sequential}
+P.~Del~Moral, A.~Doucet, and A.~Jasra, {\it Sequential monte carlo samplers},
+  {\em Journal of the Royal Statistical Society Series B: Statistical
+  Methodology} {\bf 68} (2006), no.~3 411--436.
+
+\bibitem{Eloy:2021fhc}
+C.~Eloy, G.~Larios, and H.~Samtleben, {\it {Triality and the consistent
+  reductions on AdS$_{3}\times S^{3}$}},  {\em JHEP} {\bf 01} (2022) 055,
+  [\href{http://arxiv.org/abs/2111.01167}{{\tt arXiv:2111.01167}}].
+
+\bibitem{tensorflow2015-whitepaper}
+M.~Abadi, A.~Agarwal, P.~Barham, E.~Brevdo, Z.~Chen, C.~Citro, G.~S. Corrado,
+  A.~Davis, J.~Dean, M.~Devin, S.~Ghemawat, I.~Goodfellow, A.~Harp, G.~Irving,
+  M.~Isard, Y.~Jia, R.~Jozefowicz, L.~Kaiser, M.~Kudlur, J.~Levenberg,
+  D.~Man\'{e}, R.~Monga, S.~Moore, D.~Murray, C.~Olah, M.~Schuster, J.~Shlens,
+  B.~Steiner, I.~Sutskever, K.~Talwar, P.~Tucker, V.~Vanhoucke, V.~Vasudevan,
+  F.~Vi\'{e}gas, O.~Vinyals, P.~Warden, M.~Wattenberg, M.~Wicke, Y.~Yu, and
+  X.~Zheng, {\it {TensorFlow}: Large-scale machine learning on heterogeneous
+  systems},  2015.
+\newblock Software available from tensorflow.org.
+
+\bibitem{loshchilov2017sgdrstochasticgradientdescent}
+I.~Loshchilov and F.~Hutter, {\it Sgdr: Stochastic gradient descent with warm
+  restarts},  \href{http://arxiv.org/abs/1608.03983}{{\tt arXiv:1608.03983}}.
 
 \end{thebibliography}\endgroup
