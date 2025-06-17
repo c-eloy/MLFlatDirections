@@ -81,13 +81,68 @@
 
 % ---- TIKZ ----
 \usepackage{tikz}
+\usepackage{tcolorbox}
 \usetikzlibrary{calc}
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning}
 
-\tikzstyle{startstop} = [ellipse, minimum width=3.5cm, minimum height=1.cm, text centered, draw=black, fill=gray!20]
-\tikzstyle{process} = [rectangle, minimum width=6cm, minimum height=1.2cm, text centered, draw=black, fill=myblue!75]
-\tikzstyle{decision} = [rectangle, minimum width=5cm, minimum height=1.2cm, text centered, draw=black, fill=myorange!100, aspect=2]
-\tikzstyle{arrow} = [thick,->,>=stealth]
+% Définition des couleurs modernes
+\definecolor{deepblue}{RGB}{41, 128, 185}
+\definecolor{lightblue}{RGB}{174, 214, 241}
+\definecolor{emerald}{RGB}{46, 204, 113}
+\definecolor{lightemerald}{RGB}{212, 245, 227}
+\definecolor{coral}{RGB}{231, 76, 60}
+\definecolor{lightcoral}{RGB}{250, 215, 212}
+\definecolor{charcoal}{RGB}{52, 73, 94}
+\definecolor{lightgray}{RGB}{150, 150, 150}
+
+% Styles épurés et modernes
+\tikzstyle{startstop} = [
+ellipse, 
+minimum width=3cm, 
+minimum height=1cm, 
+text centered, 
+draw=charcoal, 
+fill=lightgray,
+line width=1.2pt,
+font=\sffamily\small\bfseries
+]
+
+\tikzstyle{process} = [
+rectangle, 
+minimum width=5.5cm, 
+minimum height=1.1cm, 
+text centered,
+draw=myblue, 
+fill=lightblue,
+line width=1pt,
+rounded corners=2pt,
+font=\sffamily\small
+]
+
+\tikzstyle{decision} = [
+rectangle, 
+minimum width=3.2cm, 
+minimum height=1.cm, 
+text centered, 
+draw=coral, 
+fill=lightcoral,
+line width=1pt,
+font=\sffamily\small\bfseries,
+aspect=1.3
+]
+
+\tikzstyle{arrow} = [
+thick,
+->,
+>=Stealth,
+color=charcoal,
+line width=1.5pt
+]
+
+\tikzstyle{arrow_label} = [
+font=\sffamily\small\bfseries,
+color=charcoal
+]
 
 % ---- MATHS ----
 \usepackage{amsmath,amssymb,amsfonts,dsfont}
@@ -620,61 +675,126 @@ An additional advantage of this approach is its broader applicability. In scenar
   	Let us clarify a point regarding the expected structure of the solutions to the system defined by the critical points of the scalar potential, i.e., the variety defined by the vanishing of the gradient $\nabla V$.
   
   In algebraic geometry, the set of solutions to the equations $\nabla V = 0$ defines an algebraic variety over a certain base field. In our case, the potential $V$ and its gradient $\nabla V$ are polynomial functions with
-  \begin{center}
-  	\begin{minipage}{18cm}
-  		\begin{tcolorbox}[colback=myblue!5,
-  			colframe=myblue,
-  			title=Algorithm flowchart for ASMC algorithm,
-  			halign title=flush center,
-  			sharp corners
-  			]
-  			%	\scalebox{0.5}{
-  				\begin{tikzpicture}[node distance=1.8cm and .5cm]
-  					
-  					% Nodes
-  					\node (start) [startstop] {Start};
-  					
-  					\node (init_particles) [process, below of=start] {Initialize sparse polynomials};
-  					\node (set_weights) [process, below of=init_particles] {Initialize weights and variables};
-  					\node (compute_beta) [process, below of=set_weights] {Compute or adapt temperature $\beta$};
-  					\node (weight_update) [process, below of=compute_beta] {Compute log-targets and update weights};
-  					
-  					\node (ess_check) [decision, below of=weight_update] {Is ESS $<$ Threshold?};
-  					\node (resample) [process, right=4.25cm of ess_check] {Resample particles};
-  					
-  					\node (mutation) [process, below of=ess_check, yshift=-0.5cm] {Apply MH mutation to particles};
-  					\node (acceptance) [process, below of=mutation] {Compute acceptance and update best};
-  					
-  					\node (end_iter) [decision, below of=acceptance] {Is this the last iteration?};
-  					
-  					\node (exploit) [process, below of=end_iter, yshift=-0.5cm] {Optional local search (exploitation)};
-  					\node (output) [process, below of=exploit] {Return best coefficients and logs};
-  					\node (stop) [startstop, below of=output] {Stop};
-  					
-  					% Arrows
-  					\draw [arrow] (start) -- (init_particles);
-  					\draw [arrow] (init_particles) -- (set_weights);
-  					\draw [arrow] (set_weights) -- (compute_beta);
-  					\draw [arrow] (compute_beta) -- (weight_update);
-  					\draw [arrow] (weight_update) -- (ess_check);
-  					
-  					\draw [arrow] (ess_check) -- node[above] {Yes} (resample);
-  					\draw [arrow] (resample) |- (mutation);
-  					
-  					\draw [arrow] (ess_check) -- node[left] {No} (mutation);
-  					\draw [arrow] (mutation) -- (acceptance);
-  					\draw [arrow] (acceptance) -- (end_iter);
-  					
-  					\draw [arrow] (end_iter) -- node[left] {} ++(-4,0) |- (compute_beta);
-  					\node [pos=10, below=430pt, xshift=-100pt] {No};
-  					\draw [arrow] (end_iter) -- node[right] {Yes} (exploit);
-  					
-  					\draw [arrow] (exploit) -- (output);
-  					\draw [arrow] (output) -- (stop);
-  				\end{tikzpicture}
-  			\end{tcolorbox}
-  		\end{minipage}
-  	\end{center}
+\begin{center}
+	\begin{minipage}{16cm}
+		\begin{tcolorbox}[
+			colback=white,
+			colframe=myblue,
+			title=\textbf{Algorithme ASMC - Diagramme de flux},
+			fonttitle=\sffamily\large,
+			halign title=flush center,
+			boxrule=2pt,
+			left=6pt,
+			right=6pt,
+			top=8pt,
+			bottom=8pt
+			]
+			\begin{tikzpicture}[node distance=1.6cm and 0.8cm, scale=0.85, transform shape]
+				
+				% Nœuds
+				\node (start) [startstop] {Start};
+				
+				\node (init_particles) [process, below of=start] {Initialize particles et weights};
+				
+				\node (compute_beta) [process, below of=init_particles] {Compute/adapt inverse temperature $\beta$};
+				
+				\node (weight_update) [process, below of=compute_beta] {Compute losses and update weights};
+				
+				\node (ess_check) [decision, below of=weight_update] {ESS $<$ Threshold ?};
+				
+				\node (resample) [process, right=3.8cm of ess_check] {Resampling particles};
+				
+				\node (mutation) [process, below of=ess_check, yshift=-0.4cm] {Mutate particles with Metropolis Hasting proposal};
+				
+				\node (acceptance) [process, below of=mutation] {Accept/Reject particles};
+				
+				\node (end_iter) [decision, below of=acceptance] {Last step ?};
+				
+				\node (exploit) [process, below of=end_iter, yshift=-0.4cm] {Optional local search};
+				
+				\node (output) [process, below of=exploit] {Return current particles};
+				
+				\node (stop) [startstop, below of=output] {End};
+				
+				% Flèches avec étiquettes améliorées
+				\draw [arrow] (start) -- (init_particles);
+				\draw [arrow] (init_particles) -- (compute_beta);
+				\draw [arrow] (compute_beta) -- (weight_update);
+				\draw [arrow] (weight_update) -- (ess_check);
+				
+				\draw [arrow] (ess_check) -- node[above, arrow_label] {Yes} (resample);
+				\draw [arrow] (resample) |- (mutation);
+				
+				\draw [arrow] (ess_check) -- node[left, arrow_label] {No} (mutation);
+				\draw [arrow] (mutation) -- (acceptance);
+				\draw [arrow] (acceptance) -- (end_iter);
+				
+				% Boucle de retour améliorée
+				\draw [arrow] (end_iter) -| node[pos=0.25, below, arrow_label] {Non} ++(-4.5,0) |- (compute_beta);
+				
+				\draw [arrow] (end_iter) -- node[right, arrow_label] {No} (exploit);
+				\draw [arrow] (exploit) -- (output);
+				\draw [arrow] (output) -- (stop);
+				
+			\end{tikzpicture}
+		\end{tcolorbox}
+	\end{minipage}
+\end{center}
+%  \begin{center}
+%  	\begin{minipage}{18cm}
+%  		\begin{tcolorbox}[colback=myblue!5,
+%  			colframe=myblue,
+%  			title=Algorithm flowchart for ASMC algorithm,
+%  			halign title=flush center,
+%  			sharp corners
+%  			]
+%  			%	\scalebox{0.5}{
+%  				\begin{tikzpicture}[node distance=1.8cm and .5cm]
+%  					
+%  					% Nodes
+%  					\node (start) [startstop] {Start};
+%  					
+%  					\node (init_particles) [process, below of=start] {Initialize sparse polynomials};
+%  					\node (set_weights) [process, below of=init_particles] {Initialize weights and variables};
+%  					\node (compute_beta) [process, below of=set_weights] {Compute or adapt temperature $\beta$};
+%  					\node (weight_update) [process, below of=compute_beta] {Compute log-targets and update weights};
+%  					
+%  					\node (ess_check) [decision, below of=weight_update] {Is ESS $<$ Threshold?};
+%  					\node (resample) [process, right=4.25cm of ess_check] {Resample particles};
+%  					
+%  					\node (mutation) [process, below of=ess_check, yshift=-0.5cm] {Apply MH mutation to particles};
+%  					\node (acceptance) [process, below of=mutation] {Compute acceptance and update best};
+%  					
+%  					\node (end_iter) [decision, below of=acceptance] {Is this the last iteration?};
+%  					
+%  					\node (exploit) [process, below of=end_iter, yshift=-0.5cm] {Optional local search (exploitation)};
+%  					\node (output) [process, below of=exploit] {Return best coefficients and logs};
+%  					\node (stop) [startstop, below of=output] {Stop};
+%  					
+%  					% Arrows
+%  					\draw [arrow] (start) -- (init_particles);
+%  					\draw [arrow] (init_particles) -- (set_weights);
+%  					\draw [arrow] (set_weights) -- (compute_beta);
+%  					\draw [arrow] (compute_beta) -- (weight_update);
+%  					\draw [arrow] (weight_update) -- (ess_check);
+%  					
+%  					\draw [arrow] (ess_check) -- node[above] {Yes} (resample);
+%  					\draw [arrow] (resample) |- (mutation);
+%  					
+%  					\draw [arrow] (ess_check) -- node[left] {No} (mutation);
+%  					\draw [arrow] (mutation) -- (acceptance);
+%  					\draw [arrow] (acceptance) -- (end_iter);
+%  					
+%  					\draw [arrow] (end_iter) -- node[left] {} ++(-4,0) |- (compute_beta);
+%  					\node [pos=10, below=430pt, xshift=-100pt] {No};
+%  					\draw [arrow] (end_iter) -- node[right] {Yes} (exploit);
+%  					
+%  					\draw [arrow] (exploit) -- (output);
+%  					\draw [arrow] (output) -- (stop);
+%  				\end{tikzpicture}
+%  			\end{tcolorbox}
+%  		\end{minipage}
+%  	\end{center}
   	coefficients lying in a specific field extension of $\mathbb{Q}$—typically of the form $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$, where $d_i \in \mathbb{Q}$. That is, the coefficients of the polynomials are combinations of rational numbers and square roots of rational numbers.
   
   The conformal manifold (or the moduli space of solutions) is then a subvariety of this ambient space, defined as the common zero locus of the polynomials in $\nabla V$. From the perspective of algebraic geometry, this variety is cut out by an ideal in the polynomial ring with coefficients in the aforementioned field extension of $\mathbb{Q}$. Since the defining equations have coefficients in this field, the variety itself is defined over that same field.

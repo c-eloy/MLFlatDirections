@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  17 JUN 2025 13:50
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.2.21)  17 JUN 2025 20:23
 entering extended mode
  \write18 enabled.
  %&-line parsing enabled.
@@ -1147,24 +1147,24 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 (./Draft_MLFlatDirections.aux)
 \openout1 = `Draft_MLFlatDirections.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 195.
-LaTeX Font Info:    ... okay on input line 195.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 250.
+LaTeX Font Info:    ... okay on input line 250.
 
 (/usr/local/texlive/2023/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
@@ -1197,19 +1197,19 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
 \c@lstlisting=\count371
-LaTeX Info: Redefining \microtypecontext on input line 195.
-Package microtype Info: Applying patch `item' on input line 195.
-Package microtype Info: Applying patch `toc' on input line 195.
-Package microtype Info: Applying patch `eqnum' on input line 195.
-Package microtype Info: Applying patch `footnote' on input line 195.
-Package microtype Info: Applying patch `verbatim' on input line 195.
+LaTeX Info: Redefining \microtypecontext on input line 250.
+Package microtype Info: Applying patch `item' on input line 250.
+Package microtype Info: Applying patch `toc' on input line 250.
+Package microtype Info: Applying patch `eqnum' on input line 250.
+Package microtype Info: Applying patch `footnote' on input line 250.
+Package microtype Info: Applying patch `verbatim' on input line 250.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 195.
+LaTeX Info: Redefining \showhyphens on input line 250.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
@@ -1256,12 +1256,12 @@ Package caption Info: Begin \AtBeginDocument code.
 Package caption Info: hyperref package is loaded.
 Package caption Info: subfigure package is loaded.
 Package caption Info: End \AtBeginDocument code.
-Package hyperref Info: Link coloring ON on input line 195.
+Package hyperref Info: Link coloring ON on input line 250.
 (./Draft_MLFlatDirections.out) (./Draft_MLFlatDirections.out)
 \@outlinefile=\write4
 \openout4 = `Draft_MLFlatDirections.out'.
 
-LaTeX Font Info:    Trying to load font information for U+msa on input line 222
+LaTeX Font Info:    Trying to load font information for U+msa on input line 277
 .
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1270,7 +1270,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 222
+LaTeX Font Info:    Trying to load font information for U+msb on input line 277
 .
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1279,19 +1279,19 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 (/usr/local/texlive/2023/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+rsfs on input line 22
-2.
+LaTeX Font Info:    Trying to load font information for U+rsfs on input line 27
+7.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/jknapltx/ursfs.fd
 File: ursfs.fd 1998/03/24 rsfs font definition file (jk)
 )
 LaTeX Font Info:    Trying to load font information for U+stmry on input line 2
-22.
+77.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/stmaryrd/Ustmry.fd)
 
 LaTeX Font Warning: Font shape `U/stmry/b/n' undefined
-(Font)              using `U/stmry/m/n' instead on input line 222.
+(Font)              using `U/stmry/m/n' instead on input line 277.
 
 [1
 
@@ -1305,18 +1305,18 @@ al/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
 <Figures/log_grad_V_hist.png, id=223, 665.48625pt x 609.27625pt>
 File: Figures/log_grad_V_hist.png Graphic file (type png)
 <use Figures/log_grad_V_hist.png>
-Package pdftex.def Info: Figures/log_grad_V_hist.png  used on input line 463.
+Package pdftex.def Info: Figures/log_grad_V_hist.png  used on input line 518.
 (pdftex.def)             Requested size: 232.92368pt x 213.24988pt.
 <Figures/log_Vp4_hist.png, id=225, 660.4675pt x 609.27625pt>
 File: Figures/log_Vp4_hist.png Graphic file (type png)
 <use Figures/log_Vp4_hist.png>
-Package pdftex.def Info: Figures/log_Vp4_hist.png  used on input line 465.
+Package pdftex.def Info: Figures/log_Vp4_hist.png  used on input line 520.
 (pdftex.def)             Requested size: 231.16708pt x 213.24988pt.
  [6]
 <Figures/Loss_grad_des_1.png, id=239, 717.68124pt x 607.26875pt>
 File: Figures/Loss_grad_des_1.png Graphic file (type png)
 <use Figures/Loss_grad_des_1.png>
-Package pdftex.def Info: Figures/Loss_grad_des_1.png  used on input line 476.
+Package pdftex.def Info: Figures/Loss_grad_des_1.png  used on input line 531.
 (pdftex.def)             Requested size: 358.83974pt x 303.63364pt.
 
 
@@ -1326,7 +1326,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 File: Figures/triangular_plot_1_2_4_8_10.png Graphic file (type png)
 <use Figures/triangular_plot_1_2_4_8_10.png>
 Package pdftex.def Info: Figures/triangular_plot_1_2_4_8_10.png  used on input 
-line 484.
+line 539.
 (pdftex.def)             Requested size: 437.23688pt x 427.90193pt.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1335,7 +1335,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <Figures/Local_PCA.png, id=253, 638.385pt x 607.26875pt>
 File: Figures/Local_PCA.png Graphic file (type png)
 <use Figures/Local_PCA.png>
-Package pdftex.def Info: Figures/Local_PCA.png  used on input line 498.
+Package pdftex.def Info: Figures/Local_PCA.png  used on input line 553.
 (pdftex.def)             Requested size: 255.34947pt x 242.9032pt.
 
 
@@ -1344,13 +1344,13 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 <Figures/3d_plot_x4_x8_x10.png, id=256, 505.89pt x 505.89pt>
 File: Figures/3d_plot_x4_x8_x10.png Graphic file (type png)
 <use Figures/3d_plot_x4_x8_x10.png>
-Package pdftex.def Info: Figures/3d_plot_x4_x8_x10.png  used on input line 516.
+Package pdftex.def Info: Figures/3d_plot_x4_x8_x10.png  used on input line 571.
 
 (pdftex.def)             Requested size: 252.94437pt x 252.94437pt.
 <Figures/3d_plot_x2_x4_x8.png, id=257, 505.89pt x 505.89pt>
 File: Figures/3d_plot_x2_x4_x8.png Graphic file (type png)
 <use Figures/3d_plot_x2_x4_x8.png>
-Package pdftex.def Info: Figures/3d_plot_x2_x4_x8.png  used on input line 517.
+Package pdftex.def Info: Figures/3d_plot_x2_x4_x8.png  used on input line 572.
 (pdftex.def)             Requested size: 252.94437pt x 252.94437pt.
 [8 <./Figures/Loss_grad_des_1.png>]
 
@@ -1359,7 +1359,7 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 [9 <./Figures/triangular_plot_1_2_4_8_10.png>] [10 <./Figures/Local_PCA.png> <.
 /Figures/3d_plot_x4_x8_x10.png> <./Figures/3d_plot_x2_x4_x8.png>]
 LaTeX Font Info:    Trying to load font information for T1+cmtt on input line 5
-38.
+93.
 
 (/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmtt.fd
 File: t1cmtt.fd 2022/07/10 v2.5l Standard LaTeX font definitions
@@ -1370,52 +1370,59 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             See the microtype manual for details.
  [11] [12{/usr/local/texlive/2023/texmf-dist/fonts/enc/dvips/cm-super/cm-super-
 ts1.enc}]
-Overfull \hbox (11.6656pt too wide) in paragraph at lines 624--677
- []$ 
- []
+LaTeX Font Info:    Trying to load font information for T1+cmss on input line 6
+91.
 
-[13] [14] [15]
+(/usr/local/texlive/2023/texmf-dist/tex/latex/base/t1cmss.fd
+File: t1cmss.fd 2022/07/10 v2.5l Standard LaTeX font definitions
+)
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `cmss' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+ [13] [14]
 
-LaTeX Warning: Reference `fig:losses_ASMC' on page 16 undefined on input line 7
-12.
+LaTeX Warning: Reference `fig:losses_ASMC' on page 15 undefined on input line 8
+32.
 
-<Figures/Count_beta_adaptative_temp_indiv.png, id=329, 730.73pt x 730.73pt>
+[15]
+<Figures/Count_beta_adaptative_temp_indiv.png, id=333, 730.73pt x 730.73pt>
 File: Figures/Count_beta_adaptative_temp_indiv.png Graphic file (type png)
 <use Figures/Count_beta_adaptative_temp_indiv.png>
 Package pdftex.def Info: Figures/Count_beta_adaptative_temp_indiv.png  used on 
-input line 735.
+input line 855.
 (pdftex.def)             Requested size: 190.42995pt x 190.43132pt.
 
-Overfull \hbox (130.0013pt too wide) in paragraph at lines 736--736
+Overfull \hbox (130.0013pt too wide) in paragraph at lines 856--856
 [] [] 
  []
 
-<Figures/Count_good_pol_all.png, id=330, 730.73pt x 730.73pt>
+<Figures/Count_good_pol_all.png, id=334, 730.73pt x 730.73pt>
 File: Figures/Count_good_pol_all.png Graphic file (type png)
 <use Figures/Count_good_pol_all.png>
-Package pdftex.def Info: Figures/Count_good_pol_all.png  used on input line 741
+Package pdftex.def Info: Figures/Count_good_pol_all.png  used on input line 861
 .
 (pdftex.def)             Requested size: 190.42995pt x 190.43132pt.
 
-Overfull \hbox (130.0013pt too wide) in paragraph at lines 742--742
+Overfull \hbox (130.0013pt too wide) in paragraph at lines 862--862
 [] [] 
  []
 
-<Figures/Loss_all_ASMC.png, id=331, 730.73pt x 730.73pt>
+<Figures/Loss_all_ASMC.png, id=335, 730.73pt x 730.73pt>
 File: Figures/Loss_all_ASMC.png Graphic file (type png)
 <use Figures/Loss_all_ASMC.png>
-Package pdftex.def Info: Figures/Loss_all_ASMC.png  used on input line 747.
+Package pdftex.def Info: Figures/Loss_all_ASMC.png  used on input line 867.
 (pdftex.def)             Requested size: 190.42995pt x 190.43132pt.
 
-Overfull \hbox (130.0013pt too wide) in paragraph at lines 748--748
+Overfull \hbox (130.0013pt too wide) in paragraph at lines 868--868
 [] [] 
  []
 
 LaTeX Font Info:    Font shape `T1/cmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 751.
+(Font)              Font shape `T1/cmtt/m/n' tried instead on input line 871.
 [16 <./Figures/Count_beta_adaptative_temp_indiv.png> <./Figures/Count_good_pol_
-all.png> <./Figures/Loss_all_ASMC.png>] [17] [18] (./Draft_MLFlatDirections.bbl
-[19] [20]) [21] (./Draft_MLFlatDirections.aux)
+all.png> <./Figures/Loss_all_ASMC.png>] [17] (./Draft_MLFlatDirections.bbl
+[18] [19] [20]) [21] (./Draft_MLFlatDirections.aux)
 
 LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 
@@ -1427,13 +1434,13 @@ Package rerunfilecheck Info: File `Draft_MLFlatDirections.out' has not changed.
 (rerunfilecheck)             Checksum: 382CB34CCD7BC11E436CCFFF2E0BEC2D;2145.
  ) 
 Here is how much of TeX's memory you used:
- 38777 strings out of 476025
- 760884 string characters out of 5790017
+ 38842 strings out of 476025
+ 762189 string characters out of 5790017
  1886388 words of memory out of 5000000
- 58101 multiletter control sequences out of 15000+600000
- 551871 words of font info for 260 fonts, out of 8000000 for 9000
+ 58137 multiletter control sequences out of 15000+600000
+ 556535 words of font info for 275 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 101i,17n,117p,1806b,986s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 101i,17n,117p,1806b,1085s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbsy10.pf
 b></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2023/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb><
@@ -1461,15 +1468,18 @@ mf-dist/fonts/type1/public/cm-super/sfrm0900.pfb></usr/local/texlive/2023/texmf
 -dist/fonts/type1/public/cm-super/sfrm1000.pfb></usr/local/texlive/2023/texmf-d
 ist/fonts/type1/public/cm-super/sfrm1095.pfb></usr/local/texlive/2023/texmf-dis
 t/fonts/type1/public/cm-super/sfrm1200.pfb></usr/local/texlive/2023/texmf-dist/
-fonts/type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2023/texmf-dist/fo
-nts/type1/public/cm-super/sfti1095.pfb></usr/local/texlive/2023/texmf-dist/font
-s/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/
-type1/public/cm-super/sftt1095.pfb></usr/local/texlive/2023/texmf-dist/fonts/ty
-pe1/public/stmaryrd/stmary10.pfb>
-Output written on Draft_MLFlatDirections.pdf (22 pages, 1390083 bytes).
+fonts/type1/public/cm-super/sfss1000.pfb></usr/local/texlive/2023/texmf-dist/fo
+nts/type1/public/cm-super/sfsx1000.pfb></usr/local/texlive/2023/texmf-dist/font
+s/type1/public/cm-super/sfsx1200.pfb></usr/local/texlive/2023/texmf-dist/fonts/
+type1/public/cm-super/sfti1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/ty
+pe1/public/cm-super/sfti1095.pfb></usr/local/texlive/2023/texmf-dist/fonts/type
+1/public/cm-super/sftt1000.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/
+public/cm-super/sftt1095.pfb></usr/local/texlive/2023/texmf-dist/fonts/type1/pu
+blic/stmaryrd/stmary10.pfb>
+Output written on Draft_MLFlatDirections.pdf (22 pages, 1436119 bytes).
 PDF statistics:
- 583 PDF objects out of 1000 (max. 8388607)
- 444 compressed objects within 5 object streams
+ 598 PDF objects out of 1000 (max. 8388607)
+ 453 compressed objects within 5 object streams
  123 named destinations out of 1000 (max. 500000)
- 63791 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 74031 words of extra memory for PDF output out of 74296 (max. 10000000)
 
