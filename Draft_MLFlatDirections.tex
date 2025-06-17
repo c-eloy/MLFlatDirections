@@ -591,62 +591,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 		%\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
 		
 		Once the Annealing loop is over, we end up with a total of $n_{sample}$ particles, which in principle should be close to annihilate our data, but whose coefficient may need some more fine tuning. To deal with it, we ran a quick exploitation phase, where, for each polynomial, we now only modify its coefficients, with a pertubation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, and keep the new particle, only if the Loss function is now getting smaller. This allow to fine-tune the coefficients. 
-\hspace{-2cm}
-\begin{center}
-	\begin{minipage}{18cm}
-		\begin{tcolorbox}[colback=myblue!5,
-			colframe=myblue,
-			title=Algorithm flowchart for ASMC algorithm,
-			halign title=flush center,
-			sharp corners
-			]
-%	\scalebox{0.5}{
-\begin{tikzpicture}[node distance=1.8cm and .5cm]
-	
-	% Nodes
-	\node (start) [startstop] {Start};
-	
-	\node (init_particles) [process, below of=start] {Initialize sparse polynomials};
-	\node (set_weights) [process, below of=init_particles] {Initialize weights and variables};
-	\node (compute_beta) [process, below of=set_weights] {Compute or adapt temperature $\beta$};
-	\node (weight_update) [process, below of=compute_beta] {Compute log-targets and update weights};
-	
-	\node (ess_check) [decision, below of=weight_update] {Is ESS $<$ Threshold?};
-	\node (resample) [process, right=4.25cm of ess_check] {Resample particles};
-	
-	\node (mutation) [process, below of=ess_check, yshift=-0.5cm] {Apply MH mutation to particles};
-	\node (acceptance) [process, below of=mutation] {Compute acceptance and update best};
-	
-	\node (end_iter) [decision, below of=acceptance] {Is this the last iteration?};
-	
-	\node (exploit) [process, below of=end_iter, yshift=-0.5cm] {Optional local search (exploitation)};
-	\node (output) [process, below of=exploit] {Return best coefficients and logs};
-	\node (stop) [startstop, below of=output] {Stop};
-	
-	% Arrows
-	\draw [arrow] (start) -- (init_particles);
-	\draw [arrow] (init_particles) -- (set_weights);
-	\draw [arrow] (set_weights) -- (compute_beta);
-	\draw [arrow] (compute_beta) -- (weight_update);
-	\draw [arrow] (weight_update) -- (ess_check);
-	
-	\draw [arrow] (ess_check) -- node[above] {Yes} (resample);
-	\draw [arrow] (resample) |- (mutation);
-	
-	\draw [arrow] (ess_check) -- node[left] {No} (mutation);
-	\draw [arrow] (mutation) -- (acceptance);
-	\draw [arrow] (acceptance) -- (end_iter);
-	
-	\draw [arrow] (end_iter) -- node[left] {} ++(-4,0) |- (compute_beta);
-	\node [pos=10, below=430pt, xshift=-100pt] {No};
-	\draw [arrow] (end_iter) -- node[right] {Yes} (exploit);
-	
-	\draw [arrow] (exploit) -- (output);
-	\draw [arrow] (output) -- (stop);
-		\end{tikzpicture}
-		\end{tcolorbox}
-\end{minipage}
-\end{center}
+
 %		\bd{Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.}
 	%\end{itemize}
 	
@@ -674,7 +619,63 @@ An additional advantage of this approach is its broader applicability. In scenar
   
   	Let us clarify a point regarding the expected structure of the solutions to the system defined by the critical points of the scalar potential, i.e., the variety defined by the vanishing of the gradient $\nabla V$.
   
-  In algebraic geometry, the set of solutions to the equations $\nabla V = 0$ defines an algebraic variety over a certain base field. In our case, the potential $V$ and its gradient $\nabla V$ are polynomial functions with coefficients lying in a specific field extension of $\mathbb{Q}$—typically of the form $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$, where $d_i \in \mathbb{Q}$. That is, the coefficients of the polynomials are combinations of rational numbers and square roots of rational numbers.
+  In algebraic geometry, the set of solutions to the equations $\nabla V = 0$ defines an algebraic variety over a certain base field. In our case, the potential $V$ and its gradient $\nabla V$ are polynomial functions with
+  \begin{center}
+  	\begin{minipage}{18cm}
+  		\begin{tcolorbox}[colback=myblue!5,
+  			colframe=myblue,
+  			title=Algorithm flowchart for ASMC algorithm,
+  			halign title=flush center,
+  			sharp corners
+  			]
+  			%	\scalebox{0.5}{
+  				\begin{tikzpicture}[node distance=1.8cm and .5cm]
+  					
+  					% Nodes
+  					\node (start) [startstop] {Start};
+  					
+  					\node (init_particles) [process, below of=start] {Initialize sparse polynomials};
+  					\node (set_weights) [process, below of=init_particles] {Initialize weights and variables};
+  					\node (compute_beta) [process, below of=set_weights] {Compute or adapt temperature $\beta$};
+  					\node (weight_update) [process, below of=compute_beta] {Compute log-targets and update weights};
+  					
+  					\node (ess_check) [decision, below of=weight_update] {Is ESS $<$ Threshold?};
+  					\node (resample) [process, right=4.25cm of ess_check] {Resample particles};
+  					
+  					\node (mutation) [process, below of=ess_check, yshift=-0.5cm] {Apply MH mutation to particles};
+  					\node (acceptance) [process, below of=mutation] {Compute acceptance and update best};
+  					
+  					\node (end_iter) [decision, below of=acceptance] {Is this the last iteration?};
+  					
+  					\node (exploit) [process, below of=end_iter, yshift=-0.5cm] {Optional local search (exploitation)};
+  					\node (output) [process, below of=exploit] {Return best coefficients and logs};
+  					\node (stop) [startstop, below of=output] {Stop};
+  					
+  					% Arrows
+  					\draw [arrow] (start) -- (init_particles);
+  					\draw [arrow] (init_particles) -- (set_weights);
+  					\draw [arrow] (set_weights) -- (compute_beta);
+  					\draw [arrow] (compute_beta) -- (weight_update);
+  					\draw [arrow] (weight_update) -- (ess_check);
+  					
+  					\draw [arrow] (ess_check) -- node[above] {Yes} (resample);
+  					\draw [arrow] (resample) |- (mutation);
+  					
+  					\draw [arrow] (ess_check) -- node[left] {No} (mutation);
+  					\draw [arrow] (mutation) -- (acceptance);
+  					\draw [arrow] (acceptance) -- (end_iter);
+  					
+  					\draw [arrow] (end_iter) -- node[left] {} ++(-4,0) |- (compute_beta);
+  					\node [pos=10, below=430pt, xshift=-100pt] {No};
+  					\draw [arrow] (end_iter) -- node[right] {Yes} (exploit);
+  					
+  					\draw [arrow] (exploit) -- (output);
+  					\draw [arrow] (output) -- (stop);
+  				\end{tikzpicture}
+  			\end{tcolorbox}
+  		\end{minipage}
+  	\end{center}
+  	coefficients lying in a specific field extension of $\mathbb{Q}$—typically of the form $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$, where $d_i \in \mathbb{Q}$. That is, the coefficients of the polynomials are combinations of rational numbers and square roots of rational numbers.
   
   The conformal manifold (or the moduli space of solutions) is then a subvariety of this ambient space, defined as the common zero locus of the polynomials in $\nabla V$. From the perspective of algebraic geometry, this variety is cut out by an ideal in the polynomial ring with coefficients in the aforementioned field extension of $\mathbb{Q}$. Since the defining equations have coefficients in this field, the variety itself is defined over that same field.
   
