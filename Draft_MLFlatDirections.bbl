@@ -143,6 +143,12 @@ J.~Bao, Y.-H. He, E.~Hirst, J.~Hofscheier, A.~Kasprzyk, and S.~Majumder, {\it
 J.~R. Koza, {\it Genetic programming as a means for programming computers by
   natural selection},  {\em Statistics and computing} {\bf 4} (1994) 87--112.
 
+\bibitem{virgolin2021improving}
+M.~Virgolin, T.~Alderliesten, C.~Witteveen, and P.~A. Bosman, {\it Improving
+  model-based genetic programming for symbolic regression of small
+  expressions},  {\em Evolutionary computation} {\bf 29} (2021), no.~2
+  211--237.
+
 \bibitem{randall2022bingo}
 D.~L. Randall, T.~S. Townsend, J.~D. Hochhalter, and G.~F. Bomarito, {\it
   Bingo: a customizable framework for symbolic regression with genetic
@@ -174,6 +180,17 @@ M.~Valipour, B.~You, M.~Panju, and A.~Ghodsi, {\it Symbolicgpt: A generative
 \bibitem{bastiani2025diffusion}
 Z.~Bastiani, R.~M. Kirby, J.~Hochhalter, and S.~Zhe, {\it Diffusion-based
   symbolic regression},  {\em arXiv preprint arXiv:2505.24776} (2025).
+
+\bibitem{2018arXiv180607259S}
+S.~S. {Sahoo}, C.~H. {Lampert}, and G.~{Martius}, {\it {Learning Equations for
+  Extrapolation and Control}},  {\em arXiv e-prints} (June, 2018)
+  arXiv:1806.07259, [\href{http://arxiv.org/abs/1806.07259}{{\tt
+  arXiv:1806.07259}}].
+
+\bibitem{Udrescu:2019mnk}
+S.-M. Udrescu and M.~Tegmark, {\it {AI Feynman: a Physics-Inspired Method for
+  Symbolic Regression}},  {\em Sci. Adv.} {\bf 6} (2020), no.~16 eaay2631,
+  [\href{http://arxiv.org/abs/1905.11481}{{\tt arXiv:1905.11481}}].
 
 \bibitem{neal1998annealedimportancesampling}
 R.~M. Neal, {\it Annealed importance sampling},  1998.

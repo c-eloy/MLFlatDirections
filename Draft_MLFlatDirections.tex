@@ -6,6 +6,9 @@
 
 \usepackage[most]{tcolorbox}
 
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
 % ---- FONT & MICROTYPOGRAPHY ----
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -331,7 +334,7 @@ The emergence of machine learning techniques in theoretical physics opens new av
 
 Similar strategies have previously been applied to identify new isolated vacua in $\mathrm{SO}(8)$ supergravity \cite{Comsa:2019rcz,Berman:2022jqn}. More broadly, there has been increasing interest in applying machine learning and numerical techniques across various domains of high-energy physics. This includes, for instance, the characterization of Calabi–Yau metrics and hypersurfaces \cite{Ashmore:2019wzb,Berman:2021mcw,Larfors:2022nep,Berglund:2022gvm,Jejjala:2020wcc,Douglas:2006rr,Larfors:2021pbb,He:2018jtw}, as well as broader efforts to explore the string theory landscape using machine learning techniques \cite{He:2017aed,Carifio:2017bov,Ruehle:2017mzq}. Additional applications include studies in CFT \cite{Chen:2020dxg}, investigations of the supergravity landscape \cite{Brady:2025zzi,Krishnan:2020sfg}, and explorations of the AdS/CFT correspondence \cite{Hashimoto:2018ftp}. More generally, machine learning has found utility in the study of string theory, geometry, and fundamental physics \cite{Ruehle:2020jrk,He:2023csq,Bao:2021auj}.
 
-In this work, we demonstrate the viability of the aformentionned machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of three-dimensional chiral $\mathcal{N} = (1,1)$  supergravity arising from $AdS_3 \times S^3$ compactification from 6d supergravity, or from the compactification of type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with some symbolic regression technique. There exist a large litterature on symbolic regression, using methods from genetic programming \cite{koza1994genetic,randall2022bingo,burlacu2019parsimony}, to deep machine learning \cite{petersen2019deep,kamienny2022end}, generative modelling \cite{valipour2021symbolicgpt} and diffusion models \cite{bastiani2025diffusion}. However, in the spirit of trying to build a generalisable method, we develop here our own algorithm, which is based on symbolic regression using an Annealing Importance Sampling method (AIS) \cite{neal1998annealedimportancesampling}. In this paper, we will study a 5 parameter truncation, which is itself coming from a 13 parameter consistent truncation of $\mathcal{N} = (1,1)$ 6-dimensional supergravity. 
+In this work, we demonstrate the viability of the aformentionned machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of three-dimensional chiral $\mathcal{N} = (1,1)$  supergravity arising from $AdS_3 \times S^3$ compactification from 6d supergravity, or from the compactification of type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with some symbolic regression technique. There exist a large litterature on symbolic regression, using methods from genetic programming \cite{koza1994genetic} such as \cite{virgolin2021improving,randall2022bingo,burlacu2019parsimony}, to deep machine learning \cite{petersen2019deep,kamienny2022end}, generative modelling \cite{valipour2021symbolicgpt}, diffusion models \cite{bastiani2025diffusion}, and equation learner with the nodes being symbolic operations \cite{2018arXiv180607259S}. Another state-of-the art algorithm is the AIFeynman methods \cite{Udrescu:2019mnk}. They use neural network to identify structure in the dataset (such as translational symmetries, multiplicative separability, compositionality, \dots) to recursively define simpler problems on which they can fit the solutions with polynomials.  However, in the spirit of trying to build a generalisable method, we develop here our own algorithm, which is based on symbolic regression using an Annealing Importance Sampling method (AIS) \cite{neal1998annealedimportancesampling}. In this paper, we will study a 5 parameter truncation, which is itself coming from a 13 parameter consistent truncation of $\mathcal{N} = (1,1)$ 6-dimensional supergravity. 
 
 The study of this 5 dimensional parameter potentiel is separated into several parts. We first use the gradient descent to efficiently sample the underlying conformal manifold. Combined with numerical analysis, such as principal component analysis and clustering, we can identify the existence of a 3-dimensional continuous family. We then use an AIS technique combined with a sequential Monte Carlo approach (SMC) \cite{del2006sequential} in order to do symbolic regression. As we will indeed demonstrate in the paper, there exist polynomial constraints on the 5 parameters, viewed as embedding coordinates, that projects them on the 3 dimensional manifolds. We manage to identify 8 of those constraints on the data, not all independent, which once solved gives that two of the embedding coordinates can be expressed in terms of the others. This provides an explicit family of 3 dimensional parameters family 
 
@@ -652,7 +655,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 	
 	\subsubsection{Results}
 	
-	The results of this method are as follow. The code finds 8 different following polynomials: 
+	The results of this method are as follow. The code finds the 8 different following polynomials: 
 	\begin{subequations} \label{eq:pols}
     \begin{align}
       p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}x_8 + x_{2}x_8x_{10} - \sqrt{2}\,x_{2}x_{4}x_8,\\
@@ -674,13 +677,14 @@ An additional advantage of this approach is its broader applicability. In scenar
   
   	Let us clarify a point regarding the expected structure of the solutions to the system defined by the critical points of the scalar potential, i.e., the variety defined by the vanishing of the gradient $\nabla V$.
   
-  In algebraic geometry, the set of solutions to the equations $\nabla V = 0$ defines an algebraic variety over a certain base field. In our case, the potential $V$ and its gradient $\nabla V$ are polynomial functions with
-\begin{center}
-	\begin{minipage}{16cm}
+  In algebraic geometry, the set of solutions to the equations $\nabla V = 0$ defines an algebraic variety over a certain base field. In our case, the potential $V$ and its gradient $\nabla V$ are polynomial  functions with coefficients lying in a specific field extension of $\mathbb{Q}$—typically of the form $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$, where $d_i \in \mathbb{Q}$. That is, the coefficients of the polynomials are combinations of rational numbers and square roots of rational numbers.
+\begin{figure}[h!]
+	\centering
+	\begin{minipage}{14cm}
 		\begin{tcolorbox}[
 			colback=white,
 			colframe=myblue,
-			title=\textbf{Algorithme ASMC - Diagramme de flux},
+			title=\textbf{ASMC Algorithm},
 			fonttitle=\sffamily\large,
 			halign title=flush center,
 			boxrule=2pt,
@@ -739,63 +743,9 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\end{tikzpicture}
 		\end{tcolorbox}
 	\end{minipage}
-\end{center}
-%  \begin{center}
-%  	\begin{minipage}{18cm}
-%  		\begin{tcolorbox}[colback=myblue!5,
-%  			colframe=myblue,
-%  			title=Algorithm flowchart for ASMC algorithm,
-%  			halign title=flush center,
-%  			sharp corners
-%  			]
-%  			%	\scalebox{0.5}{
-%  				\begin{tikzpicture}[node distance=1.8cm and .5cm]
-%  					
-%  					% Nodes
-%  					\node (start) [startstop] {Start};
-%  					
-%  					\node (init_particles) [process, below of=start] {Initialize sparse polynomials};
-%  					\node (set_weights) [process, below of=init_particles] {Initialize weights and variables};
-%  					\node (compute_beta) [process, below of=set_weights] {Compute or adapt temperature $\beta$};
-%  					\node (weight_update) [process, below of=compute_beta] {Compute log-targets and update weights};
-%  					
-%  					\node (ess_check) [decision, below of=weight_update] {Is ESS $<$ Threshold?};
-%  					\node (resample) [process, right=4.25cm of ess_check] {Resample particles};
-%  					
-%  					\node (mutation) [process, below of=ess_check, yshift=-0.5cm] {Apply MH mutation to particles};
-%  					\node (acceptance) [process, below of=mutation] {Compute acceptance and update best};
-%  					
-%  					\node (end_iter) [decision, below of=acceptance] {Is this the last iteration?};
-%  					
-%  					\node (exploit) [process, below of=end_iter, yshift=-0.5cm] {Optional local search (exploitation)};
-%  					\node (output) [process, below of=exploit] {Return best coefficients and logs};
-%  					\node (stop) [startstop, below of=output] {Stop};
-%  					
-%  					% Arrows
-%  					\draw [arrow] (start) -- (init_particles);
-%  					\draw [arrow] (init_particles) -- (set_weights);
-%  					\draw [arrow] (set_weights) -- (compute_beta);
-%  					\draw [arrow] (compute_beta) -- (weight_update);
-%  					\draw [arrow] (weight_update) -- (ess_check);
-%  					
-%  					\draw [arrow] (ess_check) -- node[above] {Yes} (resample);
-%  					\draw [arrow] (resample) |- (mutation);
-%  					
-%  					\draw [arrow] (ess_check) -- node[left] {No} (mutation);
-%  					\draw [arrow] (mutation) -- (acceptance);
-%  					\draw [arrow] (acceptance) -- (end_iter);
-%  					
-%  					\draw [arrow] (end_iter) -- node[left] {} ++(-4,0) |- (compute_beta);
-%  					\node [pos=10, below=430pt, xshift=-100pt] {No};
-%  					\draw [arrow] (end_iter) -- node[right] {Yes} (exploit);
-%  					
-%  					\draw [arrow] (exploit) -- (output);
-%  					\draw [arrow] (output) -- (stop);
-%  				\end{tikzpicture}
-%  			\end{tcolorbox}
-%  		\end{minipage}
-%  	\end{center}
-  	coefficients lying in a specific field extension of $\mathbb{Q}$—typically of the form $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$, where $d_i \in \mathbb{Q}$. That is, the coefficients of the polynomials are combinations of rational numbers and square roots of rational numbers.
+	\caption{The flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm}
+	\label{ASMCflowchart}
+\end{figure}
   
   The conformal manifold (or the moduli space of solutions) is then a subvariety of this ambient space, defined as the common zero locus of the polynomials in $\nabla V$. From the perspective of algebraic geometry, this variety is cut out by an ideal in the polynomial ring with coefficients in the aforementioned field extension of $\mathbb{Q}$. Since the defining equations have coefficients in this field, the variety itself is defined over that same field.
   
@@ -829,7 +779,7 @@ This strategy was determined empirically through trial and error; a systematic a
 	&\texttt{max\_num\_monomials} = 6.
 \end{aligned}
 \end{equation}
-The main results are presented in Fig.\eqref{fig:evolutionoftargetreproduction} and the losses of the run are shown in Fig. \ref{fig:losses_ASMC}. 
+The main results are summarized in Fig. \ref{fig:evolutionoftargetreproduction} (a) and (b) and the losses of the run are shown in Fig. \ref{fig:evolutionoftargetreproduction} (c). 
 %\begin{figure}
 %	\centering
 %	\includegraphics[scale=0.35]{Figures/Loss_all_ASMC.png}
@@ -875,7 +825,7 @@ With this approach, the average number of particles reproducing one of the targe
 
 \section{Conclusion}
 
-In this work, we have presented a novel machine learning approach to systematically identify and characterize flat directions in supergravity scalar potentials. Our methodology combines gradient descent sampling with annealed importance sampling for symbolic regression, demonstrating its effectiveness on a 5-scalar subsector of 3d (2,0) supergravity derived from 
+In this work, we have presented a novel machine learning approach to systematically identify and characterize flat directions in supergravity scalar potentials. Our methodology combines gradient descent sampling with annealed importance sampling for symbolic regression, demonstrating its effectiveness on a 5-scalar subsector of 3d (1,1) supergravity derived from 
 $AdS_3 \times S^3 \times T^4$ compactifications of IIB supergravity.
 
 We developed a robust pipeline that transitions from numerical exploration to analytical understanding. The gradient descent procedure successfully samples the flat direction manifold, while local PCA analysis reveals its intrinsic dimensionality. Most notably, our annealed importance sampling approach to symbolic regression automatically discovers polynomial constraints characterizing the manifold, bypassing the computational complexity that renders direct symbolic manipulation intractable.
@@ -891,6 +841,9 @@ Beyond technical improvements, this work suggests a broader paradigm for studyin
 The marriage of machine learning techniques with traditional supergravity analysis represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, we envision this methodology becoming a standard tool for exploring the intricate relationships between geometry, symmetry, and dynamics in supergravity theories.
 
 While the specific solution found in this 5-scalar model may have limited direct physical applications, the demonstrated feasibility of our approach and its potential for systematic classification of flat directions across the supergravity landscape make it a valuable addition to the theoretical physicist's toolkit.
+
+
+\bibliography{references}
 
 \appendix
 \section{Supergravity solutions}
@@ -982,7 +935,204 @@ no SUSY enhancements other than $r=0$.
 
 No dependence on $\Phi$.
 
-\bibliography{references}
+\newpage
+\section{Details on the algorithm}
+
+\begin{algorithm}
+	\caption{Local Dimension Estimation using PCA}
+	\label{alg:local-dim}
+	\begin{algorithmic}[1]
+		
+		\State \textbf{Function} \textsc{LocalDim1Point}($\texttt{x}$, $\texttt{var\_thres}$)
+		\State \hspace{0.5cm} Apply PCA to data matrix $\texttt{x}$
+		\State \hspace{0.5cm} Compute explained variance ratios: $\texttt{lambda\_1, lambda\_2,} \ldots, \texttt{lambda\_d}$
+		\State \hspace{0.5cm} Compute cumulative variance: $\texttt{cumvar\_k} = \sum_{\texttt{i=1}}^\texttt{k} \texttt{lambda\_i}$ for $\texttt{k = 1, }\ldots\texttt{, d}$
+		\State \hspace{0.5cm} Find $\texttt{dim = min\{k : cumvar\_k} \geq \texttt{var\_thres\}}$
+		\State \hspace{0.5cm} \textbf{return} $\texttt{dim}$
+		\State
+		
+%		\State \textbf{Function} \textsc{ComputeLocalDim}(\texttt{i, data, neighbors\_idx, var\_thres})
+%		\State \hspace{0.5cm} Extract local neighbors : \texttt{local\_neighbors} $\leftarrow$ \texttt{data[neighbors\_idx[i]]}
+%		\State \hspace{0.5cm} \texttt{dim} $\leftarrow$ \textsc{LocalDim1Point}(\texttt{local\_neighbors, var\_thres})
+%		\State \hspace{0.5cm} \textbf{return} \texttt{[dim, i]}
+%		\State
+
+%		\Require \texttt{data} (input data matrix of size \texttt{n $\times$ d}), \texttt{n\_neig} (number of neighbors), \texttt{var\_thres} (variance threshold)
+%		\Ensure Local dimensions for all points
+
+		\State \textbf{Function} \textsc{LocalDimNPoints}(\texttt{data, n\_neig, var\_thres})
+		\State \hspace{0.5cm} \texttt{n\_points} $\leftarrow$ number of rows in \texttt{data}
+		\State \hspace{0.5cm} Initialize \texttt{results} $\leftarrow \emptyset$
+%		\State \hspace{0.5cm} Fit KD-Tree on \texttt{data} with \texttt{n\_neig} neighbors \Comment{Find k-nearest neighbors using KD-Tree}
+		\State \hspace{0.5cm} Compute \texttt{neighbors\_idx} for all points in \texttt{data}
+		\For{\texttt{i = 1} to \texttt{n\_points}} \Comment{Compute local dimensions for all points}
+		\State \texttt{result\_i} $\leftarrow$ \textsc{ComputeLocalDim}(\texttt{i, data, neighbors\_idx, var\_thres})
+		\State Append \texttt{result\_i} to \texttt{results}
+		\EndFor
+
+		
+		\Return \texttt{results}
+	\end{algorithmic}
+\end{algorithm}
+
+
+In this appendix, we detail the different algorithm that we used. We first here provide a pseudo-code for the AIS-SMC algorithm : 
+
+%\begin{algorithm}
+%	\caption{Annealing Importance Sampling for Polynomial Discovery}
+%	\label{alg:annealing-is}
+%	\begin{algorithmic}[1]
+%		\Require $n\_iter$ (number of iterations), $n\_particles$ (number of particles), $target\_acc\_rate(\cdot,\cdot)$ (target acceptance rate), $adaptation\_strength$ (temperature adaptation parameter)
+%		
+%		\State Initialize particles $\{z_0^{(k)}\}_{k=1}^{n\_particles}$ with sparse polynomials
+%		\State Set $w_0^{(k)} = 1/n\_particles$ and $\tilde{w}_0^{(k)} = 1$ for all $k$ \Comment{normalized and unnormalized weights}
+%
+%		\State $z_{prev} \leftarrow z_0$, $best\_loss \leftarrow \infty$, $acceptance\_history \leftarrow \emptyset$, $q_{ratio}^{(k)}=1$ for all $k$ \Comment{q is the proposal ratio}, $\beta_0 \leftarrow 10^{-8}$
+%		
+%		\For{$i = 1$ to $n\_iter$} \Comment{Temperature adaptation}
+%
+%		\State $\beta_{prev} \leftarrow \beta_{current}$, $avg\_acc \leftarrow$ mean$(acceptance\_history)$ \Comment{only of the last 5 epochs}
+%		\If{$avg\_acc < target\_acc\_rate(i, n\_iter) - 0.05$}
+%		\State $\beta_{current} \leftarrow \beta_{current} \times (1 - adaptation\_strength)$
+%		\ElsIf{$avg\_acc > target\_acc\_rate(i, n\_iter) + 0.05$}
+%		\State $\beta_{current} \leftarrow \beta_{current} \times (1 + adaptation\_strength)$
+%		\EndIf
+%
+%		
+%		\For{$k = 1$ to $n\_particles$} \Comment{Reweighting step}
+%		\State Compute $\log \gamma_i(z_i^{(k)}) = -\beta_{current} \times loss(z_i^{(k)}) $
+%		\State Compute $\log \gamma_{i-1}(z_{i-1}^{(k)}) = -\beta_{prev} \times loss(z_{prev}^{(k)})$
+%		\State $\Delta \log w_i^{(k)} \leftarrow \log \gamma_i(z_i^{(k)}) - \log \gamma_{i-1}(z_{i-1}^{(k)}) + \log q_{ratio}^{(k)}$
+%		\EndFor
+%		
+%		\State Update unnormalized weights: $\tilde{w}_i^{(k)} \leftarrow \tilde{w}_{i-1}^{(k)} \times \exp(\Delta \log w_i^{(k)})$
+%		\State Normalize weights: $w_i^{(k)} \leftarrow \tilde{w}_i^{(k)} / \sum_{j=1}^{n\_particles} \tilde{w}_i^{(j)}$
+%		\State Compute ESS: $ESS = 1 / \sum_{k=1}^{n\_particles} (w_i^{(k)})^2$
+%		
+%		\If{$ESS < n\_particles / 2$} \Comment{Resampling}
+%		\State Resample particles: $\{z_i^{(k)}\}_{k=1}^{n\_particles} \sim Multinomial(n\_particles, \{w_i^{(k)}\}_{k=1}^{n\_particles})$
+%		\State Reset weights: $w_i^{(k)} = 1/n\_particles$, $\tilde{w}_i^{(k)} = 1$ for all $k$
+%		\State Update $z_{prev}$ accordingly
+%		\EndIf
+%		
+%		\State $z_{before\_mutation} \leftarrow z_i$ (save current particles)
+%
+%		\For{$k = 1$ to $n\_particles$} \Comment{Mutating with Metropolis-Hasting}
+%		\State Propose $z'^{(k)} \sim q(z'^{(k)} | z_i^{(k)})$ using specialized MH proposal
+%		\State Compute $\log p_{current}^{(k)} = -\beta_{current} \times loss(z_i^{(k)}) + sparsity\_prior(z_i^{(k)})$
+%		\State Compute $\log p_{proposed}^{(k)} = -\beta_{current} \times loss(z'^{(k)}) + sparsity\_prior(z'^{(k)})$
+%		\State $\log \alpha^{(k)} \leftarrow \log p_{proposed}^{(k)} - \log p_{current}^{(k)} + \log q_{ratio}^{(k)}$
+%		\State Generate $u^{(k)} \sim \mathcal{U}(0,1)$
+%		\If{$\log u^{(k)} < \log \alpha^{(k)}$}
+%		\State $z_i^{(k)} \leftarrow z'^{(k)}$ (accept proposal)
+%		\EndIf
+%		\EndFor
+%		
+%		\State $acceptance\_rate \leftarrow$ fraction of accepted proposals
+%		\State Add $acceptance\_rate$ to $acceptance\_history$
+%		\State $z_{prev} \leftarrow z_{before\_mutation}$ (update for next iteration)
+%		
+%		\EndFor
+%
+%		
+%		\Return final particles, final losses, final weights
+%	\end{algorithmic}
+%\end{algorithm}
+
+\begin{algorithm}
+	\caption{Annealing Importance Sampling for Polynomial Discovery}
+	\label{alg:annealing-is}
+	\begin{algorithmic}[1]
+		\Require \texttt{n\_iter} (number of iterations), \texttt{n\_particles} (number of particles), \texttt{target\_acc\_rate}$(\cdot,\cdot)$ (target acceptance rate), \texttt{adaptation\_strength} (temperature adaptation parameter)
+		
+		\State Initialize particles $\{\texttt{z\_0}^{(k)}\}_{k=1}^{\texttt{n\_particles}}$ with sparse polynomials
+		\State Set $\texttt{w\_0}^{\texttt{(k)}} = 1/\texttt{n\_particles}$ and $\texttt{w\_unorm\_0}^{\texttt{(k)}} = 1$ for all $\texttt k$ \Comment{normalized and unnormalized weights}
+		\State $\texttt{z\_prev} \leftarrow \texttt{z\_0}$, $\texttt{best\_loss} \leftarrow \infty$, $\texttt{acceptance\_history} \leftarrow \emptyset$, $\texttt{q\_ratio}^{\texttt{(k)}}=1$ for all $k$, $\texttt{beta\_0} \leftarrow \texttt{init\_beta}$ \Comment{q is the proposal ratio}
+		
+		\For{$\texttt{i = 1}$ to \texttt{n\_iter}} \Comment{Temperature adaptation}
+		\State $\texttt{beta\_{prev}} \leftarrow \texttt{beta\_current}$
+		\State $\texttt{avg\_acc} \leftarrow$ mean$(\texttt{acceptance\_history})$ \Comment{only of the last 5 epochs}
+		\If{$\texttt{avg\_acc < target\_acc\_rate(i, n\_iter) - 0.05}$}
+		\State $\texttt{beta\_current} \leftarrow \texttt{beta\_current} \times \texttt{(1 - adaptation\_strength)}$
+		\ElsIf{$\texttt{avg\_acc > target\_acc\_rate(i, n\_iter) + 0.05}$}
+		\State $\texttt{beta\_current} \leftarrow \texttt{beta\_current} \times \texttt{(1 + adaptation\_strength)}$
+		\EndIf
+		
+		\For{$\texttt{k = 1}$ to \texttt{n\_particles}} \Comment{Reweighting step}
+		\State Compute $\texttt{log(gamma\_i(z\_i}^{\texttt{(k)}} \texttt{)) = - beta\_current} \times \texttt{loss}(\texttt{z\_i}^{\texttt{(k)}}) $
+		\State Compute $\texttt{log(gamma\_(i-1)}(\texttt{z\_(i-1)}^{\texttt{(k)}}\texttt{)) = - beta\_prev} \times \texttt{loss}(\texttt{z\_prev}^{\texttt{(k)}})$
+		\State $\Delta \log \texttt{w\_i}^{\texttt{(k)}} \leftarrow \texttt{log(gamma\_i(\texttt{z\_i}}^{\texttt{(k)}}  \texttt{) - log(gamma\_(i-1)(z\_(i-1)}^{\texttt{(k)}} \texttt{) + log(q\_ratio}^{\texttt{(k)}}\texttt)$
+		\EndFor
+		
+		\State Update unnormalized weights: $\texttt{w\_unorm\_i}^{\texttt{(k)}} \leftarrow \texttt{w\_unorm\_(i-1)}^{\texttt{(k)}} \times \texttt{exp(}\Delta \texttt{log w\_i}^{\texttt{(k)}}\texttt)$
+		\State Normalize weights: $\texttt{w\_i}^{\texttt{(k)}} \leftarrow \texttt{w\_unorm\_i}^{\texttt{(k)}} \texttt/ \sum_{\texttt{j=1}}^{\texttt{n\_particles}} \texttt{w\_unorm\_i}^{\texttt{(j)}}$
+		\State Compute ESS: $\texttt{ESS = 1 /} \sum_{\texttt{k=1}}^{\texttt{n\_particles}} \texttt{(w\_i}^{\texttt{(k)}})^\texttt2$
+		
+		\If{$\texttt{ESS < n\_particles / 2}$} \Comment{Resampling}
+		\State Resample particles: $\{\texttt{z\_i}^{\texttt{(k)}}\}_{\texttt{k=1}}^{\texttt{n\_particles}} \sim \texttt{Multinomial}(\texttt{n\_particles}, \{\texttt{w\_i}^{\texttt{(k)}}\}_{\texttt{k=1}}^{\texttt{n\_particles}})$
+		\State Reset weights: $\texttt{w\_i}^{\texttt{(k)}} = \texttt{1/n\_particles}$, $\texttt{w\_unorm\_i}^{\texttt{(k)}} \texttt{= 1}$ for all $\texttt k$
+		\State Update $\texttt{z\_prev}$ accordingly
+		\EndIf
+		
+		\State $\texttt{z\_before\_mutation} \leftarrow \texttt{z\_i}$ (save current particles)
+		\For{$\texttt{k = 1}$ to \texttt{n\_particles}} \Comment{Mutating with Metropolis-Hasting}
+		\State Propose $\texttt{z}'^{\texttt{(k)}} \sim \texttt{q}(\texttt{z}'^{\texttt{(k)}} | \texttt{z\_i}^{\texttt{(k)}})$ using specialized MH proposal
+		\State Compute $ \texttt{log(p\_current}^{\texttt{(k)}} \texttt{) = - beta\_current} \times \texttt{loss}(\texttt{z\_i}^{\texttt{(k)}}) + \texttt{sparsity\_prior}(\texttt{z\_i}^{\texttt{(k)}})$
+		\State Compute $\texttt{log(p\_proposed}^{\texttt{(k)}} \texttt{) = - beta\_current} \times \texttt{loss}(\texttt{z}'^{\texttt{(k)}}) + \texttt{sparsity\_prior}(\texttt{z}'^{\texttt{(k)}})$
+		\State $\texttt{log(alpha}^{\texttt{(k)}} \texttt) \leftarrow  \texttt{log(p\_proposed}^{\texttt{(k)}}  \texttt{) -  log(p\_current}^{\texttt{(k)}}  \texttt{) + log(q\_ratio}^{\texttt{(k)}}\texttt)$
+		\State Generate $\texttt{u}^{\texttt{(k)}} \sim \mathcal{U}\texttt{(0,1)}$
+		\If{$\texttt{u}^{\texttt{(k)}} \texttt{ < alpha}^{\texttt{(k)}}$}
+		\State $\texttt{z\_i}^{\texttt{(k)}} \leftarrow \texttt{z}'^{\texttt{(k)}}$ (accept proposal)
+		\EndIf
+		\EndFor
+		
+		\State $\texttt{acceptance\_rate} \leftarrow$ fraction of accepted proposals
+		\State Add $\texttt{acceptance\_rate}$ to $\texttt{acceptance\_history}$
+		\State $\texttt{z\_prev} \leftarrow \texttt{z\_before\_mutation}$ (update for next iteration)
+		
+		\EndFor
+		
+		\Return \texttt{final particles, final losses, final weights}
+	\end{algorithmic}
+\end{algorithm}
+
+This pseudo code sketch how does our annealing loops work. Here is the pseudo-code for the initialization of each individual polynomial. We chose to generate more terms with a high number of monomials, because in principle there are more possibilities of polynomials with larger number of monomials. This does not prevent the code from finding polynomials with lower number of monomials as we can see on the results. The polynomial that the code find the most often is the polynomial $p_1$ which only has 4 terms instead of 5 or 6 for all others polynomials. The code can find such polynomials by putting gradually one or several of the coefficients to zero. Note also that we could include the possibility in the MH process too add/remove monomials. However, in the spirit of making "small" steps in the search space, we decided not to for now. 
+\begin{algorithm}
+	\caption{Initialize Sparse Polynomials}
+	\label{alg:initialize-sparse}
+	\begin{algorithmic}[1]
+		\Require $\texttt{n\_particles}$ (number of particles), $\texttt{max\_degree}$ (maximum polynomial degree), $\texttt{num\_vars}$ (number of variables), $\texttt{max\_num\_monomials}$ (maximum number of monomials per polynomial), $\texttt{num\_terms}$ (total number of possible terms)
+		
+		\State $\texttt{particles} \leftarrow \mathbf{0}_{\texttt{n\_particles} \times \texttt{num\_terms}}$
+		\State $\texttt{max\_monomials} \leftarrow \texttt{max\_num\_monomials}$
+		
+		\State $\texttt{n\_mon\_to\_max\_order} \leftarrow \binom{\texttt{max\_degree + num\_vars}}{\texttt{max\_degree}}$ \Comment{Compute total number of possible monomials up to max degree}
+		
+		\State $\texttt{n\_mon\_all\_coeff} \leftarrow \emptyset$
+		\State $\texttt{n\_tot\_pol} \leftarrow \texttt{0}$ 
+		\For{$\texttt{i = 1}$ to $\texttt{max\_num\_monomials}$} \Comment{Compute probability distribution over number of monomials}
+		\State $\texttt{n\_mon\_i\_coeff} \leftarrow \binom{\texttt{n\_mon\_to\_max\_order}}{i}$ \Comment{Number of polynomials with exactly $i$ monomials}
+		\State $\texttt{n\_tot\_pol} \leftarrow \texttt{n\_tot\_pol + n\_mon\_i\_coeff}$
+		\State Append $\texttt{n\_mon\_i\_coeff}$ to $\texttt{n\_mon\_all\_coeff}$
+		\EndFor
+		
+		\State $\texttt{proba} \leftarrow \texttt{n\_mon\_all\_coeff / n\_tot\_pol}$ \Comment{Normalize to get probabilities}
+
+		\For{$\texttt{i = 1}$ to $\texttt{n\_particles}$} \Comment{Generate particles}
+
+		\State $\texttt{num\_monomials} \sim \texttt{Categorical(\{1, 2, \ldots, max\_monomials\}, proba)}$ \Comment{Sample number of monomials according to computed distribution}
+		
+		\State $\texttt{nonzero\_indices}\leftarrow$ sample $\texttt{num\_monomials}$ indices from $\{\texttt{1, 2, }\ldots, \texttt{num\_terms}\}$ without replacement \Comment{Randomly select which monomials will be non-zero}
+		
+		\For{\texttt{j} $ \in \texttt{nonzero\_indices}$} \Comment{Generate random coefficients}
+		\State $\texttt{particles[i, j] }\leftarrow \mathcal{U}(-2,2)$ 
+		\Comment{Uniform in $[-2, 2]$}
+		\EndFor
+		\EndFor
+		
+		\Return $\texttt{particles}$
+	\end{algorithmic}
+\end{algorithm}
 
 
 \end{document}

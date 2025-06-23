@@ -4,12 +4,13 @@
 \contentsline {section}{\numberline {3}Numerical analysis}{6}{section.16}%
 \contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{6}{subsection.17}%
 \contentsline {subsubsection}{\numberline {3.1.1}Sampling the manifold}{6}{subsubsection.18}%
-\contentsline {subsubsection}{\numberline {3.1.2}Determining the dimension}{7}{subsubsection.23}%
-\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{11}{subsection.27}%
+\contentsline {subsubsection}{\numberline {3.1.2}Determining the dimension}{8}{subsubsection.23}%
+\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{10}{subsection.27}%
 \contentsline {subsubsection}{\numberline {3.2.1}Annealed Sequential Monte Carlo principle}{11}{subsubsection.28}%
 \contentsline {subsubsection}{\numberline {3.2.2}Results}{13}{subsubsection.35}%
-\contentsline {subsubsection}{\numberline {3.2.3}Setup of ASMC}{15}{subsubsection.45}%
-\contentsline {section}{\numberline {4}Conclusion}{16}{section.51}%
-\contentsline {section}{\numberline {A}Supergravity solutions}{17}{appendix.52}%
-\contentsline {paragraph}{Bosonic spectrum}{18}{paragraph*.58}%
+\contentsline {subsubsection}{\numberline {3.2.3}Setup of ASMC}{14}{subsubsection.46}%
+\contentsline {section}{\numberline {4}Conclusion}{16}{section.52}%
+\contentsline {section}{\numberline {A}Supergravity solutions}{20}{appendix.53}%
+\contentsline {paragraph}{Bosonic spectrum}{21}{paragraph*.59}%
+\contentsline {section}{\numberline {B}Details on the algorithm}{22}{appendix.63}%
 \contentsfinish 
