@@ -53,41 +53,56 @@
 \newlabel{eq: scalarmatrix}{{2.11}{4}{Supergravity setup}{equation.13}{}}
 \newlabel{eq:scalarpotential}{{2.12}{5}{Supergravity setup}{equation.14}{}}
 \citation{tensorflow2015-whitepaper}
-\citation{loshchilov2017sgdrstochasticgradientdescent}
 \@writefile{toc}{\contentsline {section}{\numberline {3}Numerical analysis}{6}{section.16}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Gradient descent and local analysis}{6}{subsection.17}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.1}Sampling the manifold}{6}{subsubsection.18}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.\relax }}{7}{figure.caption.20}\protected@file@percent }
+\citation{loshchilov2017sgdrstochasticgradientdescent}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.\relax }}{7}{figure.caption.21}\protected@file@percent }
 \providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
-\newlabel{fig:Analyze_V_points}{{1}{7}{Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.\relax }{figure.caption.20}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha $ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.\relax }}{8}{figure.caption.21}\protected@file@percent }
-\newlabel{fig:loss_grad_des}{{2}{8}{Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha $ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.\relax }{figure.caption.21}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2}Determining the dimension}{8}{subsubsection.23}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }}{9}{figure.caption.22}\protected@file@percent }
-\newlabel{triangular_plot_1_2_4_8_10}{{3}{9}{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }{figure.caption.22}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }}{10}{figure.caption.24}\protected@file@percent }
-\newlabel{local_pca}{{4}{10}{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }{figure.caption.24}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{10}{subsection.27}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }}{11}{figure.caption.26}\protected@file@percent }
-\newlabel{3dplots}{{5}{11}{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }{figure.caption.26}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Annealed Sequential Monte Carlo principle}{11}{subsubsection.28}\protected@file@percent }
-\newlabel{eq:gamman}{{3.2}{12}{Annealed Sequential Monte Carlo principle}{equation.29}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Results}{13}{subsubsection.35}\protected@file@percent }
-\newlabel{eq:pols}{{3.8}{13}{Results}{equation.36}{}}
-\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Setup of ASMC}{14}{subsubsection.46}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm\relax }}{15}{figure.caption.45}\protected@file@percent }
-\newlabel{ASMCflowchart}{{6}{15}{The flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm\relax }{figure.caption.45}{}}
-\newlabel{eq:sample10000adaptativetemp}{{3.10}{15}{Setup of ASMC}{equation.48}{}}
-\newlabel{table:results}{{3.12}{16}{Setup of ASMC}{equation.50}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces {\bfseries  \boldmath  \texttt  {acceptance\_ratio} = 0.8 - 0.5 $\times $ (\texttt  {epoch}/\texttt  {n\_epochs})} (a) Evolution of the mean number of particles reproducing each target polynomial (log scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma $ deviation, for the parameters described in~\eqref  {eq:sample10000adaptativetemp}.\relax }}{16}{figure.caption.51}\protected@file@percent }
-\newlabel{fig:evolutionoftargetreproduction}{{7}{16}{{\bfseries \boldmath \texttt {acceptance\_ratio} = 0.8 - 0.5 $\times $ (\texttt {epoch}/\texttt {n\_epochs})} (a) Evolution of the mean number of particles reproducing each target polynomial (log scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma $ deviation, for the parameters described in~\eqref {eq:sample10000adaptativetemp}.\relax }{figure.caption.51}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion}{16}{section.52}\protected@file@percent }
+\newlabel{fig:Analyze_V_points}{{1}{7}{Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.\relax }{figure.caption.21}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha $ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.\relax }}{8}{figure.caption.22}\protected@file@percent }
+\newlabel{fig:loss_grad_des}{{2}{8}{Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha $ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.\relax }{figure.caption.22}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.1.2}Determining the dimension}{8}{subsubsection.24}\protected@file@percent }
+\citation{10.1007/978-3-642-37456-2_14}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }}{9}{figure.caption.23}\protected@file@percent }
+\newlabel{triangular_plot_1_2_4_8_10}{{3}{9}{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent\relax }{figure.caption.23}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }}{10}{figure.caption.25}\protected@file@percent }
+\newlabel{local_pca}{{4}{10}{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.\relax }{figure.caption.25}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces 3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }}{11}{figure.caption.27}\protected@file@percent }
+\newlabel{3dplots}{{5}{11}{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.\relax }{figure.caption.27}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Annealed Importance Sampling for polynomial symbolic regression}{11}{subsection.28}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.1}Annealed Sequential Monte Carlo principle}{12}{subsubsection.29}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces The flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm\relax }}{12}{figure.caption.30}\protected@file@percent }
+\newlabel{ASMCflowchart}{{6}{12}{The flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm\relax }{figure.caption.30}{}}
+\newlabel{eq:gamman}{{3.2}{13}{Annealed Sequential Monte Carlo principle}{equation.31}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.2}Results}{14}{subsubsection.37}\protected@file@percent }
+\newlabel{eq:pols}{{3.8}{14}{Results}{equation.38}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.2.3}Setup of ASMC}{15}{subsubsection.47}\protected@file@percent }
+\newlabel{eq:sample10000adaptativetemp}{{3.10}{16}{Setup of ASMC}{equation.49}{}}
+\newlabel{table:results}{{3.12}{16}{Setup of ASMC}{equation.51}{}}
+\citation{Udrescu:2019mnk}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces {\bfseries  \boldmath  \texttt  {acceptance\_ratio} = 0.8 - 0.5 $\times $ (\texttt  {epoch}/\texttt  {n\_epochs})} (a) Evolution of the mean number of particles reproducing each target polynomial (log scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma $ deviation, for the parameters described in~\eqref  {eq:sample10000adaptativetemp}.\relax }}{17}{figure.caption.52}\protected@file@percent }
+\newlabel{fig:evolutionoftargetreproduction}{{7}{17}{{\bfseries \boldmath \texttt {acceptance\_ratio} = 0.8 - 0.5 $\times $ (\texttt {epoch}/\texttt {n\_epochs})} (a) Evolution of the mean number of particles reproducing each target polynomial (log scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma $ deviation, for the parameters described in~\eqref {eq:sample10000adaptativetemp}.\relax }{figure.caption.52}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Pie chart showing the repartition of the number of distinct polynomials found in the runs. Note that there is also the failure case, which corresponds 3 different runs.\relax }}{18}{figure.caption.58}\protected@file@percent }
+\newlabel{fig:piechart}{{8}{18}{Pie chart showing the repartition of the number of distinct polynomials found in the runs. Note that there is also the failure case, which corresponds 3 different runs.\relax }{figure.caption.58}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Conclusion}{18}{section.59}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {A}Supergravity solutions}{19}{appendix.60}\protected@file@percent }
+\newlabel{eq:solvepol}{{A.1}{19}{Supergravity solutions}{equation.61}{}}
+\newlabel{eq:rulex8x10}{{A.3}{19}{Supergravity solutions}{equation.63}{}}
+\@writefile{toc}{\contentsline {paragraph}{Bosonic spectrum}{20}{paragraph*.66}\protected@file@percent }
 \bibdata{references}
 \bibcite{Maldacena:1997re}{1}
 \bibcite{Ooguri:2016pdq}{2}
 \bibcite{Palti:2019pca}{3}
 \bibcite{Giambrone:2021wsm}{4}
 \bibcite{Aharony:2001dp}{5}
+\@writefile{toc}{\contentsline {section}{\numberline {B}Details on the algorithm}{21}{appendix.70}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Local Dimension Estimation using PCA\relax }}{21}{algorithm.71}\protected@file@percent }
+\newlabel{alg:local-dim}{{1}{21}{Local Dimension Estimation using PCA\relax }{algorithm.71}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Annealing Importance Sampling for Polynomial Discovery\relax }}{22}{algorithm.72}\protected@file@percent }
+\newlabel{alg:annealing-is}{{2}{22}{Annealing Importance Sampling for Polynomial Discovery\relax }{algorithm.72}{}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Initialize Sparse Polynomials\relax }}{23}{algorithm.73}\protected@file@percent }
+\newlabel{alg:initialize-sparse}{{3}{23}{Initialize Sparse Polynomials\relax }{algorithm.73}{}}
 \bibcite{Dong:2014tsa}{6}
 \bibcite{Eloy:2024lwn}{7}
 \bibcite{Comsa:2019rcz}{8}
@@ -125,16 +140,6 @@
 \bibcite{Eloy:2021fhc}{40}
 \bibcite{tensorflow2015-whitepaper}{41}
 \bibcite{loshchilov2017sgdrstochasticgradientdescent}{42}
-\@writefile{toc}{\contentsline {section}{\numberline {A}Supergravity solutions}{20}{appendix.53}\protected@file@percent }
-\newlabel{eq:solvepol}{{A.1}{20}{Supergravity solutions}{equation.54}{}}
-\newlabel{eq:rulex8x10}{{A.3}{20}{Supergravity solutions}{equation.56}{}}
-\@writefile{toc}{\contentsline {paragraph}{Bosonic spectrum}{21}{paragraph*.59}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {B}Details on the algorithm}{22}{appendix.63}\protected@file@percent }
-\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Local Dimension Estimation using PCA\relax }}{22}{algorithm.64}\protected@file@percent }
-\newlabel{alg:local-dim}{{1}{22}{Local Dimension Estimation using PCA\relax }{algorithm.64}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {2}{\ignorespaces Annealing Importance Sampling for Polynomial Discovery\relax }}{23}{algorithm.65}\protected@file@percent }
-\newlabel{alg:annealing-is}{{2}{23}{Annealing Importance Sampling for Polynomial Discovery\relax }{algorithm.65}{}}
-\@writefile{loa}{\contentsline {algorithm}{\numberline {3}{\ignorespaces Initialize Sparse Polynomials\relax }}{24}{algorithm.66}\protected@file@percent }
-\newlabel{alg:initialize-sparse}{{3}{24}{Initialize Sparse Polynomials\relax }{algorithm.66}{}}
+\bibcite{10.1007/978-3-642-37456-2_14}{43}
 \ttl@finishall
-\gdef \@abspage@last{25}
+\gdef \@abspage@last{27}

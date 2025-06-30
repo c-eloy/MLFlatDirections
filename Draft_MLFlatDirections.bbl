@@ -220,4 +220,11 @@ M.~Abadi, A.~Agarwal, P.~Barham, E.~Brevdo, Z.~Chen, C.~Citro, G.~S. Corrado,
 I.~Loshchilov and F.~Hutter, {\it Sgdr: Stochastic gradient descent with warm
   restarts},  \href{http://arxiv.org/abs/1608.03983}{{\tt arXiv:1608.03983}}.
 
+\bibitem{10.1007/978-3-642-37456-2_14}
+R.~J. G.~B. Campello, D.~Moulavi, and J.~Sander, {\it Density-based clustering
+  based on hierarchical density estimates},  in {\em Advances in Knowledge
+  Discovery and Data Mining} (J.~Pei, V.~S. Tseng, L.~Cao, H.~Motoda, and
+  G.~Xu, eds.), (Berlin, Heidelberg), pp.~160--172, Springer Berlin Heidelberg,
+  2013.
+
 \end{thebibliography}\endgroup
