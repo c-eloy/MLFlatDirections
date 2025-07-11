@@ -1,0 +1,43 @@
+﻿\begin{tikzpicture}[scale=2]
+
+\def\radius{1.25}
+
+\fill[myblue!80] (0:0) -- (0:\radius) arc [start angle=0,end angle={360*0.223},radius=\radius] -- (0:0);
+\draw ({360*0.223/2:0.6*\radius})node [black] {\small 223};
+
+\fill[myorange!80] (0:0) -- ({360*0.223}:\radius) arc [start angle={360*0.223},end angle={360*(0.223+0.332)}, radius = \radius] -- (0:0);
+\draw ({360*(0.223+0.332/2)}:0.6*\radius) node [black] {\small 332};
+
+\fill[myblack!80] (0:0) -- ({360*(0.223+0.332)}:\radius) arc [start angle={360*(0.223+0.332)},end angle={360*(0.223+0.332+0.003)},radius = \radius] -- (0:0);
+\draw [very thin] ({360*(0.223+0.332+0.003/2)}:{\radius*0.6}) -- ({360*(0.223+0.332+0.003/2)}:\radius*1.2);
+\draw ({360*(0.223+0.332+0.003/2)}:\radius*1.3) node {\small 3};  
+
+\fill[myred!80] (0:0) -- ({360*(0.223+0.332+0.003)}:\radius) arc [start angle={360*(0.223+0.332+0.003)},end angle={360*(0.223+0.332+0.003+0.426)},radius = \radius] -- (0:0);
+\draw ({360*(0.223+0.332+0.003+0.426/2)}:0.6*\radius) node [black] {\small 426};
+
+\fill[mygreen!80] (0:0) -- ({360*(0.223+0.332+0.003+0.426)}:\radius) arc [start angle={360*(0.223+0.332+0.003+0.426)},end angle={360*(0.223+0.332+0.003+0.426+0.016)},radius = \radius] -- (0:0);
+\draw [very thin] ({360*(0.223+0.332+0.003+0.426+0.016/2)}:\radius*0.6) -- ({360*(0.223+0.332+0.003+0.426+0.016/2)}:\radius*1.2);
+\draw ({360*(0.223+0.332+0.003+0.426+0.016/2)}:\radius*1.3) node {\small 16};  
+
+
+\draw (0:0) -- (0:\radius) arc [start angle=0,end angle={360*0.223}, radius = \radius] -- (0:0);
+\draw ({360*0.223}:\radius) arc [start angle={360*0.223},end angle={360*(0.223+0.332)}, radius = \radius] -- (0:0);
+\draw ({360*(0.223+0.332)}:\radius) arc [start angle={360*(0.223+0.332)},end angle={360*(0.223+0.332+0.003)}, radius = \radius] -- (0:0);
+\draw ({360*(0.223+0.332+0.003)}:\radius) arc [start angle={360*(0.223+0.332+0.003)},end angle={360*(0.223+0.332+0.003+0.426)},radius = \radius] -- (0:0);
+\draw ({360*(0.223+0.332+0.003+0.426)}:\radius) arc [start angle={360*(0.223+0.332+0.003+0.426)},end angle={360*(0.223+0.332+0.003+0.426+0.016)}, radius = \radius] -- (0:0);
+
+
+
+\draw (3.2,0.6) node [align=center, font= \bfseries\small] {Number of annihilator\\polynomial for a run};
+\draw[black, fill=myblack!80] (2.2,0) rectangle +(0.3,0.2);
+\draw (2.6,0.1) node [right] {\small $0$};
+\draw[black, fill=myblue!80] (3,0) rectangle +(0.3,0.2);
+\draw (3.4,0.1) node [right] {\small $1$};
+\draw[black, fill=myorange!80] (3.8,0) rectangle +(0.3,0.2);
+\draw (4.2,0.1) node [right] {\small $2$};
+\draw[black, fill=myred!80] (2.6,-0.4) rectangle +(0.3,0.2);
+\draw (3,-0.3) node [right] {\small $3$};
+\draw[black, fill=mygreen!80] (3.5,-0.4) rectangle +(0.3,0.2);
+\draw (3.9,-0.3) node [right] {\small $4$};
+ 
+\end{tikzpicture}

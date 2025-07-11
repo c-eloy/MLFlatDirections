@@ -678,7 +678,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\gamma_n(z) := d_0(z) \: \exp \left( -\beta_n L(z) \right).
 		\end{equation} 
 		
-		At each step, we have a set of particles and weights $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and calculate the new unnormalized importance weight $w_n^k$. The latter are updated using the formula 
+		At each epoch, we have a set of particles and weights $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and calculate the new unnormalized importance weight $w_n^k$. The latter are updated using the formula 
 		\begin{equation}
 			w_n^k = w_{n-1}^k \times \alpha_{n}^k
 		\end{equation}
@@ -694,7 +694,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\item Variable multiplication. Given a polynomial $z_{n-1}$, we choose randomly one of his monomial, and multiply it by one of the available variable. So for eg : $2 x_1 + 3 x_2^2 \rightarrow  2 x_1 x_2 + 3 x_2^2$.
 			\item Variable division. Given a polynomial $z_{n-1}$, we choose randomly one of his monomial, and divide it by one of its variable. So for eg : $2 x_1 x_2 + 3 x_2^2 \rightarrow  2 x_1 + 3 x_2^2$. 
 		\end{itemize}
-		This implementation enables a direct computation of both the forward and backward propagation kernels. In particular, for the case of coefficient perturbations, the transition is symmetric. That is,
+		The polynomials get mutated at each epoch. The mutation is chosen randomly, assigning probabilities \texttt{p\_{modify}} , \texttt{p\_{multiply}} and \texttt{p\_{divide}} to each possibility. This implementation enables a direct computation of both the forward and backward propagation kernels. In particular, for the case of coefficient perturbations, the transition is symmetric. That is,
 		\begin{equation}
 			q(z_n^k \mid z_{n-1}^k) = q(z_{n-1}^k \mid z_n^k),
 		\end{equation}
@@ -704,20 +704,26 @@ An additional advantage of this approach is its broader applicability. In scenar
 		
 		
 		The acceptance ratio for the MCMC algorithm is given by : 
-		\begin{equation}
+		\begin{equation}\label{eq:acceptanceratio}
 			A(z_n,z_{n-1}) = \mathrm{min} \left(1,\frac{ \gamma_n(z_n^k) q(z_{n-1}^k | z_n^k) }{ \gamma_{n-1}(z_{n-1}^k) q(z_n^k | z_{n-1}^k) }  \right)
 		\end{equation}
 		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
+
+		We have adapted the classic approach outilned above. As can be seen in \eqref{eq:gamman}, what matters the most to determine $\gamma_{n}$ is not the inverse temperature, but rather the product of the inverse temperature and the loss function. Therefore, instead of implementing an arbitrary schedule for $\beta$, we employed an adaptive temperature approach. The acceptance ratio is controlled by the following schedule as function of the \texttt{epoch}:
+		\begin{equation} \label{eq:acceptanceratioschedule}
+			\texttt{acceptance\_ratio} = 0.8 - 0.5 \times \left(\frac{\texttt{epoch}}{\texttt{n\_epochs}}\right),
+		\end{equation}
+		where \texttt{n\_epochs} is the total number of epochs. This encourages exploration during the early stages of training and gradually transitions to a more selective regime. \ce{So we don't use eq.~\eqref{eq:acceptanceratio} at all? This is not clear to me.}
 		
 		Before closing the section, we need to discuss what is the Loss function we choose. It is required to compute the unormalized distribution $\gamma_n$. Assume that we have $z = \sum_k c_k X_k$, where $c_k$ are the coefficients of the polynomials, and $X_k$ is a short notations for all the possible monomials up to a given degree (so if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_k$ are $1, x, y, x^2, y^2, x y$). For the Loss function, we decided to take : 
-		\begin{equation}
+		\begin{equation} \label{eq:lossreg}
 			L(z) = \sum_{i} z(x_i)^2 + \frac{\lambda}{\sum_k |c_k|}
 		\end{equation}
 		So the first term is just the sum of the squared of the polynomial evaluated on the data. We want to make this 0 so we find polynomial that annihilates our data. The second part is a regularisation factor : it prevents the algorithm to send all the coefficient to 0, which would give a trivial solution to the problem. We typically take $\lambda \sim \mathcal{O}(1000)$.
 		
 		%\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
 		
-		Once the Annealing loop is over, we end up with a total of $n_{sample}$ particles, which in principle should be close to annihilate our data, but whose coefficient may need some more fine tuning. To deal with it, we ran a quick exploitation phase, where, for each polynomial, we now only modify its coefficients, with a pertubation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, and keep the new particle, only if the Loss function is now getting smaller. This allow to fine-tune the coefficients. 
+		Once the Annealing loop is over, we end up with a total of $n_{\rm sample}$ particles, which in principle should be close to annihilate our data, but whose coefficients may need some more fine tuning. To deal with it, we ran a quick exploitation phase, where, for each polynomial, we now only modify its coefficients, with a pertubation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, and keep the new particle, only if the Loss function is now getting smaller. This allow to fine-tune the coefficients. \ce{Mention threshold? And number of iterations?}
 
 %		\bd{Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.}
 	%\end{itemize}
@@ -857,6 +863,232 @@ which corresponds to $p_1$ of Eq. \eqref{eq:pols}. While the AIFeynman code is a
 	\caption{Pie chart showing the repartition of the number of distinct polynomials found in the runs. Note that there is also the failure case, which corresponds 3 different runs.}
 	\label{fig:piechart}
 \end{figure}
+
+\section{Results}
+\paragraph{Initialisation}
+We initialized the algorithm with 
+\begin{equation}	\label{eq:sample10000adaptativetemp}
+	\begin{aligned}
+		&\texttt{n\_epochs} = 1000,\\
+		&\texttt{beta}  = 10^{-6}, \\
+		&\texttt{p\_{modify}} = 0.5,\\
+		&\texttt{p\_{multiply}} = 0.25,\\
+		&\texttt{p\_{divide}} = 0.25. 
+	\end{aligned}
+\end{equation}
+This strategy was determined empirically through trial and error; a systematic analysis of its optimization is left for future work. For the representation of polynomials, we adopt a vectorial approach: each polynomial is represented as an array of its coefficients $\{c_k\}$, where $k \in \{1,\dots,n_{\text{mon}}\}$ and $n_{\text{mon}}$ denotes the number of available monomials, determined by the chosen maximum degree \texttt{max\_degree}. We also impose a constraint on the maximum number of terms within a single polynomial to promote sparsity. An alternative approach would be to encourage sparsity through the prior distribution or within the loss function formulation. For the simulations we have done, we chose : 
+\begin{equation} \label{eq:parampol}
+	\begin{aligned}
+		&\texttt{max\_degree} = 4,\\
+		&\texttt{max\_num\_monomials} = 6.
+	\end{aligned}
+\end{equation}
+
+\paragraph{Typical run}
+After a run, the 1000 particles are typically distributed into less than 10 different type of polynomials. \ce{Check the exact number.} Each particles of a given type share the same monomials, but their coefficients fluctuate a bit. We select the representant of each type that features the minimal loss (without the regularisation, $\lambda=0$, see eq.~\eqref{lossreg}). Here is an example of ouput for a given run: \ce{Here $\texttt{threshold} = 0.1$ and $\texttt{steps} = 1000$ for the local search.}
+\begin{subequations}
+    \begin{align}
+		1.999\,x_{2} - 1.999\,x_{2}x_{8} + 1.414\,x_{1}x_{10} + 1.999\,x_{1}x_{4} - x_{10}^{2}x_{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 2 \times 10^{-4},  \label{eq:expol1}\\
+		2\,x_{2} - 1.999\,x_{2}x_{8} + 1.415\,x_{1}x_{8}x_{10} + 2.001\,x_{1}x_{4}x_{8} - 2.002\,x_{2}x_{4}^{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 3 \times 10^{-3}, \label{eq:expol2}\\
+		x_{1}x_{8}x_{10} + 1.416\,x_{1}x_{4}x_{8} - 1.516\,x_{2}x_{4}^{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 3 \times 10^{2}, \label{eq:expol3}\\
+		2\,x_{2} - 1.972\,x_{2}x_{8} + 0.816\,x_{1}x_{10} + 1.369\,x_{1}x_{4} - 0.442\,x_{10}^{2}x_{2},\quad &L^{(\lambda = 0)} \simeq 3 \times 10^{2}, \label{eq:expol4}
+	\end{align}
+\end{subequations}
+where we normalised the coefficients be setting one of them to $1$ or $2$. Then, we filter out the polynomials with loss higher than $1$, as the polynomials~\eqref{eq:expol3} and~\eqref{eq:expol4}, which do not annihilate the data. As discussed in sec. ?? \ce{to do}, the coefficients must be combinations of rational numbers or square roots thereof. We then deduce from eq.~\eqref{eq:expol1} and~\eqref{eq:expol2} the candidate annihilator polynomials for the above example:
+\begin{equation}
+	\begin{gathered}
+		2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}x_8x_{10}^{2},\\
+      2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_8x_{10} + 2\,x_{1}x_{4}x_8
+      		- 2\,x_{2} x_{4}^{2}x_8.
+	\end{gathered}
+\end{equation}
+
+\paragraph{Statistics}
+We performed 1000 independent runs with the same parameters as above, each involving 1000 particles. It takes approximately 600\,s to do a single run on a regular computer. \ce{That's without local search, right?} The code finds the 8 different following polynomials: 
+\begin{subequations} \label{eq:pols}
+ \begin{align}
+   p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}x_8 + x_{2}x_8x_{10} - \sqrt{2}\,x_{2}x_{4}x_8,\\
+   p_{2} &= 2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}x_8x_{10}^{2},\\
+   p_{3} &= 2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_8x_{10} + 2\,x_{1}x_{4}x_8
+   		- 2\,x_{2} x_{4}^{2}x_8,\\
+   p_{4} &= \sqrt{2}\,x_{2} - \sqrt{2}\,x_{2}x_8 + \sqrt{2}\,x_{1}\,x_{4} + x_{1}x_8x_{10}
+   		- x_{2}x_{4}x_8x_{10},\\
+   p_{5} &= -2\,x_{1} - 2\,x_{2}x_{4}- 2\,x_{1}x_{4}^{2} + 2\,x_{1}x_8 + \sqrt{2}\,x_{2}x_{10}
+   		+ x_{1}x_8x_{10}^{2},\\
+   p_{6} &= -2\,x_{2}x_{4} - 2\,x_{1}x_{4}^{2} + 2\,x_{2}x_{4}x_8 + \sqrt{2}\,x_{2}x_{10} 
+   		- \sqrt{2}\,x_{2}x_8x_{10} +  x_{1}x_8x_{10}^{2},\\
+   p_{7} &= -\sqrt{2}\,x_{1}^{2}x_{4} + \sqrt{2}\,x_{2}^{2}x_{4} + \sqrt{2}\,x_{1}x_{2}x_{4}^{2} - x_{1}^{2}x_{10}
+   		- x_{2}^{2}x_{10}, \\
+   p_{8} &= -2 + 4 x_{8} - 2 x_8^2 + 2 x_{4}^2 x_8 - x_8^2 x_{10}^2,
+ \end{align}
+\end{subequations}
+where $x_{8} = e^{\tilde{x}_{8}}$. They are found with different frequencies with some polynomials occurring more often than others, as reported in tab.~\ref{table:results}. The average number of particles reproducing one of the annihilator polynomials at the end of a run is 882, with a standard deviation of 200. Moreover, the algorithm typically identifies an average of $2.24$ distinct polynomials per run, with a maximum number of $4$, demonstrating its capacity to uncover multiple solutions simultaneously. Finally, the algorithm failed at finding a solution in only 3 runs. This is summed up in fig.~\ref{fig:piechart}. We see that for $77.4\%$ on the time that the algorithm finds more than a single solution, demonstrating the robustness of the method.
+
+\begin{figure}
+	\centering
+	\input{Figures/Piechart_n_pols.pgf}
+	\caption{Pie chart of the repartition of the number of distinct polynomials found in a run.}
+	\label{fig:piechart}
+\end{figure}
+
+\begin{table}
+	\centering
+	\renewcommand{\arraystretch}{1.3}
+	\begin{tabular}{c|ccccccccc}
+		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $p_{8}$ &  $\varnothing$  \\\hline\hline
+		Frequency & 92.6\% & 75.0\% & 1.7\% & 51.9\% & 0.7\% & 0.1\% & 0.2\% & 0.7\% & 0.3\% \\
+		Maximum \# of representatives & 1000 & 1000 & 869 & 991 & 710 & 18 & 879 & 207 & --
+	\end{tabular}
+	\caption{Statistics of the ability of the ASMC algorithm to produce the polynomials~\eqref{eq:pols} on 1000 runs with parameters~\eqref{eq:sample10000adaptativetemp} and~\eqref{eq:parampol}. The frequencies represent the percentage of runs featuring a given polynomial in its outputs, and the maximum number of representatives gives the maximum number of particles representing the polynomial in a given run. The column $\varnothing$ counts the runs that failed to produce an annihilator polynomial.}
+	\label{table:results}
+\end{table}
+  
+The dynamics of appearance of each annihilator polynomial is plotted in fig.~\ref{fig:evolutionoftargetreproduction}(a), together with the evolution of the inverse temperature $\beta$, averaged on the 1000 runs. Note that the dynamics depend strongly on the polynomial, some of the appearing after only few dozens of epochs, and others just before the end of the runs. The evolution of the inverse temperature, imposed by eq.~\eqref{eq:acceptanceratioschedule}, is polynomial. \ce{Do a fit.}. The losses of the runs are shown in fig.~\ref{fig:evolutionoftargetreproduction}(c). \ce{Describe more the loss? Is it summed on all particles?}.
+
+\ce{Keep fig.~\ref{fig:evolutionoftargetreproduction}(b)?}
+
+\begin{figure}[h!]
+	\centering
+	\begin{adjustbox}{width=20cm,center}
+		\begin{minipage}[t]{0.31\paperwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figures/Count_beta_adaptative_temp_indiv}
+			\caption*{(a)}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}[t]{0.31\paperwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figures/Count_good_pol_all}
+			\caption*{(b)}
+		\end{minipage}%
+		\hfill
+		\begin{minipage}[t]{0.31\paperwidth}
+			\centering
+			\includegraphics[width=\linewidth]{Figures/Loss_all_ASMC.png}
+			\caption*{(c)}
+		\end{minipage}
+	\end{adjustbox}
+	\caption{(a) Dynamics of the mean number of particles reproducing each polynomial in eq.~\eqref{eq:pols} (left scale) and evolution of the inverse temperature $\beta$ and its $1\sigma$ deviation (right scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma$ deviation, for the parameters described in~\eqref{eq:sample10000adaptativetemp}. (c) Evolution of the losses during the runs (in blue) and their average (in yellow).}
+	\label{fig:evolutionoftargetreproduction}
+\end{figure}
+
+\ce{Tests sur le gradient analytique pour voir si c'est un polynome annulateur.}
+
+\paragraph{Comparison with AIFeynman}
+In comparaison with state of the art technique, we have used the AIFeynman algorithm on our data set, with again $x_8 = \exp(\tilde{x}_8)$, such that we again look for polynomial expressions. We have run it with the following configuration 
+\begin{equation}
+	\begin{aligned}
+		&\texttt{BF\_try\_time} = 300, \\
+		&\texttt{polyfit\_deg} = 6, \\
+		&\texttt{NN\_epochs} = 5000.\\
+	\end{aligned}
+\end{equation}
+The first parameter fixes the time limit in seconds for each brute force call, \texttt{polyfit\_deg} gives the maximum degree of the polynomial tried by the polynomial fit routine and \texttt{NN\_epochs} is the number of training epoch for the internal neural network. The function used for the brut force tests are 
+\begin{equation}
+\texttt{+*-/><} \sim \texttt{\textbackslash R1}
+\end{equation}
+The binary operations are addition, multiplication, substraction and division. The unary ones are inverse, increment, decrement, negation and square root. Finally there is a nonary one, the unity. For more details we refer to \cite{Udrescu:2019mnk}.
+
+In this algorithm, one tries to fit one of the variables in term of the others. Here, we used it to fit $x_{10}$ in terms of the others. The AIFeynman algorithm finds a solution in TIME : 
+\begin{equation}
+	\texttt{x\_10 = 1.414213551821*(x\_4-((x\_1/x\_2)-((x\_1/x\_2)/x\_8))}
+\end{equation}
+which after identifying the numerical factor with $\sqrt 2$ and inverting the relation gives 
+\begin{equation}
+	- \sqrt 2 x_1 + \sqrt 2 x_1 x_8 + x_2 x_8  x_{10} -\sqrt 2 x_2 x_4 x_8 = 0
+\end{equation}
+which corresponds to $p_1$ of Eq. \eqref{eq:pols}. While the AIFeynman code is able to recover one of the constraints, it exhibits several drawbacks compared to our method. First, it is significantly slower: it required TIME (to be specified) compared to approximately 600 seconds for a single run of our ASMC algorithm. Moreover, the AIFeynman framework is based on expressing one variable as a function of the others, which assumes the invertibility of the underlying relation. In general, this is not guaranteed for the class of polynomials in Eq. \eqref{eq:pols}, and obtaining a closed-form inverse can be nontrivial or even impossible for higher-degree expressions. In our case, each polynomial involves at most quadratic terms in any single variable, ensuring invertibility, but this property would not hold for more complex models. In addition, AIFeynman is limited to recovering one constraint per run, whereas our ASMC method can discover multiple constraints simultaneously. This is reflected in our results, where each run identified an average of 2.15 polynomials, with up to 4 found in the best case. Finally, the brute-force regression strategy used by AIFeynman makes it less effective for identifying higher-degree polynomials, whose complexity increases the search difficulty. In contrast, our method treats all polynomials as equally probable, regardless of their degree, enabling it to uncover more intricate structures more efficiently \footnote{Note that we do not claim that we have used the AIFeynman in the most optimal way.}.
+
+
+\paragraph{Supergravity}
+%\begin{itemize}[label=\textbullet]
+%	\item For each couple of candidate polynomials, we get the same expression for the solution, and it indeed defines a unique vacuum of the 3d SUGRA.
+%	\item Discussion of the vacuum: gauge group, Zham. metric, change of variables, 3d spectrum (and stability), spin 2 spectrum on $S^{3}$, one parameter seems to be a gauge parameter, uplift?
+%\end{itemize}
+
+%For every couples $(p_{i},p_{j})$ of polynomials in eq.~\eqref{eq:pols}, the system
+%\begin{equation}
+%	\begin{cases}
+	%		p_{i} = 0, \\
+	%		p_{j} = 0,
+	%	\end{cases}
+%\end{equation}
+%gives the same solution \ce{That's not true! For example, $x_{1}=x_{2}=0$ solves all polynomials but is not a sugra solution. Mention tests on the sugra?}
+
+In the previous section, we introduced a numerical method that enabled symbolic regression, yielding a set of polynomials that vanish on our dataset, as presented in Eq.~\ref{eq:pols}. We can now solve the system
+\begin{equation}\label{eq:solvepol}
+	p_i = 0, \quad \forall i \in {1,\dots,7}
+\end{equation}
+which leads to the following expressions:
+\begin{equation}
+	\begin{cases}
+		\displaystyle x_{1} = \frac{x_{2}}{\sqrt{2}}\,\frac{e^{x_{8}/2}}{e^{x_{8}}-1}\,\Big(-x_{5}\,e^{x_{8}/2} + \sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}\Big),\\[8pt]
+		\displaystyle x_{4} = \frac{e^{-x_{8}/2}}{\sqrt{2}}\,\sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}.
+	\end{cases}
+\end{equation}
+
+Alternatively, the system can be recast as:
+\begin{equation}\label{eq:rulex8x10}
+	\begin{cases}
+		\displaystyle \tilde{x}_{8} = \frac{x{1}^{2}+x_{2}^{2}}{x_{2}^{2} + \big(x_{1}-x_{2}x_{4}\big)^{2}},\\[10pt]
+		\displaystyle x_{10} = \sqrt{2},x_{4},\frac{x_{2}^{2} - x_{1}^{2}+x_{1}x_{2}x_{4}}{x_{1}^{2}+x_{2}^{2}}.
+	\end{cases}
+\end{equation}
+
+As anticipated, this defines a three-parameter solution corresponding to a three-dimensional slice of the half-maximal supergravity scalar potential.
+
+Let us make a few remarks at this stage. First, it is possible to find solutions to Eq.~\ref{eq:solvepol} which, however, are not solutions of $\nabla V = 0$. For instance $x_1 = x_2 = 0$; such cases are excluded, as they do not satisfy the stationarity condition and therefore do not correspond to valid physical solutions.
+
+Secondly, one might argue that only two of the seven polynomials are sufficient to fully characterize the solution. That is, choosing any pair $(i,j) \in {1, \dots, 7}$ may suffice to extract a complete description. In practice, this is not entirely accurate. While such a pair can yield partial constraints—for example, recovering Eq.\ref{eq:rulex8x10}—it may also produce alternative (and potentially less general) parameterizations. Upon inspection, all such partial rules are found to be consistent with, and included in, the most general expressions given in Eq.\ref{eq:rulex8x10}.
+
+The solution preserves a ${\rm U}(1)\times{\rm U}(1)$ gauged symmetry.
+
+%\paragraph{Moduli space}
+The $(x_{1},x_{2},x_{4})$ moduli space is most nicely parametrised using the change of coordinates
+\begin{equation}
+	x_{1} = r\cos(\theta)\cos(\Phi), \quad x_{2} = r\cos(\theta)\sin(\Phi) \quad {\rm and} \quad x_{4} = r\sin(\theta),
+\end{equation}
+for which the Zamolodchikov metric reads
+\begin{equation}
+	\d^{2}s_{\rm Zam.} = -\,\d r^{2} - r^{2}\,\bigg(\d \theta^{2} - r\cos(\theta)\,\d \theta\d\Phi + \sin(\theta)\,\d r\d\Phi + \frac{1}{2}\,\big(3+r^{2}-\cos(2\theta)\big)\,\d\Phi^{2} \bigg).
+\end{equation}
+\ce{Tests other change of variables? Test choices of variables other than $(x_{1},x_{2},x_{4})$?}
+
+\paragraph{Bosonic spectrum}
+Vector fields:
+\begin{equation}
+	\begin{aligned}	
+		m_{\sst{(1)}}\ell_{\rm AdS}:\quad &
+		0\ [2],	\quad
+		-2\ [5],	\quad
+		2\ [1],	\\[5pt]
+		&	-1\pm\sqrt{\left(1+r^2\right)^2-2\,r^2\,\cos(2\theta)}\ [2+2],	\\[5pt]
+		&	1\pm\sqrt{1+4\,r^2+r^{4}}\ [2+2].
+	\end{aligned}
+\end{equation}
+The integers between square brackets indicate the multiplicity of each eigenvalue. The spectrum includes two massless vectors corresponding to the unbroken ${\rm U}(1)\times {\rm U}(1)$ gauge symmetry, although in three dimensions they are non-propagating.
+
+
+Scalars:
+\begin{equation}
+	\begin{aligned}	
+		\left(m_{\sst{(0)}}\ell_{\rm AdS}\right)^2:\quad&
+		0\ [5],	\quad
+		8\ [1],	\quad
+		r^{2}\,\left(4+r^2\right)\ [8],	\\[5pt]
+		&	2r\,\Big(3\,r+r^{3}\pm(2+r^{2})\,\sqrt{2+r^2-2\,\cos(2\theta)}-r\cos(2\theta)\Big)\ [2+2].
+	\end{aligned}
+\end{equation}
+
+Gravitini:
+\begin{equation}
+	m_{{(\nicefrac32)}}\ell_{\rm AdS}:\quad 
+	\quad \dfrac1{2}\bigg[1\pm\sqrt{4+2\,r^{2}+r^{4}-2r^{2}\cos(2\theta)}\bigg]\ [4+4],
+\end{equation}
+no SUSY enhancements other than $r=0$.
+
+No dependence on $\Phi$.
+
 
 \section{Conclusion}
 
