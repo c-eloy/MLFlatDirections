@@ -709,11 +709,11 @@ An additional advantage of this approach is its broader applicability. In scenar
 		\end{equation}
 		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
 
-		We have adapted the classic approach outilned above. As can be seen in \eqref{eq:gamman}, what matters the most to determine $\gamma_{n}$ is not the inverse temperature, but rather the product of the inverse temperature and the loss function. Therefore, instead of implementing an arbitrary schedule for $\beta$, we employed an adaptive temperature approach. The acceptance ratio is controlled by the following schedule as function of the \texttt{epoch}:
+		We have adapted the classic approach outilned above. As can be seen in \eqref{eq:gamman}, what matters the most to determine $\gamma_{n}$ is not the inverse temperature, but rather the product of the inverse temperature and the loss function. Therefore, instead of implementing an arbitrary schedule for $\beta$, we employed an adaptive temperature approach. The number of particles accepted at each run is monitored. We aim at following the following schedule as function of the \texttt{epoch}:
 		\begin{equation} \label{eq:acceptanceratioschedule}
 			\texttt{acceptance\_ratio} = 0.8 - 0.5 \times \left(\frac{\texttt{epoch}}{\texttt{n\_epochs}}\right),
 		\end{equation}
-		where \texttt{n\_epochs} is the total number of epochs. This encourages exploration during the early stages of training and gradually transitions to a more selective regime. \ce{So we don't use eq.~\eqref{eq:acceptanceratio} at all? This is not clear to me.}
+		where \texttt{n\_epochs} is the total number of epochs. If we accept more particle (in the 5 last epochs), we decrease the temperature by 5\%, if we accept less we increase it by 5\%. This encourages exploration during the early stages of training and gradually transitions to a more selective regime. \ce{So we don't use eq.~\eqref{eq:acceptanceratio} at all? This is not clear to me.} 
 		
 		Before closing the section, we need to discuss what is the Loss function we choose. It is required to compute the unormalized distribution $\gamma_n$. Assume that we have $z = \sum_k c_k X_k$, where $c_k$ are the coefficients of the polynomials, and $X_k$ is a short notations for all the possible monomials up to a given degree (so if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_k$ are $1, x, y, x^2, y^2, x y$). For the Loss function, we decided to take : 
 		\begin{equation} \label{eq:lossreg}
@@ -869,23 +869,24 @@ which corresponds to $p_1$ of Eq. \eqref{eq:pols}. While the AIFeynman code is a
 We initialized the algorithm with 
 \begin{equation}	\label{eq:sample10000adaptativetemp}
 	\begin{aligned}
-		&\texttt{n\_epochs} = 1000,\\
-		&\texttt{beta}  = 10^{-6}, \\
-		&\texttt{p\_{modify}} = 0.5,\\
-		&\texttt{p\_{multiply}} = 0.25,\\
-		&\texttt{p\_{divide}} = 0.25. 
+		&\texttt{n\_epochs = 1000},\\
+		&\texttt{beta  = 1e-6}, \\
+		&\texttt{p\_{modify} = 0.5},\\
+		&\texttt{p\_{multiply} = 0.25},\\
+		&\texttt{p\_{divide} = 0.25}. 
 	\end{aligned}
 \end{equation}
 This strategy was determined empirically through trial and error; a systematic analysis of its optimization is left for future work. For the representation of polynomials, we adopt a vectorial approach: each polynomial is represented as an array of its coefficients $\{c_k\}$, where $k \in \{1,\dots,n_{\text{mon}}\}$ and $n_{\text{mon}}$ denotes the number of available monomials, determined by the chosen maximum degree \texttt{max\_degree}. We also impose a constraint on the maximum number of terms within a single polynomial to promote sparsity. An alternative approach would be to encourage sparsity through the prior distribution or within the loss function formulation. For the simulations we have done, we chose : 
 \begin{equation} \label{eq:parampol}
 	\begin{aligned}
-		&\texttt{max\_degree} = 4,\\
-		&\texttt{max\_num\_monomials} = 6.
+		&\texttt{max\_degree = 4},\\
+		&\texttt{max\_num\_monomials = 6.}
 	\end{aligned}
 \end{equation}
+\ce{Give details on the basis of polynomials. 126.}
 
 \paragraph{Typical run}
-After a run, the 1000 particles are typically distributed into less than 10 different type of polynomials. \ce{Check the exact number.} Each particles of a given type share the same monomials, but their coefficients fluctuate a bit. We select the representant of each type that features the minimal loss (without the regularisation, $\lambda=0$, see eq.~\eqref{lossreg}). Here is an example of ouput for a given run: \ce{Here $\texttt{threshold} = 0.1$ and $\texttt{steps} = 1000$ for the local search.}
+After a run, the 1000 particles are typically distributed into less than 10 different type of polynomials. \ce{Check the exact number.} Each particles of a given type share the same monomials, but their coefficients fluctuate a bit. We select the representant of each type that features the minimal loss (without the regularisation, $\lambda=0$, see eq.~\eqref{eq:lossreg}). Here is an example of output for a given run: \ce{Here $\texttt{threshold} = 0.1$ and $\texttt{steps} = 1000$ for the local search.}
 \begin{subequations}
     \begin{align}
 		1.999\,x_{2} - 1.999\,x_{2}x_{8} + 1.414\,x_{1}x_{10} + 1.999\,x_{1}x_{4} - x_{10}^{2}x_{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 2 \times 10^{-4},  \label{eq:expol1}\\
@@ -943,7 +944,7 @@ where $x_{8} = e^{\tilde{x}_{8}}$. They are found with different frequencies wit
 	\label{table:results}
 \end{table}
   
-The dynamics of appearance of each annihilator polynomial is plotted in fig.~\ref{fig:evolutionoftargetreproduction}(a), together with the evolution of the inverse temperature $\beta$, averaged on the 1000 runs. Note that the dynamics depend strongly on the polynomial, some of the appearing after only few dozens of epochs, and others just before the end of the runs. The evolution of the inverse temperature, imposed by eq.~\eqref{eq:acceptanceratioschedule}, is polynomial. \ce{Do a fit.}. The losses of the runs are shown in fig.~\ref{fig:evolutionoftargetreproduction}(c). \ce{Describe more the loss? Is it summed on all particles?}.
+The dynamics of appearance of each annihilator polynomial is plotted in fig.~\ref{fig:evolutionoftargetreproduction}(a), together with the evolution of the inverse temperature $\beta$, averaged on the 1000 runs. Note that the dynamics depend strongly on the polynomial, some of the appearing after only few dozens of epochs, and others just before the end of the runs. \ce{The polynomials are organize in three classes, the first ones appear after typically a dozen of iteration, the second one after 100 and the last one are very difficult to find and rare. The code favors the polynomials with lowest loss through resampling. Du fait de la structure, quand un polynome est trouvé il est favorisé au détriment des autres (resampling). Faire une figure ?} The evolution of the inverse temperature, imposed by eq.~\eqref{eq:acceptanceratioschedule}, is polynomial. \ce{Do a fit.}. \ce{At the end beta is not 1. This allows to find more than one candidate polynomials, favors the diversity. This is linked to the choice of the acceptance ration at the end. The lower the acceptance ration, the higher beta. If ratio too low, no diversoty. If ratio too high, shitty polynomials.} The losses of the runs are shown in fig.~\ref{fig:evolutionoftargetreproduction}(c). \ce{Describe more the loss? It is the best loss at each step. Use the loss to show that we indeed converged}.
 
 \ce{Keep fig.~\ref{fig:evolutionoftargetreproduction}(b)?}
 
