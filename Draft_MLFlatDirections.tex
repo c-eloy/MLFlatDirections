@@ -1,6 +1,6 @@
 %!TEX output_directory = aux
 
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper]{article}
 
 \usepackage[english]{babel}
 
@@ -127,8 +127,8 @@ rectangle,
 minimum width=3.2cm, 
 minimum height=1.cm, 
 text centered, 
-draw=coral, 
-fill=lightcoral,
+draw=myorange, 
+fill=myorange!20,
 line width=1pt,
 font=\sffamily\small\bfseries,
 aspect=1.3
@@ -508,7 +508,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 		To do so, we perform a basic gradient descent. We begin by randomly and uniformly initializing points within a hypercube of range $[-2,2]$. This choice is important to ensure that points are not restricted to the inner range $[-1,1]$. This will be important later, when performing the symbolic regression \footnote{The rationale is that symbolic regression (SR) evaluates the data points ${\vec{x}^i}$ using a candidate polynomial function $p$. The loss function—used later to assess the quality of a given polynomial—is defined as $\sum_i p(\vec{x}^i)$. When all data points lie within the interval $[-1, 1]$, the SR algorithm tends to favor high-degree polynomials, as these often yield smaller values over this range, thereby artificially lowering the loss. Introducing data points with absolute values greater than 1 mitigates this bias by discouraging the selection of overly complex polynomials that exploit this effect.}. For this example, we choose to generate $10^5$ points. This number is motivated by the dimensionality of our problem. If we aim to populate all possible directions and want approximately $\mathcal{O}(10)$ points per direction, then we require $\mathcal{O}(10^5)$ points. Given that the true intrinsic dimensionality of the manifold is less than or equal to 5, this value serves as a conservative upper bound for the number of points needed to adequately sample the manifold.
 		
 		We then perform gradient descent on the points using TensorFlow’s automatic differentiation \cite{tensorflow2015-whitepaper}. The loss function is defined as:
-		\begin{equation}
+		\begin{equation} \label{eq:lossgraddes}
 			\mathcal{L} = \sum_{i = 1}^{n_{points}} ||\left.\nabla V(\vec{X}^{\,i})\,\right|_{\vec{y}=0}||^2
 		\end{equation}
 		where $\vec{X}^{\,i} = (x^i_1,\dots,x^i_6,\tilde{x}^i_7,\tilde{x}^i_8,\tilde{x}^i_9,x^i_{10},\dots,x^i_{12},\tilde{x}^i_{13})$ and $\vec{y}^{\,i} = (x^i_3,x^i_5,x^i_6,\tilde{x}^i_7,\tilde{x}^i_9,x^i_{11},x^i_{12},\tilde{x}^i_{11})$ denotes the data points. This way we only keep $(x^i_1,x^i_2,x^i_4,\tilde{x}^i_8,x^i_{10})$ alive after we have taken the derivative. As already mentionned above, we use the analytic formula for $\nabla V$, but we could have perform the gradient descent by fully using automatic differentiation.
@@ -517,10 +517,17 @@ An additional advantage of this approach is its broader applicability. In scenar
 		
 		\begin{figure}
 			\centering
-			\includegraphics[scale=0.35]{Figures/log_grad_V_hist.png}
-			\quad
-			\includegraphics[scale=0.35]{Figures/log_Vp4_hist.png}
-			\caption{Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.}
+			\subfigure{ \label{fig:log_grad_V}
+				\begin{tikzpicture}
+			  		\draw (0,0) node (fig1) {\includegraphics[scale=0.7]{Figures/log_grad_V_hist_21_05_2025.pdf}};
+			  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+			  		\draw (9,0) node (fig2) {\includegraphics[scale=0.7]{Figures/log_Vp4_hist_21_05_2025.pdf}};
+			  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+			  	\end{tikzpicture}
+			}
+			\subfigure{\label{fig:log_Vp4}}
+			\vspace{-1cm}
+			\caption{(a) Histogram of the the norm of the gradient for each point ($x$ axis is in $\log$ scale). (b) Histogram of the distance of the value of the potential to $V(0)$ for each point ($x$ axis is in $\log$ scale).}
 			\label{fig:Analyze_V_points}
 		\end{figure}
 		
@@ -530,15 +537,15 @@ An additional advantage of this approach is its broader applicability. In scenar
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale = 0.5]{Figures/Loss_grad_des_1.png}
-			\caption{Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha$ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.}
+			\includegraphics[scale = 0.75]{Figures/Loss_grad_des_21_05_2025.pdf}
+			\caption{Evolution of the loss function~\eqref{eq:lossgraddes} during gradient descent and corresponding learning rate schedule, noted $\alpha$ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.}
 			\label{fig:loss_grad_des}
 		\end{figure}
 		
 		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale = 0.3]{Figures/triangular_plot_1_2_4_8_10.png} %names need to be changed.
+			\makebox[\textwidth][c]{\includegraphics[scale = 0.7]{Figures/Triangular_plot_1_2_4_8_10_21_05_2025.pdf}}
 			\caption{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent}
 			\label{triangular_plot_1_2_4_8_10}
 		\end{figure}
@@ -548,11 +555,11 @@ An additional advantage of this approach is its broader applicability. In scenar
 		\subsubsection{Determining the dimension}
 		Once the gradient descent has been completed and the flat directions sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we can first perform some exploratory analyses to better understand the data. Specifically, we aim to determine the dimensionality of the manifold and wether it consists of a single connected component or multiple disjoint components (e.g., two intersecting hyperplanes).
 		To this end, we apply a local Principal Component Analysis (PCA). For each point, we identify its $k$ nearest neighbours and perform a PCA on that local neighbourhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point.
-		We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in Fig. \ref{local_pca}.
+		We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in fig.~\ref{local_pca}.
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale=0.4]{Figures/Local_PCA.png}
+			\includegraphics[scale=0.75]{Figures/Local_PCA_21_05_2025.pdf}
 			\caption{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.}
 			\label{local_pca}
 		\end{figure}
@@ -654,7 +661,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 						% Boucle de retour améliorée
 						\draw [arrow] (end_iter) -| node[pos=0.25, below, arrow_label] {No} ++(-4.5,0) |- (compute_beta);
 						
-						\draw [arrow] (end_iter) -- node[right, arrow_label] {No} (exploit);
+						\draw [arrow] (end_iter) -- node[right, arrow_label] {Yes} (exploit);
 						\draw [arrow] (exploit) -- (output);
 						\draw [arrow] (output) -- (stop);
 						
@@ -946,34 +953,30 @@ where $x_{8} = e^{\tilde{x}_{8}}$. They are found with different frequencies wit
   
 The dynamics of appearance of each annihilator polynomial is plotted in fig.~\ref{fig:evolutionoftargetreproduction}(a), together with the evolution of the inverse temperature $\beta$, averaged on the 1000 runs. Note that the dynamics depend strongly on the polynomial, some of the appearing after only few dozens of epochs, and others just before the end of the runs. \ce{The polynomials are organize in three classes, the first ones appear after typically a dozen of iteration, the second one after 100 and the last one are very difficult to find and rare. The code favors the polynomials with lowest loss through resampling. Du fait de la structure, quand un polynome est trouvé il est favorisé au détriment des autres (resampling). Faire une figure ?} The evolution of the inverse temperature, imposed by eq.~\eqref{eq:acceptanceratioschedule}, is polynomial. \ce{Do a fit.}. \ce{At the end beta is not 1. This allows to find more than one candidate polynomials, favors the diversity. This is linked to the choice of the acceptance ration at the end. The lower the acceptance ration, the higher beta. If ratio too low, no diversoty. If ratio too high, shitty polynomials.} The losses of the runs are shown in fig.~\ref{fig:evolutionoftargetreproduction}(c). \ce{Describe more the loss? It is the best loss at each step. Use the loss to show that we indeed converged}.
 
-\ce{Keep fig.~\ref{fig:evolutionoftargetreproduction}(b)?}
-
-\begin{figure}[h!]
+\begin{figure}
 	\centering
-	\begin{adjustbox}{width=20cm,center}
-		\begin{minipage}[t]{0.31\paperwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figures/Count_beta_adaptative_temp_indiv}
-			\caption*{(a)}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}[t]{0.31\paperwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figures/Count_good_pol_all}
-			\caption*{(b)}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}[t]{0.31\paperwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figures/Loss_all_ASMC.png}
-			\caption*{(c)}
-		\end{minipage}
-	\end{adjustbox}
-	\caption{(a) Dynamics of the mean number of particles reproducing each polynomial in eq.~\eqref{eq:pols} (left scale) and evolution of the inverse temperature $\beta$ and its $1\sigma$ deviation (right scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma$ deviation, for the parameters described in~\eqref{eq:sample10000adaptativetemp}. (c) Evolution of the losses during the runs (in blue) and their average (in yellow).}
+	\subfigure{ \label{fig:count_pol_all_beta}
+		\begin{tikzpicture}
+	  		\draw (0,0) node (fig1) {\includegraphics[scale=0.7]{Figures/Count_pol_all_beta_1000runs_13.pdf}};
+	  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+	  		\draw (8.25,0) node (fig2) {\includegraphics[scale=0.7]{Figures/Count_pol_indiv_1000runs_13.pdf.pdf}};
+	  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+	  	\end{tikzpicture}
+	}
+	\subfigure{\label{fig:count_pol_indiv}}
+	\vspace{-1cm}
+	\caption{(a) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma$ deviation, for the parameters described in~\eqref{eq:sample10000adaptativetemp} (left scale) and evolution of the inverse temperature $\beta$ and its $1\sigma$ deviation (right scale). (b) Dynamics of the mean number of particles reproducing each polynomial in eq.~\eqref{eq:pols} (the scale of the $y$ axis is logarithmic).}
 	\label{fig:evolutionoftargetreproduction}
 \end{figure}
 
-\ce{Tests sur le gradient analytique pour voir si c'est un polynome annulateur.}
+\begin{figure}[h!]
+	\centering
+	\includegraphics[scale=0.75]{Figures/Loss_all_ASMC_1000runs_13.pdf}
+	\caption{Evolution of the losses during the runs (in blue) and their average (in yellow).}
+	\label{fig:lossallASMC}
+\end{figure}
+
+\ce{Tests sur le gradient analytique pour voir si c'est un polynome annulateur. {\bfseries Say more. Add legend?}}
 
 \paragraph{Comparison with AIFeynman}
 In comparaison with state of the art technique, we have used the AIFeynman algorithm on our data set, with again $x_8 = \exp(\tilde{x}_8)$, such that we again look for polynomial expressions. We have run it with the following configuration 
