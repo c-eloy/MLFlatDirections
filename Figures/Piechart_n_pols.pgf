@@ -28,16 +28,16 @@
 
 
 
-\draw (3.2,0.6) node [align=center, font= \bfseries\small] {Number of annihilator\\polynomial for a run};
+\draw (3.2,0.6) node [align=center, font= \bfseries\small] {Number of annihilator\\polynomials for a run};
 \draw[black, fill=myblack!80] (2.2,0) rectangle +(0.3,0.2);
 \draw (2.6,0.1) node [right] {\small $0$};
 \draw[black, fill=myblue!80] (3,0) rectangle +(0.3,0.2);
 \draw (3.4,0.1) node [right] {\small $1$};
 \draw[black, fill=myorange!80] (3.8,0) rectangle +(0.3,0.2);
 \draw (4.2,0.1) node [right] {\small $2$};
-\draw[black, fill=myred!80] (2.6,-0.4) rectangle +(0.3,0.2);
-\draw (3,-0.3) node [right] {\small $3$};
-\draw[black, fill=mygreen!80] (3.5,-0.4) rectangle +(0.3,0.2);
-\draw (3.9,-0.3) node [right] {\small $4$};
+\draw[black, fill=myred!80] (2.55,-0.4) rectangle +(0.3,0.2);
+\draw (2.95,-0.3) node [right] {\small $3$};
+\draw[black, fill=mygreen!80] (3.4,-0.4) rectangle +(0.3,0.2);
+\draw (3.8,-0.3) node [right] {\small $4$};
  
 \end{tikzpicture}
