@@ -1,6 +1,6 @@
 %!TEX output_directory = aux
 
-\documentclass[11pt]{article}
+\documentclass[11pt,a4paper]{article}
 
 \usepackage[english]{babel}
 
@@ -127,8 +127,8 @@ rectangle,
 minimum width=3.2cm, 
 minimum height=1.cm, 
 text centered, 
-draw=coral, 
-fill=lightcoral,
+draw=myorange, 
+fill=myorange!20,
 line width=1pt,
 font=\sffamily\small\bfseries,
 aspect=1.3
@@ -339,10 +339,7 @@ The study of this 5 dimensional parameter potentiel is separated into several pa
 
 The paper is organized as follows. Section 2 establishes the supergravity setup, presenting the scalar potential in its full complexity and motivating the truncation to five fields. Section 3 details our numerical methodology, covering both the gradient descent sampling procedure and the annealed importance sampling approach to symbolic regression. Finally, Section 4 concludes with prospects for extending this approach to higher-dimensional cases and its broader implications for systematic studies of conformal manifolds in holographic theories.
 
-\section{Supergravity setup}
-%\begin{itemize}[label=\textbullet]
-%	\item Context: 6d ${\rm AdS}_{3}\times S^{3}$, truncation to 3d, potential, conformal manifold.
-	
+\section{Supergravity setup} \label{sec:sugra}
 Three-dimensional $\mathcal{N}=8$ (half-maximal) gauged supergravity is governed by the Lagrangian
 %
 \begin{equation}	\label{eq: lagrangian_rephrased} 
@@ -472,14 +469,20 @@ where ${\rm T}\left(A,B,C\right)=\varepsilon_{mnp}\,\varepsilon_{qrs}\,A^{mq}B^{
 				\end{pmatrix}.
 	\end{aligned}
 \end{equation}
+For later convenience, we define a thirteen-dimensional vector
+\begin{equation} \label{eq:defvecX}
+	% \vec{X} = (x_1,\dots,x_6,\tilde{x}_7,\tilde{x}_8,\tilde{x}_9,x_{10},\dots,x_{12},\tilde{x}_{13})
+	\vec{X} = (x_1, x_{2}, x_{3}, x_{4}, x_{5}, x_6, \tilde{x}_7, \tilde{x}_8, \tilde{x}_9,x_{10}, x_{11}, x_{12}, \tilde{x}_{13})
+\end{equation}
+encompassing all parameters. Note here that all dilaton fields are denoted with a tilde. This convention is adopted in anticipation of a later redefinition of the form \( x_i = e^{\tilde{x}_i} \) for these fields. %By reserving the notation without tildes for the exponentiated variables, we maintain a clear and consistent distinction for use in subsequent expressions.
 
-We note here that all dilaton fields are denoted with a tilde. This convention is adopted in anticipation of a later redefinition of the form \( x_i = e^{\tilde{x}_i} \) for these fields. By reserving the notation without tildes for the exponentiated variables, we maintain a clear and consistent distinction for use in subsequent expressions.
+A first numerical exploration suggests that attention can be focused on the five scalars $x_{1}, x_{2}, x_{4}, \tilde{x}_{8}$, and $x_{10}$. This subset, selected at random from the original set of thirteen scalar fields, serves to render the problem more tractable at the outset. It is important to emphasize, however, that this subset does not constitute a consistent truncation of the full theory. Consequently, the truncated theory involving only five scalar fields may not constitute a formally consistent truncation of the full thirteen-scalar theory, as higher-order interactions could, in principle, source the remaining scalar modes. As a result, the interpretation of the five-scalar theory as a consistent subsector of the original theory may no longer hold. Nonetheless, the five-scalar model remains a self-consistent theory in its own right and can be used independently. This distinction does not affect our numerical approach: the solutions we obtain remain valid solutions of the complete theory. This is because we identify the critical points of the scalar potential by first computing $\nabla V = 0$ with all scalar fields included, and only then setting the remaining fields
+\begin{equation} \label{eq:defvecy}
+	\vec{y} = (x_3,x_5,x_6,\tilde{x}_7,\tilde{x}_9,x_{11},x_{12},\tilde{x}_{11})
+\end{equation}
+to zero, as detailed in sec.~\ref{sec:graddes}. By performing the differentiation before the truncation, we ensure that the resulting configurations satisfy the full equations of motion and are therefore legitimate solutions of the complete theory.
 
-A first numerical exploration suggests that attention can be focused on the five scalars $x_{1}, x_{2}, x_{4}, \tilde{x}_{8}$, and $x_{10}$. This subset, selected at random from the original set of thirteen scalar fields, serves to render the problem more tractable at the outset. It is important to emphasize, however, that this subset does not constitute a consistent truncation of the full theory. Consequently, the truncated theory involving only five scalar fields may not constitute a formally consistent truncation of the full 13-scalar theory, as higher-order interactions could, in principle, source the remaining scalar modes. As a result, the interpretation of the five-scalar theory as a consistent subsector of the original theory may no longer hold. Nonetheless, the five-scalar model remains a self-consistent theory in its own right and can be used independently. This distinction does not affect our numerical approach.
-
-Nevertheless, the solutions we obtain remain valid solutions of the complete theory. This is because we identify the critical points of the scalar potential by first computing $\nabla V = 0$ with all scalar fields included, and only then setting the remaining fields to zero. By performing the differentiation before the truncation, we ensure that the resulting configurations satisfy the full equations of motion and are therefore legitimate solutions of the complete theory.
-
-To compute the gradient, we exploit the fact that we possess an analytic expression for the scalar potential \eqref{eq:scalarpotential}, which we implement in Mathematica for numerical analysis. Note however that it could have been fully done using a numerical approach, automatic differenciations methods (that we will use later to do the gradient descent for the loss function).
+To compute the gradient, we exploit the fact that we possess an analytic expression for the scalar potential~\eqref{eq:scalarpotential}, which we implement in Mathematica for numerical analysis. Note however that it could have been fully done using a numerical approach, automatic differentiations methods (that we will use later to do the gradient descent for the loss function).
 %Under this truncation, the scalar potential~\eqref{eq:scalarpotential} reduces to:
 %\begin{equation} \label{eq:scalarpotential124810}
 %	\begin{aligned}
@@ -496,92 +499,90 @@ To compute the gradient, we exploit the fact that we possess an analytic express
 
 Let us make a comment at this point. Since we have an explicit parametrisation of the potential with \eqref{eq:scalarpotential}, one might argue that the problem of identifying flat directions could be addressed by directly computing the gradient of the expression, setting the appropriate scalar fields to zero and subsequently simplifying the resulting equations. However, attempting to carry out this procedure using a symbolic solver such as Mathematica quickly reveals its limitations: the resulting expressions are too complex to be simplified into a manageable form, and do not yield usable relationships that express some variables in terms of others. This complexity does not, however, rule out the possibility that simpler solutions satisfying the condition of vanishing gradient may exist. In this work, we aim to identify such solutions, which we seek using numerical methods. 
 
-An additional advantage of this approach is its broader applicability. In scenarios where an explicit analytic expression for the potential and its gradient is inaccessible—yet numerical evaluation remains feasible—our method retains its validity. In particular, one could replace the analytic gradient by automatic differenciation methods if one can only evaluate the potential. Hence, the numerical strategy adopted here may prove effective even in cases where an exact analytic expression for the potential is out of reach. \bd{other motivation? Example of this ? }
+An additional advantage of this approach is its broader applicability. In scenarios where an explicit analytic expression for the potential and its gradient is inaccessible—yet numerical evaluation remains feasible—our method retains its validity. In particular, one could replace the analytic gradient by automatic differentiation methods if one can only evaluate the potential. Hence, the numerical strategy adopted here may prove effective even in cases where an exact analytic expression for the potential is out of reach. \bd{other motivation? Example of this ? }
 
 \section{Numerical analysis}
-	\subsection{Gradient descent and local analysis}
-		To identify the flat directions in the potential, we will use numerical tools. The procedure is as follows: first, we sample the underlying manifold, and then we use numerical techniques to extract analytical information from the resulting cloud of points. The first step is thus to sample the manifold.
-			\subsubsection{Sampling the manifold}
-		%\paragraph{Gradient descent: implementation, sampling, time needed, loss}
+To identify the flat directions in the potential, we will use numerical tools. The procedure is as follows: first, we sample the underlying manifold, and then we use numerical techniques to extract analytical information from the resulting cloud of points. The sampling of the manifold is done through a gradient descent. We then analyse its dimension and structure using a local Principal Component Analysis~(PCA) and clustering algorithms, and finally extract analytical constraints defining the manifold thanks to Symbolic Regression methods. We detail these different procedures in the following.
 
-		
-		To do so, we perform a basic gradient descent. We begin by randomly and uniformly initializing points within a hypercube of range $[-2,2]$. This choice is important to ensure that points are not restricted to the inner range $[-1,1]$. This will be important later, when performing the symbolic regression \footnote{The rationale is that symbolic regression (SR) evaluates the data points ${\vec{x}^i}$ using a candidate polynomial function $p$. The loss function—used later to assess the quality of a given polynomial—is defined as $\sum_i p(\vec{x}^i)$. When all data points lie within the interval $[-1, 1]$, the SR algorithm tends to favor high-degree polynomials, as these often yield smaller values over this range, thereby artificially lowering the loss. Introducing data points with absolute values greater than 1 mitigates this bias by discouraging the selection of overly complex polynomials that exploit this effect.}. For this example, we choose to generate $10^5$ points. This number is motivated by the dimensionality of our problem. If we aim to populate all possible directions and want approximately $\mathcal{O}(10)$ points per direction, then we require $\mathcal{O}(10^5)$ points. Given that the true intrinsic dimensionality of the manifold is less than or equal to 5, this value serves as a conservative upper bound for the number of points needed to adequately sample the manifold.
-		
-		We then perform gradient descent on the points using TensorFlow’s automatic differentiation \cite{tensorflow2015-whitepaper}. The loss function is defined as:
-		\begin{equation}
-			\mathcal{L} = \sum_{i = 1}^{n_{points}} ||\left.\nabla V(\vec{X}^{\,i})\,\right|_{\vec{y}=0}||^2
-		\end{equation}
-		where $\vec{X}^{\,i} = (x^i_1,\dots,x^i_6,\tilde{x}^i_7,\tilde{x}^i_8,\tilde{x}^i_9,x^i_{10},\dots,x^i_{12},\tilde{x}^i_{13})$ and $\vec{y}^{\,i} = (x^i_3,x^i_5,x^i_6,\tilde{x}^i_7,\tilde{x}^i_9,x^i_{11},x^i_{12},\tilde{x}^i_{11})$ denotes the data points. This way we only keep $(x^i_1,x^i_2,x^i_4,\tilde{x}^i_8,x^i_{10})$ alive after we have taken the derivative. As already mentionned above, we use the analytic formula for $\nabla V$, but we could have perform the gradient descent by fully using automatic differentiation.
-		
-		Through trial and error, we observed that periodically reinitializing the optimizer significantly improved the convergence rate. This technique bears similarity to the concept of warm restarts introduced in \cite{loshchilov2017sgdrstochasticgradientdescent}. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence. We interpret this as follows: when the optimizer is reinitialized, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case.  The evolution of the loss function, along with the learning rate schedule, is shown in Fig.~\eqref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is reinitialized. We also observe that, following the last few reinitializations, the loss exhibits a small bump immediately after the restart. We interpret this behavior as a consequence of the increased learning rate: some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence. This strategy introduces the risk of desampling certain regions in favor of others, introducing the risk to hide some flat directions in the potential. However, we believe that with enough points, it is very unlikely for a flat direction to be completely hidden from us and desampled. 
-		
-		\begin{figure}
-			\centering
-			\includegraphics[scale=0.35]{Figures/log_grad_V_hist.png}
-			\quad
-			\includegraphics[scale=0.35]{Figures/log_Vp4_hist.png}
-			\caption{Left panel: Histogram of the logarithm of the norm of the gradient for each point. Right panel: Histogram of the distance of the value of the potential for each point.}
-			\label{fig:Analyze_V_points}
-		\end{figure}
-		
-		The Adam optimizer was employed throughout the gradient descent procedure. It was reinitialized at iterations {250, 500, 750}, with the learning rate fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialized once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialization was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 500 epochs.
-		
-		Upon completion, it was observed that all data points converged to values close to $-4$. Specifically, nearly all data points attained values within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were on the order of $10^{-3}$. Similarly, 99,739 out of 100,000 data points exhibited gradient norms smaller than $10^{-3}$. These results are summarized in Figure~\ref{fig:Analyze_V_points}.
-		
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale = 0.5]{Figures/Loss_grad_des_1.png}
-			\caption{Evolution of the loss function during gradient descent and corresponding learning rate schedule, noted $\alpha$ on the left y-axis, both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.}
-			\label{fig:loss_grad_des}
-		\end{figure}
-		
-		As a first visualization, we present a triangular plot of the data in Fig. \ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2D projections of the data, along with the 1D histograms of each coordinate after gradient descent.
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale = 0.3]{Figures/triangular_plot_1_2_4_8_10.png} %names need to be changed.
-			\caption{Triangular plot showing $2d$ projections and $1d$ histograms of the data after the gradient descent}
-			\label{triangular_plot_1_2_4_8_10}
-		\end{figure}
-		We can make a few comments on those plots. First, we observe non-trivial correlations in the data. Some of these may result from larger basins of attraction, such as in the $x_1/x_2$ plot. However, the structures seen in the $x_4/\tilde{x}_8$ or $x_4/x_{10}$ plots likely reflect genuine features of the manifold, and will show latter that this is indeed the case. We also note that all directions appear to be well populated. 
-		%Furthermore, we can notice that a large majority of the points converge to the origin $\vec{0}$. This is not surprising, as this just mean that the round sphere solution has a larger basin of attraction, which sounds reasonable. We do not however attempt to shift the points along flat directions to depopulate the origin or repopulate other regions.
-		%\paragraph{Local PCA: graphs of number of patches with given local dimension, and with varying size of local patch, discuss optimal patch size (we want at least few points in each direction)}
-		\subsubsection{Determining the dimension}
-		Once the gradient descent has been completed and the flat directions sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we can first perform some exploratory analyses to better understand the data. Specifically, we aim to determine the dimensionality of the manifold and wether it consists of a single connected component or multiple disjoint components (e.g., two intersecting hyperplanes).
-		To this end, we apply a local Principal Component Analysis (PCA). For each point, we identify its $k$ nearest neighbours and perform a PCA on that local neighbourhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point.
-		We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in Fig. \ref{local_pca}.
-		
-		\begin{figure}[h!]
-			\centering
-			\includegraphics[scale=0.4]{Figures/Local_PCA.png}
-			\caption{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.}
-			\label{local_pca}
-		\end{figure}
-		
-		We observe that for every choice of $k$, there is a prominent peak at $d = 3$, suggesting that the underlying manifold is three-dimensional. For $k = 5$, a noticeable fraction of points are assigned a dimensionality of 2. This can be attributed to the fact that if the true dimension is 3, then selecting only 5 neighbours may not sufficiently populate all three directions, leading the algorithm to underestimate the dimensionality for a fraction of the points. 
-		Additionally, for $k \geq 20$, we observe an increasing number of points being assigned dimensionalities of 4 or 5. This behavior can be explained by the loss of locality when the number of neighbours becomes too large: increasing $k$ results in a coarser approximation, and the algorithm may then incorporate points that are no longer truly local. This artificial enlargement of the neighbourhood can cause the estimated local dimensionality to rise.
-		We thus assume that the manifold under investigation has an intrinsic dimension of 3.
-		
-		%\paragraph{Clustering: HDBScan (only parameter: minimal number of points in a cluster), and graphs of 3d slices of the 5d space}
-		
-		One possible scenario is that our data actually consists of several distinct three-dimensional manifolds, and the points previously identified with dimension $4$ may lie at the intersections of these manifolds. To illustrate, consider the intersection of two lines: at the intersection point, the local dimensionality estimated by the previous PCA algorithm would be 2. To rule out this possibility, we apply a clustering algorithm based on local density, where we only select the points of dimension 3. This, way, we remove the possible intersection points with dimension 4 or 5. For the purpose of the clustering, we use the HDBSCAN algorithm\footnote{Details of the algorithm can be found in the original HDBSCAN paper or documentation \cite{10.1007/978-3-642-37456-2_14}. Briefly, it is a density-based clustering method that extends DBSCAN by converting it into a hierarchical clustering algorithm and then extracting a flat clustering based on the stability of clusters.}.
-		We set the minimum cluster size to 10 points. Out of the 98,606 3-dimensional points, the algorithm identifies three clusters: one of size 10, one of size 91,747, and one of size 6,849. 
-		The smallest cluster (10 points) is likely an artefact of local fluctuations in the data density and is not interpreted as physically meaningful. The last group, comprising 6,849 points, consists of points that the algorithm could not assign to any cluster. We interpret these as outliers or edge points rather than representatives of a separate manifold.
-		What the algorithm does indicate, however, is that over 90\% of the data belongs to a single dominant cluster. In Fig.~\ref{3dplots}, we show 3D projections of the data to visualize the clustering. 
-		\begin{figure}[h!]
-			\centering
-			\hspace{-2cm}
-			\includegraphics[scale=0.5]{Figures/3d_plot_x4_x8_x10.png}
-			\includegraphics[scale=0.5]{Figures/3d_plot_x2_x4_x8.png}
-			\caption{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.}
-			\label{3dplots}
-		\end{figure}
-		In these scatter plots, turquoise points belong to the main cluster, while purple points are those that the algorithm failed to assign. In one of the plots, a few yellow points can be seen; these correspond to the smallest cluster of 10 points. From visual inspection, it appears that the unassigned (purple) points lie mostly on the boundary of the sampled region. We therefore interpret their unassigned status not as evidence of belonging to another manifold, but rather as a result of insufficient local density near the edges of the dataset.
-		
-		From this analysis, we conclude that the gradient descent procedure has produced a sampling of a single, connected, three-dimensional manifold.
-		
-		\vspace{0.5em}
-		
-		After performing both PCA and clustering, we thus find that the data obtained after gradient descent samples a three-dimensional manifold.
+	\subsection{Sampling the manifold: gradient descent} \label{sec:graddes}
+	To perform the gradient descent, we initialise randomly and uniformly points within a hypercube of range $[-2,2]$. This choice is important to ensure that points are not restricted to the inner range~$[-1,1]$, which will be crucial for the Symbolic Regression.\footnote{The rationale is that symbolic regression (SR) evaluates the data points $\vec{x}^{(i)}$ using a candidate polynomial function $p$. The loss function—used later to assess the quality of a given polynomial—is defined as $\sum_i p(\vec{x}^{(i)}$. When all data points lie within the interval $[-1, 1]$, the SR algorithm tends to favor high-degree polynomials, as these often yield smaller values over this range, thereby artificially lowering the loss. Introducing data points with absolute values greater than 1 mitigates this bias by discouraging the selection of overly complex polynomials that exploit this effect.} \ce{Put the footnote later in the SR section?} As the example we're focussing on has a five-dimensional parameter space, we choose to generate $n_{\rm points}=10^5$ points: we aim at populating all five directions and want approximately $\mathcal{O}(10)$ points per direction. As the solutions manifold lie within the five dimensional space, its intrinsic dimension is less than or equal to 5. The value $10^5$ then serves as a conservative upper bound for the number of points needed to adequately sample the manifold.
+	
+	We then perform a gradient descent on the points using TensorFlow’s automatic differentiation \cite{tensorflow2015-whitepaper}. The loss function is defined as
+	\begin{equation} \label{eq:lossgraddes}
+		\mathcal{L} = \sum_{i = 1}^{n_{\rm points}} \left|\left|\left.\nabla V(\vec{X}^{(i)})\,\right|_{\vec{y}^{\,(i)}=0}\right|\right|^2,
+	\end{equation}
+	% where $\vec{X}^{(i)} = (x^{(i)}_1,\dots,x^{(i)}_6,\tilde{x}^{(i)}_7,\tilde{x}^{(i)}_8,\tilde{x}^{(i)}_9,x^{(i)}_{10},\dots,x^{(i)}_{12},\tilde{x}^{(i)}_{13})$ and $\vec{y}^{\,(i)} = (x^{(i)}_3,x^{(i)}_5,x^{(i)}_6,\tilde{x}^{(i)}_7,\tilde{x}^{(i)}_9,x^{(i)}_{11},x^{(i)}_{12},\tilde{x}^{(i)}_{11})$
+	see eq.~\eqref{eq:defvecX} and~\eqref{eq:defvecy} for the definitions of the vectors $\vec{X}$ and $\vec{y}$. The exponents $(i)$ denote the data points, with $i\in\llbracket1,n_{\rm points}\rrbracket$. This way we only keep $(x^{(i)}_1,x^{(i)}_2,x^{(i)}_4,\tilde{x}^{(i)}_8,x^{(i)}_{10})$ alive after we have taken the derivative. As already mentioned above, we use the analytic formula for $\nabla V$, but we could have performed the gradient descent by fully using automatic differentiation.
+
+	\begin{figure}
+		\centering
+		\includegraphics[scale = 0.75]{Figures/Loss_grad_des_21_05_2025.pdf}
+		\caption{Evolution of the loss function~\eqref{eq:lossgraddes} during gradient descent (right $y$-axis, in blue) and corresponding learning rate schedule $\alpha$ (left $y$-axis in orange), both plotted on a logarithmic scale. Dashed lines indicate epochs at which the optimizer was reinitialized.}
+		\label{fig:loss_grad_des}
+	\end{figure}
+
+	The Adam optimizer was employed throughout the gradient descent procedure~\cite{kingma2017adammethodstochasticoptimization}. Through trial and error, we observed that periodically reinitialising the optimizer significantly improved the convergence rate. It was reinitialised at iterations {250, 500, 750}, with the learning rate $\alpha$ fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialised once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialisation was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 500 epochs. The evolution of the loss function~\eqref{eq:lossgraddes}, along with the learning rate schedule, is shown in fig.~\ref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is reinitialised. We also observe that, following the last few reinitialisations, the loss exhibits a small bump immediately after the restart. We interpret this behaviour as follows: the learning rate gets internally adjusted by the Adam optimizer during the descent, and may well be smaller than the instructions when the reset occurs. The learning rate then gets suddenly increased, and some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence. This strategy introduces the risk of desampling certain regions in favour of others, introducing the risk to hide some flat directions in the potential. However, we believe that with enough points, it is very unlikely for a flat direction to be completely hidden from us and desampled. This method bears similarity to the concept of warm restarts introduced in ref.~\cite{loshchilov2017sgdrstochasticgradientdescent}, where the authors reset the learning rate to some value at each reset, without reinitialising the whole optimizer. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence. We interpret this as follows: when the optimizer is reinitialised, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case.
+	
+	\begin{figure}
+		\centering
+		\subfigure{ \label{fig:log_grad_V}
+			\begin{tikzpicture}
+		  		\draw (0,0) node (fig1) {\includegraphics[scale=0.7]{Figures/log_grad_V_hist_21_05_2025.pdf}};
+		  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+		  		\draw (9,0) node (fig2) {\includegraphics[scale=0.7]{Figures/log_Vp4_hist_21_05_2025.pdf}};
+		  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+		  	\end{tikzpicture}
+		}
+		\subfigure{\label{fig:log_Vp4}}
+		\vspace{-1cm}
+		\caption{(a) Histogram of the the norm of the gradient for each point ($x$-axis is in $\log$ scale). (b)~Histogram of the distance of the value of the potential to $V(0)$ for each point ($x$-axis is in $\log$ scale). Note that four points have deviations of the order of $10^{-3}$ and are not visible on the figure.}
+		\label{fig:Analyze_V_points}
+	\end{figure}
+	
+	Upon completion, the loss function converges around $0.002$. The distribution of the values of the gradient at each of the data points is plotted in fig.~\ref{fig:log_grad_V}. More than $93\%$ of the points converged to values of $\vert\nabla V\vert$ lower than $10^{-4}$, and more than $99\%$ of them exhibited gradient norms smaller than $10^{-3}$, yielding a satisfying sampling of the flat directions. As can be observed in fig.~\ref{fig:log_Vp4}, all data points converged to values close to $V(0)=-4$. Specifically, nearly all points attained $V(0)$ within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were of the order of $10^{-3}$ (not visible on the graph). As the origin $\vec{X}=0$ of the parameter space corresponds to the three-dimensional truncation of the round ${\rm AdS}_{3}\times S^{3}$ solution of half-maximal supergravity in six dimensions, this confirms that the data points lie within flat directions of the potential.
+
+	\begin{figure}
+		\centering
+		\makebox[\textwidth][c]{\includegraphics[scale = 0.7]{Figures/Triangular_plot_1_2_4_8_10_21_05_2025.pdf}}
+		\caption{Triangular plot showing all $2d$ projections and $1d$ histograms of the data after the gradient descent.}
+		\label{triangular_plot_1_2_4_8_10}
+	\end{figure}
+	
+	As a first visualisation, we present a triangular plot of the data in fig.~\ref{triangular_plot_1_2_4_8_10}. \ce{Sure of the use of ``triangular''?} This figure shows all possible 2d projections of the data, along with the 1d histograms of each coordinate after gradient descent. Note that all directions appear to be well populated. There also seems to be non-trivial correlations in the data, see for example the $x_1/x_2$, $x_4/\tilde{x}_8$ or $x_4/x_{10}$ graphs. They could be genuine correlations, or may result from larger basins of attraction. Thanks to the analysis of sec.~\ref{sec:results}, we will conclude that the structures in the $x_1/x_2$ plot are artefacts of the gradient descent, whereas the ones seen in the $x_4/\tilde{x}_8$ or $x_4/x_{10}$ plots reflect genuine features of the manifold. 
+
+	\subsection{Local analysis: extracting the dimension}
+	Once the gradient descent has been completed and the flat directions sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we first perform some exploratory analyses to better understand the data. Specifically, we aim at determining the dimension of the manifold and whether it consists of a single connected component or multiple disjoint components (\textit{e.g.} two intersecting hyperplanes). To this end, we apply a local Principal Component Analysis (PCA, see for example ref.~\cite{scikit-learn}). For each point, we identify its $k$ nearest neighbours and perform a PCA on that local neighbourhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point, \textit{i.e.} the dimension of its local tangent space. We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in fig.~\ref{fig:local_pca}. We observe that for every choice of $k$, there is a prominent peak at $d = 3$, suggesting that the underlying manifold is three-dimensional. For $k = 5$, a noticeable fraction of points are assigned dimension 2. This can be attributed to the fact that if the true dimension is 3, then selecting only 5 neighbours may not sufficiently populate all three directions, leading the algorithm to underestimate the dimensionality for a fraction of the points. Additionally, for $k \geq 20$, we observe an increasing number of points being assigned dimensions 4 or 5. This behaviour can be explained by the loss of locality when the number of neighbours becomes too large: increasing $k$ results in a coarser approximation, and the algorithm may then incorporate points that are no longer truly local. This artificial enlargement of the neighbourhood can cause the estimated local dimensionality to rise. We thus conclude that the manifold under investigation has an intrinsic dimension of 3.
+
+	\begin{figure}
+		\centering
+		\includegraphics[scale=0.75]{Figures/Local_PCA_21_05_2025.pdf}
+		\caption{Results of the local PCA analysis. The $x$-axis shows the dimension inferred by the algorithm, and the $y$-axis indicates the proportion of points for which that dimension was found. Each curve corresponds to a different value of $k$ in the $k$-nearest neighbours.}
+		\label{fig:local_pca}
+	\end{figure}
+	
+	One possible scenario is that our data actually consists of several distinct three-dimensional manifolds, intersecting at least at the origin $\vec{X}=0$, and the points previously identified with dimension $4$ may lie at the intersections of these manifolds. Consider for example the intersection of two lines: at the intersection point, the local dimension estimated by the previous PCA algorithm would be 2. To rule out this possibility, we apply a clustering algorithm, based on local density, on the points with tangent spaces of dimension 3 only. This, way, we remove the possible intersection points with local dimension 4 or 5. For the purpose of the clustering, we used the HDBSCAN algorithm\footnote{Details of the algorithm can be found in the original HDBSCAN paper or documentation~\cite{10.1007/978-3-642-37456-2_14}. Briefly, it is a density-based clustering method that extends DBSCAN by converting it into a hierarchical clustering algorithm and then extracting a flat clustering based on the stability of clusters.}.
+
+	We set the minimum cluster size to 10 points. \ce{Redo explanations here, with the new data. Explain results with the fact that the algo is density based? Try to depopulate a bit the center? By randomly removing points?} \ce{Give the choice for $k$: $20$.} Out of the 98,606 3-dimensional points, the algorithm identifies three clusters: one of size 10, one of size 91,747, and one of size 6,849. 
+
+	The smallest cluster (10 points) is likely an artefact of local fluctuations in the data density and is not interpreted as physically meaningful. The last group, comprising 6,849 points, consists of points that the algorithm could not assign to any cluster. We interpret these as outliers or edge points rather than representatives of a separate manifold.
+	What the algorithm does indicate, however, is that over 90\% of the data belongs to a single dominant cluster. In Fig.~\ref{3dplots}, we show 3D projections of the data to visualize the clustering. 
+	\begin{figure}[h!]
+		\centering
+		\hspace{-2cm}
+		\includegraphics[scale=0.5]{Figures/3d_plot_x4_x8_x10.png}
+		\includegraphics[scale=0.5]{Figures/3d_plot_x2_x4_x8.png}
+		\caption{3D plots of the data in selected coordinates. Left: $(x_4, x_8, x_{10})$. Right: $(x_2, x_4, x_8)$.}
+		\label{3dplots}
+	\end{figure}
+	In these scatter plots, turquoise points belong to the main cluster, while purple points are those that the algorithm failed to assign. In one of the plots, a few yellow points can be seen; these correspond to the smallest cluster of 10 points. From visual inspection, it appears that the unassigned (purple) points lie mostly on the boundary of the sampled region. We therefore interpret their unassigned status not as evidence of belonging to another manifold, but rather as a result of insufficient local density near the edges of the dataset.
+	
+	From this analysis, we conclude that the gradient descent procedure has produced a sampling of a single, connected, three-dimensional manifold.
+	
+	\vspace{0.5em}
+	
+	After performing both PCA and clustering, we thus find that the data obtained after gradient descent samples a three-dimensional manifold.
+
+	\ce{ICI}
 
 	\subsection{Annealed Importance Sampling for polynomial symbolic regression}
 	%\begin{itemize}[label=\textbullet]
@@ -622,7 +623,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 						
 						\node (weight_update) [process, below of=compute_beta] {Compute losses and update weights};
 						
-						\node (ess_check) [decision, below of=weight_update] {Effective Sample Size $<$ Threshold ?};
+						\node (ess_check) [decision, below of=weight_update] {Effective Sample Size $<$ Threshold?};
 						
 						\node (resample) [process, right=3.8cm of ess_check] {Resampling particles};
 						
@@ -630,7 +631,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 						
 						\node (acceptance) [process, below of=mutation] {Accept/Reject particles};
 						
-						\node (end_iter) [decision, below of=acceptance] {Last step ?};
+						\node (end_iter) [decision, below of=acceptance] {Last step?};
 						
 						\node (exploit) [process, below of=end_iter, yshift=-0.4cm] {Optional local search};
 						
@@ -654,7 +655,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 						% Boucle de retour améliorée
 						\draw [arrow] (end_iter) -| node[pos=0.25, below, arrow_label] {No} ++(-4.5,0) |- (compute_beta);
 						
-						\draw [arrow] (end_iter) -- node[right, arrow_label] {No} (exploit);
+						\draw [arrow] (end_iter) -- node[right, arrow_label] {Yes} (exploit);
 						\draw [arrow] (exploit) -- (output);
 						\draw [arrow] (output) -- (stop);
 						
@@ -678,7 +679,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\gamma_n(z) := d_0(z) \: \exp \left( -\beta_n L(z) \right).
 		\end{equation} 
 		
-		At each step, we have a set of particles and weights $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and calculate the new unnormalized importance weight $w_n^k$. The latter are updated using the formula 
+		At each epoch, we have a set of particles and weights $\{z_{n-1}^k, w_{n-1}^k\}$ approximating $\pi_{n-1}$ (meaning $\mathbb{E}_{\pi_{n-1}}[f] \approx \frac{\sum_k w_{n-1}^k f(z_{n-1}^k)}{\sum_k w_{n-1}^k}$), and we want to obtain a new set $\{z_n^k, w_n^k\}$ approximating $\pi_n$. To do so, for each particle $z^k_{n-1}$, we propose a new particle $z_n^k \sim q(z_n | z_{n-1}^k)$ and calculate the new unnormalized importance weight $w_n^k$. The latter are updated using the formula 
 		\begin{equation}
 			w_n^k = w_{n-1}^k \times \alpha_{n}^k
 		\end{equation}
@@ -694,7 +695,7 @@ An additional advantage of this approach is its broader applicability. In scenar
 			\item Variable multiplication. Given a polynomial $z_{n-1}$, we choose randomly one of his monomial, and multiply it by one of the available variable. So for eg : $2 x_1 + 3 x_2^2 \rightarrow  2 x_1 x_2 + 3 x_2^2$.
 			\item Variable division. Given a polynomial $z_{n-1}$, we choose randomly one of his monomial, and divide it by one of its variable. So for eg : $2 x_1 x_2 + 3 x_2^2 \rightarrow  2 x_1 + 3 x_2^2$. 
 		\end{itemize}
-		This implementation enables a direct computation of both the forward and backward propagation kernels. In particular, for the case of coefficient perturbations, the transition is symmetric. That is,
+		The polynomials get mutated at each epoch. The mutation is chosen randomly, assigning probabilities \texttt{p\_{modify}} , \texttt{p\_{multiply}} and \texttt{p\_{divide}} to each possibility. This implementation enables a direct computation of both the forward and backward propagation kernels. In particular, for the case of coefficient perturbations, the transition is symmetric. That is,
 		\begin{equation}
 			q(z_n^k \mid z_{n-1}^k) = q(z_{n-1}^k \mid z_n^k),
 		\end{equation}
@@ -704,129 +705,201 @@ An additional advantage of this approach is its broader applicability. In scenar
 		
 		
 		The acceptance ratio for the MCMC algorithm is given by : 
-		\begin{equation}
+		\begin{equation}\label{eq:acceptanceratio}
 			A(z_n,z_{n-1}) = \mathrm{min} \left(1,\frac{ \gamma_n(z_n^k) q(z_{n-1}^k | z_n^k) }{ \gamma_{n-1}(z_{n-1}^k) q(z_n^k | z_{n-1}^k) }  \right)
 		\end{equation}
 		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
+
+		We have adapted the classic approach outilned above. As can be seen in \eqref{eq:gamman}, what matters the most to determine $\gamma_{n}$ is not the inverse temperature, but rather the product of the inverse temperature and the loss function. Therefore, instead of implementing an arbitrary schedule for $\beta$, we employed an adaptive temperature approach. The number of particles accepted at each run is monitored. We aim at following the following schedule as function of the \texttt{epoch}:
+		\begin{equation} \label{eq:acceptanceratioschedule}
+			\texttt{acceptance\_ratio} = 0.8 - 0.5 \times \left(\frac{\texttt{epoch}}{\texttt{n\_epochs}}\right),
+		\end{equation}
+		where \texttt{n\_epochs} is the total number of epochs. If we accept more particle (in the 5 last epochs), we decrease the temperature by 5\%, if we accept less we increase it by 5\%. This encourages exploration during the early stages of training and gradually transitions to a more selective regime. \ce{So we don't use eq.~\eqref{eq:acceptanceratio} at all? This is not clear to me.} 
 		
 		Before closing the section, we need to discuss what is the Loss function we choose. It is required to compute the unormalized distribution $\gamma_n$. Assume that we have $z = \sum_k c_k X_k$, where $c_k$ are the coefficients of the polynomials, and $X_k$ is a short notations for all the possible monomials up to a given degree (so if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_k$ are $1, x, y, x^2, y^2, x y$). For the Loss function, we decided to take : 
-		\begin{equation}
+		\begin{equation} \label{eq:lossreg}
 			L(z) = \sum_{i} z(x_i)^2 + \frac{\lambda}{\sum_k |c_k|}
 		\end{equation}
-		So the first term is just the sum of the squared of the polynomial evaluated on the data. We want to make this 0 so we find polynomial that annihilates our data. The second part is a regularisation factor : it prevents the algorithm to send all the coefficient to 0, which would give a trivial solution to the problem. We typically take $\lambda \sim \mathcal{O}(1000)$.
+		So the first term is just the sum of the squared of the polynomial evaluated on the data. We want to make this 0 so we find polynomial that annihilates our data. The second part is a regularisation factor: it prevents the algorithm to send all the coefficient to 0, which would give a trivial solution to the problem. We typically take $\lambda \sim \mathcal{O}(1000)$.
 		
 		%\item Analysis after AIS: select the best polynomials and do exploitation on the coefficients (without MC: we keep only the proposal of it betters the polynomial).
 		
-		Once the Annealing loop is over, we end up with a total of $n_{sample}$ particles, which in principle should be close to annihilate our data, but whose coefficient may need some more fine tuning. To deal with it, we ran a quick exploitation phase, where, for each polynomial, we now only modify its coefficients, with a pertubation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, and keep the new particle, only if the Loss function is now getting smaller. This allow to fine-tune the coefficients. 
+		Once the Annealing loop is over, we end up with a total of $n_{\rm sample}$ particles, which in principle should be close to annihilate our data, but whose coefficients may need some more fine tuning. To deal with it, we ran a quick exploitation phase, where, for each polynomial, we now only modify its coefficients, with a pertubation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, and keep the new particle, only if the Loss function is now getting smaller. This allow to fine-tune the coefficients. \ce{Mention threshold? And number of iterations?}
 
 %		\bd{Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.}
 	%\end{itemize}
 	
-	\subsubsection{Results}
-	
-	The results of this method are as follow. The code finds the 8 different following polynomials: 
+\section{Results} \label{sec:results}
+	\subsection{Initialisation of the algorithm}
+	We initialized the algorithm with \ce{Give $\lambda$? Do we have all parameters here?}
+	\begin{equation}	\label{eq:sample10000adaptativetemp}
+		\begin{aligned}
+			&\texttt{n\_epochs = 1000},\\
+			&\texttt{beta  = 1e-6}, \\
+			&\texttt{p\_{modify} = 0.5},\\
+			&\texttt{p\_{multiply} = 0.25},\\
+			&\texttt{p\_{divide} = 0.25}. 
+		\end{aligned}
+	\end{equation}
+	This strategy was determined empirically through trial and error; a systematic analysis of its optimization is left for future work. For the representation of polynomials, we adopt a vectorial approach: each polynomial is represented as an array of its coefficients $\{c_k\}$, where $k \in \{1,\dots,n_{\text{mon}}\}$ and $n_{\text{mon}}$ denotes the number of available monomials, determined by the chosen maximum degree \texttt{max\_degree} and the number of variables. We also impose a constraint on the maximum number of terms within a single polynomial \texttt{max\_num\_monomials} to promote sparsity. An alternative approach would be to encourage sparsity through the prior distribution or within the loss function formulation. For the simulations we have done, we chose : 
+	\begin{equation} \label{eq:parampol}
+		\begin{aligned}
+			&\texttt{max\_degree = 4},\\
+			&\texttt{max\_num\_monomials = 6.}
+		\end{aligned}
+	\end{equation}
+	With these parameters and given that we are dealing with $5$ variables, $n_{\text{mon}} = 126$.
+
+	\subsection{Analysis of a typical run}
+	After a run, the 1000 particles are typically distributed into less than 10 different type of polynomials. \ce{Check the exact number. Update with a new run.} Each particles of a given type share the same monomials, but their coefficients fluctuate a bit. We select the representative of each type that features the minimal loss (without the regularisation, $\lambda=0$, see eq.~\eqref{eq:lossreg}). Here is an example of output for a given run: \ce{Here $\texttt{threshold} = 0.1$ and $\texttt{steps} = 1000$ for the local search.}
+	\begin{subequations}
+	    \begin{align}
+			1.999\,x_{2} - 1.999\,x_{2}x_{8} + 1.414\,x_{1}x_{10} + 1.999\,x_{1}x_{4} - x_{10}^{2}x_{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 2 \times 10^{-4},  \label{eq:expol1}\\
+			2\,x_{2} - 1.999\,x_{2}x_{8} + 1.415\,x_{1}x_{8}x_{10} + 2.001\,x_{1}x_{4}x_{8} - 2.002\,x_{2}x_{4}^{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 3 \times 10^{-3}, \label{eq:expol2}\\
+			x_{1}x_{8}x_{10} + 1.416\,x_{1}x_{4}x_{8} - 1.516\,x_{2}x_{4}^{2}x_{8},\quad &L^{(\lambda = 0)} \simeq 3 \times 10^{2}, \label{eq:expol3}\\
+			2\,x_{2} - 1.972\,x_{2}x_{8} + 0.816\,x_{1}x_{10} + 1.369\,x_{1}x_{4} - 0.442\,x_{10}^{2}x_{2},\quad &L^{(\lambda = 0)} \simeq 3 \times 10^{2}, \label{eq:expol4}
+		\end{align}
+	\end{subequations}
+	where we normalised the coefficients by setting one of them to $1$ or $2$. Then, we filter out the polynomials with loss higher than $1$, as the polynomials~\eqref{eq:expol3} and~\eqref{eq:expol4}, which do not annihilate the data. Given that the coefficients of the gradient $\nabla V$ are only integers and square roots of integers, the coefficients of the polynomials annihilating $\nabla V$ must be combinations of rational numbers or square roots thereof. We then deduce from eq.~\eqref{eq:expol1} and~\eqref{eq:expol2} the candidate annihilator polynomials for the above example:
+	\begin{equation}
+		\begin{gathered}
+			2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}x_8x_{10}^{2},\\
+	      2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_8x_{10} + 2\,x_{1}x_{4}x_8
+	      		- 2\,x_{2} x_{4}^{2}x_8.
+		\end{gathered}
+	\end{equation}
+
+	\ce{Change of philosophy here: after SR, we select the best particle, and perform local search. If loss get very low and coefficient not zero, considered as annihilator polynomial. Then filter out the particles containing this polynomial, and repeat on the best particles of the remaining set. Keep it concise. Maybe plot of the loss for the best particle during local search.}
+
+	\subsection{Statistics}
+	We performed 1000 independent runs with the same parameters as above, each involving 1000 particles. It takes approximately 600\,s to do a single run without local search on a regular computer. The code finds the 8 different following polynomials: \ce{Sort polynomials in accordance with their frequency.} 
 	\begin{subequations} \label{eq:pols}
-    \begin{align}
-      p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}x_8 + x_{2}x_8x_{10} - \sqrt{2}\,x_{2}x_{4}x_8,\\
-      p_{2} &= 2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}x_8x_{10}^{2},\\
-      p_{3} &= 2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_8x_{10} + 2\,x_{1}x_{4}x_8
-      		- 2\,x_{2} x_{4}^{2}x_8,\\
-      p_{4} &= \sqrt{2}\,x_{2} - \sqrt{2}\,x_{2}x_8 + \sqrt{2}\,x_{1}\,x_{4} + x_{1}x_8x_{10}
-      		- x_{2}x_{4}x_8x_{10},\\
-      p_{5} &= -2\,x_{1} - 2\,x_{2}x_{4}- 2\,x_{1}x_{4}^{2} + 2\,x_{1}x_8 + \sqrt{2}\,x_{2}x_{10}
-      		+ x_{1}x_8x_{10}^{2},\\
-      p_{6} &= -2\,x_{2}x_{4} - 2\,x_{1}x_{4}^{2} + 2\,x_{2}x_{4}x_8 + \sqrt{2}\,x_{2}x_{10} 
-      		- \sqrt{2}\,x_{2}x_8x_{10} +  x_{1}x_8x_{10}^{2},\\
-      p_{7} &= -\sqrt{2}\,x_{1}^{2}x_{4} + \sqrt{2}\,x_{2}^{2}x_{4} + \sqrt{2}\,x_{1}x_{2}x_{4}^{2} - x_{1}^{2}x_{10}
-      		- x_{2}^{2}x_{10}, \\
-      p_{8} &= -2 + 4 x_{8} - 2 x_8^2 + 2 x_{4}^2 x_8 - x_8^2 x_{10}^2,
-    \end{align}
-  \end{subequations}
-  where $x_{8} = e^{\tilde{x}_{8}}$. They are found with different frequencies with some polynomials occuring more often than others. The results are presented in \eqref{table:results}.
-  
-  	Let us clarify a point regarding the expected structure of the solutions to the system defined by the critical points of the scalar potential, i.e., the variety defined by the vanishing of the gradient $\nabla V$.
-  
-  In algebraic geometry, the set of solutions to the equations $\nabla V = 0$ defines an algebraic variety over a certain base field. In our case, the potential $V$ and its gradient $\nabla V$ are polynomial  functions with coefficients lying in a specific field extension of $\mathbb{Q}$—typically of the form $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$, where $d_i \in \mathbb{Q}$. That is, the coefficients of the polynomials are combinations of rational numbers and square roots of rational numbers.
-  
-  The conformal manifold (or the moduli space of solutions) is then a subvariety of this ambient space, defined as the common zero locus of the polynomials in $\nabla V$. From the perspective of algebraic geometry, this variety is cut out by an ideal in the polynomial ring with coefficients in the aforementioned field extension of $\mathbb{Q}$. Since the defining equations have coefficients in this field, the variety itself is defined over that same field.
-  
-  Now, consider the numerical solutions obtained via methods such as annealed importance sampling. If these numerical procedures converge to points on the same variety, and assuming that the variety is irreducible over the given field, then any point (i.e., any solution) on the variety must lie in the same field extension over which the variety is defined. This follows from basic principles in algebraic geometry: the set of algebraic points on a variety defined over a field $K$ are themselves algebraic over $K$, and the field of definition of these points must be a (possibly finite) extension of $K$.
-  
-  Therefore, even if the numerical solver does not explicitly reveal this, one should expect that the coordinates of the solutions (i.e., the values of the scalar fields at critical points) lie in the same field extension of $\mathbb{Q}$ as the coefficients of the original system of polynomials $\nabla V$. That is, they should belong to $\mathbb{Q}(\sqrt{d_1}, \sqrt{d_2}, \dots)$ or a finite extension thereof.
-  
-  This argument justifies the expectation that if the scalar potential $V$ and its gradient $\nabla V$ involve only rational numbers and square roots, then the solutions to $\nabla V = 0$—regardless of how they are found—should also lie within the same field extension.
-  
- This is this argument that allowed us to round the coefficients of the polynomials given by the annealed importance sampling algorithm, and found the polynomials in Eq. \eqref{eq:pols}.
- 
- \subsubsection{Setup of ASMC}
+	 \begin{align}
+	   p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}x_8 + x_{2}x_8x_{10} - \sqrt{2}\,x_{2}x_{4}x_8,\\
+	   p_{2} &= 2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_{10} + 2\,x_{1}x_{4} - x_{2}x_8x_{10}^{2},\\
+	   p_{4} &= \sqrt{2}\,x_{2} - \sqrt{2}\,x_{2}x_8 + \sqrt{2}\,x_{1}\,x_{4} + x_{1}x_8x_{10}
+	   		- x_{2}x_{4}x_8x_{10},\\
+	   p_{3} &= 2\,x_{2} - 2\,x_{2}x_8 + \sqrt{2}\,x_{1}x_8x_{10} + 2\,x_{1}x_{4}x_8
+	   		- 2\,x_{2} x_{4}^{2}x_8,\\
+	   p_{7} &= -\sqrt{2}\,x_{1}^{2}x_{4} + \sqrt{2}\,x_{2}^{2}x_{4} + \sqrt{2}\,x_{1}x_{2}x_{4}^{2} - x_{1}^{2}x_{10}
+	   		- x_{2}^{2}x_{10}, \\
+	   p_{5} &= -2\,x_{1} - 2\,x_{2}x_{4}- 2\,x_{1}x_{4}^{2} + 2\,x_{1}x_8 + \sqrt{2}\,x_{2}x_{10}
+	   		+ x_{1}x_8x_{10}^{2},\\
+	   p_{8} &= -2 + 4\,x_{8} - 2\,x_8^2 + 2\,x_{4}^2 x_8 - x_8^2 x_{10}^2,\\
+	   p_{6} &= -2\,x_{2}x_{4} - 2\,x_{1}x_{4}^{2} + 2\,x_{2}x_{4}x_8 + \sqrt{2}\,x_{2}x_{10} 
+	   		- \sqrt{2}\,x_{2}x_8x_{10} +  x_{1}x_8x_{10}^{2},
+	 \end{align}
+	\end{subequations}
+	where $x_{8} = e^{\tilde{x}_{8}}$. They are found with different frequencies, with some polynomials occurring more often than others, as reported in tab.~\ref{table:results}. The algorithm typically identifies an average of $2.2$ distinct polynomials per run, with a maximum number of $4$, demonstrating its capacity to uncover multiple solutions simultaneously. The algorithm failed at finding a solution in only 3 runs. This is summed up in fig.~\ref{fig:piechart}. Note that in $77\%$ of the time the algorithm finds more than a single solution, demonstrating the robustness of the method.
 
-We now provide further details about the implementation of our code. To recover the polynomials presented in Eq.~\eqref{eq:pols}, we performed 1000 independent runs on a cluster, each involving 1000 particles. As can be seen in \eqref{eq:gamman}, we see that what matters the most in the the inverse temperature, but rather the inverse temperature multiplied by the loss function. Therefore, instead of implementing an arbitrary schedule for $\beta$, we employed ans adaptive temperature approach, as previously described. The acceptance ratio was controlled by the following schedule:
-\begin{equation}
-	\texttt{acceptance\_ratio} = 0.8 - 0.5 \times \left(\frac{\texttt{epoch}}{\texttt{n\_epochs}}\right),
-\end{equation}
-which encourages exploration during the early stages of training and gradually transitions to a more selective regime. We initialized the algorithm with 
-\begin{equation}\label{eq:sample10000adaptativetemp}
-	\begin{aligned}
-		&\texttt{n\_epochs = 1000}\,,\\
-		&\texttt{beta = 1e{-6}}\,, \\
-		&\texttt{p\_{modify} = 0.5},\\
-		&\texttt{p\_{multiply} = 0.25},\\
-		&\texttt{p\_{divide} = 0.25}. 
-	\end{aligned}
-\end{equation}
+	\begin{table}
+		\centering
+		\renewcommand{\arraystretch}{1.3}
+		\begin{tabular}{c|ccccccccc}
+			& $p_{1}$ & $p_{2}$ & $p_{4}$ & $p_{3}$ & $p_{7}$ & $p_{5}$ & $p_{8}$  & $p_{6}$&  $\varnothing$  \\\hline\hline
+			Frequency & 92.6\% & 75.0\% & 51.9\% & 1.7\% & 0.2\% & 0.7\% & 0.7\% & 0.3\% & 0.1\% \\
+			Maximum \# of representatives & 1000 & 1000 & 991 & 869 & 879 & 710 & 207 & 18 & --
+		\end{tabular}
+		\caption{Statistics of the ability of the ASMC algorithm to produce the polynomials~\eqref{eq:pols} on 1000 runs with parameters~\eqref{eq:sample10000adaptativetemp} and~\eqref{eq:parampol}. The frequencies represent the percentage of runs featuring a given polynomial in its outputs, and the maximum number of representatives gives the maximum number of particles representing the polynomial in a given run. The column $\varnothing$ counts the runs that failed to produce an annihilator polynomial.}
+		\label{table:results}
+	\end{table}
 
-This strategy was determined empirically through trial and error; a systematic analysis of its optimization is left for future work. For the representation of polynomials, we adopt a vectorial approach. Specifically, each polynomial is represented as an array of its coefficients $\{c_k\}$, where $k \in \{1,\dots,n_{\text{mon}}\}$ and $n_{\text{mon}}$ denotes the number of authorized monomials, determined by the chosen maximum degree. We also impose a constraint on the maximum number of terms within a single polynomial to promote sparsity. An alternative approach would be to encourage sparsity through the prior distribution or within the loss function formulation. For the simulations we have done, we chose : 
-\begin{equation}
-	\begin{aligned}
-	&\texttt{max\_degree} = 4,\\
-	&\texttt{max\_num\_monomials} = 6.
-\end{aligned}
-\end{equation}
-The time it takes to do a single run in approximately 600s on a regular computer. The main results are summarized in Fig. \ref{fig:evolutionoftargetreproduction} (a) and (b) and the losses of the run are shown in Fig. \ref{fig:evolutionoftargetreproduction} (c). 
-%\begin{figure}
-%	\centering
-%	\includegraphics[scale=0.35]{Figures/Loss_all_ASMC.png}
-%	\caption{Losses of all the 1000 runs in shaded blue and the average loss over all run in brown.}
-%	\label{fig:losses_ASMC}
-%\end{figure}
-The frequencies with which each of the polynomials in Eq.~\eqref{eq:pols} was recovered are reported in the table below:
-  \begin{equation}
-  	\label{table:results}
-	\begin{tabular}{c|ccccccccc}
-		& $p_{1}$ & $p_{2}$ & $p_{3}$ & $p_{4}$ & $p_{5}$ & $p_{6}$ & $p_{7}$ & $p_{8}$ &  $\varnothing$  \\\hline\hline
-		Frequency & 92.6\% & 75.0\% & 1.7\% & 51.9\% & 0.7\% & 0.1\% & 0.2\% & 0.7\% & 0.3\% \\\hline\hline
-		Maximum \# of Representant & 1000 & 1000 & 869 & 991 & 710 & 18 & 879 & 207 & $\varnothing$
-		
-	\end{tabular}
-\end{equation}
+	\begin{figure}
+		\centering
+		\input{Figures/Piechart_n_pols.pgf}
+		\caption{Pie chart of the repartition of the number of distinct polynomials found in a single run.}
+		\label{fig:piechart}
+	\end{figure}
+	  
+	We have tracked the appearance of the polynomials~\eqref{eq:pols} during each of the 1000 runs. To do so, we have counted at each epoch the number of particles including the same monomials as the annihilator polynomials.\footnote{Thus, a particle featuring the same monomials as one of the polynomials~\eqref{eq:pols} will be counted, even if the coefficients do not match, and if there are additional monomials.} The total number of particles reproducing at least one of the annihilator polynomials listed in eq.~\eqref{eq:pols} is plotted in fig.~\ref{fig:count_pol_all_beta}, together with the evolution of the inverse temperature $\beta$, both averaged on the 1000 runs. The proportion of annihilator polynomials among the particles start to be significant after approximately 700 epochs. It then increases quickly and, towards the end of each run, an average of $88\%$ of the particles do reproduce one of the annihilator polynomials, with a standard deviation of $20\%$. The evolution of this proportion is explained by the structure of the method: the code favours the particles with highest weights, and thus those that cause a significant improvement to the loss function, at each resampling. Once an annihilator polynomials is reached, it colonises larger and larger proportions of the particles at each resampling.
 
-With this approach, the average number of particles reproducing one of the target polynomials at the end of a run is 882, with a standard deviation of 200. Moreover, the algorithm typically identifies an average of 2.24 distinct polynomials per run, with a maximum number of 4, demonstrating its capacity to uncover multiple solutions simultaneously. Finally the algorithm failed at finding a solution in only 3 runs. This is sumed up in Fig. \ref{fig:piechart}. We see that for $77.4\%$ on the time that the algorithm finds more than a single solution, demonstrating the robustness of the technique. 
+	The evolution of the inverse temperature is dictated by eq.~\eqref{eq:acceptanceratioschedule}. Note that $\beta$ is equal to $0.02$ in average at the end of the runs. The temperature is thus still quite high, which favours diversity. This is a key ingredient to get more than one candidate polynomials per run. The end value of $\beta$ is intimately linked to the choice of target acceptance ratio in eq.~\eqref{eq:acceptanceratioschedule}: the lower the acceptance ratio, the higher the inverse temperature $\beta$. On the one hand, if the ratio is too low, very few particles get mutated and it's difficult to explore the space of polynomials and to have diverse outputs. On the other hand, if the ratio is too high, there are too many mutations: the output features a large number of polynomials, but lots of them do not converge to an annihilator polynomials because the algorithm is not selective enough. It is a matter of balance between exploration and exploitation.
 
-\begin{figure}[h!]
-	\centering
-	\begin{adjustbox}{width=20cm,center}
-		\begin{minipage}[t]{0.31\paperwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figures/Count_beta_adaptative_temp_indiv}
-			\caption*{(a)}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}[t]{0.31\paperwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figures/Count_good_pol_all}
-			\caption*{(b)}
-		\end{minipage}%
-		\hfill
-		\begin{minipage}[t]{0.31\paperwidth}
-			\centering
-			\includegraphics[width=\linewidth]{Figures/Loss_all_ASMC.png}
-			\caption*{(c)}
-		\end{minipage}
-	\end{adjustbox}
-	\caption{{\bfseries \boldmath \texttt{acceptance\_ratio} = 0.8 - 0.5 $\times$ (\texttt{epoch}/\texttt{n\_epochs})} (a) Evolution of the mean number of particles reproducing each target polynomial (log scale). (b) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma$ deviation, for the parameters described in~\eqref{eq:sample10000adaptativetemp}.}
-	\label{fig:evolutionoftargetreproduction}
-\end{figure}
+	The dynamics of appearance of each annihilator polynomial is plotted in fig.~\ref{fig:count_pol_indiv}, averaged on the 1000 runs. The dynamics depend strongly on the polynomial and we observe three different classes. In the first case, for $p_{1}, p_{2}$ and $p_{4}$, the first occurrences appear typically after only few dozen of epochs; and in the the second one, constituted of $p_{3}, p_{5}, p_{7}$ and $p_{8}$, after few hundreds of epochs. The last class has $p_{6}$ as its only representative. This polynomial is very difficult to produce, and when it appears it is only towards the end of the runs. The stair-step patterns, with sudden jumps in the population of the polynomials alternating with phases of stagnation, are due to the use of resampling in the algorithm. When a particle get close enough to an annihilating polynomials, its loss gets lowered significantly faster than the one of the other particles. This induces an increase of its weight and it will populate a large part of the sample at the next resampling. The coefficients get improved during the stagnation phases, inducing an increase of the polynomials weights, and thus even larger colonizations during the following resamplings. This also induces a competition between the annihilator polynomials, the ones that get bettered the more easily (typically those with fewest terms) are favoured. This mechanism explains the decrease in the averaged population of the polynomial $p_{8}$ observed after 800 epochs in fig.~\ref{fig:count_pol_indiv}.
 
+	The best loss for each of the 1000 runs is shown in fig.~\ref{fig:lossallASMC} in blue, together with their mean value in yellow, with a logarithmic $y$-axis. The losses here do include the regularisation factor $\lambda$, see eq.~\eqref{eq:lossreg}. For a given run, we are plotting the best loss at each epoch, the curves thus do not follow single particles. On average the loss get bettered by two orders of magnitude during a run, illustrating the convergence of the algorithm. \ce{Discuss the fact that it's still high. Also linked to the low $\beta$. Sufficient to distinguish good polynomials using local search.}
+
+	\begin{figure}
+		\centering
+		\subfigure{ \label{fig:count_pol_all_beta}
+			\begin{tikzpicture}
+		  		\draw (0,0) node (fig1) {\includegraphics[scale=0.7]{Figures/Count_pol_all_beta_1000runs_13.pdf}};
+		  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
+		  		\draw (8.25,0) node (fig2) {\includegraphics[scale=0.7]{Figures/Count_pol_indiv_1000runs_13.pdf.pdf}};
+		  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
+		  	\end{tikzpicture}
+		}
+		\subfigure{\label{fig:count_pol_indiv}}
+		\vspace{-1cm}
+		\caption{(a) Evolution of the mean number of particles reproducing a target polynomial, along with its $1\sigma$ deviation, for the parameters described in~\eqref{eq:sample10000adaptativetemp} (left scale) and evolution of the inverse temperature $\beta$ and its $1\sigma$ deviation (right scale). (b) Dynamics of the mean number of particles reproducing each polynomial in eq.~\eqref{eq:pols} (the scale of the $y$-axis is logarithmic).}
+		\label{fig:evolutionoftargetreproduction}
+	\end{figure}
+
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.75]{Figures/Loss_all_ASMC_1000runs_13.pdf}
+		\caption{Evolution of the lowest loss during each of the 1000 runs (in blue) and their average (in yellow). The losses are computed with the regularisation factor $\lambda$, see eq.~\eqref{eq:lossreg}.}
+		\label{fig:lossallASMC}
+	\end{figure}
+
+	\subsection{Supergravity solution}
+	In the previous section, we introduced a numerical method that enabled symbolic regression, yielding a set of polynomials that vanish on our dataset, as presented in eq.~\eqref{eq:pols}. We know from sec.~\ref{sec:gadientlocalanalysis} that the manifold we are aiming at parametrising is three-dimensional. As the parameter space is of dimension $5$, we only need two constraints to define the solutions, and the eight polynomials of eq.~\eqref{eq:pols} are not independent. We are however only interested in finding an analytic parametrisation of the solutions manifold, and the easiest to find it is to solve the system
+	\begin{equation}\label{eq:solvepol}
+		p_i = 0, \quad \forall i \in {1,\dots,8}.
+	\end{equation}
+	This leads to the following rules between the parameters:
+	\begin{equation}\label{eq:rulex8x10}
+		\begin{cases}
+			\displaystyle e^{\tilde{x}_{8}} = \frac{x_{1}^{2}+x_{2}^{2}}{x_{2}^{2} + \big(x_{1}-x_{2}x_{4}\big)^{2}},\\[10pt]
+			\displaystyle x_{10} = \sqrt{2}\,x_{4}\,\frac{x_{2}^{2} - x_{1}^{2}+x_{1}x_{2}x_{4}}{x_{1}^{2}+x_{2}^{2}}.
+		\end{cases}
+	\end{equation}
+	Alternatively, the system can be recast as:
+	\begin{equation}
+		\begin{cases}
+			\displaystyle x_{1} = \frac{x_{2}}{e^{\tilde{x}_{8}}-1}\,\Big(x_{4}\,e^{\tilde{x}_{8}} \pm \sqrt{-1+\big(2+x_{4}^{2}\big)\,e^{x_{8}}-e^{2\tilde{x}_{8}}}\Big),\\[8pt]
+			\displaystyle x_{10} = \mp\,e^{-\tilde{x}_{8}}\,\sqrt{-2+2\,\big(2+x_{4}^{2}\big)\,e^{\tilde{x}_{8}}-2\,e^{2\tilde{x}_{8}}},
+		\end{cases}
+	\end{equation}
+	or
+	\begin{equation}
+		\begin{cases}
+			\displaystyle x_{1} = \frac{x_{2}}{\sqrt{2}}\,\frac{e^{\tilde{x}_{8}/2}}{e^{\tilde{x}_{8}}-1}\,\Big(-x_{10}\,e^{\tilde{x}_{8}/2} \pm \sqrt{2-4\,e^{\tilde{x}_{8}}+e^{2\tilde{x}_{8}}\big(2+x_{10}^{2}\big)}\Big),\\[8pt]
+			\displaystyle x_{4} = \pm \frac{e^{-x_{8}/2}}{\sqrt{2}}\,\sqrt{2-4\,e^{\tilde{x}_{8}}+e^{2\tilde{x}_{8}}\big(2+x_{10}^{2}\big)}.
+		\end{cases}
+	\end{equation}
+	As anticipated, this defines a three-parameter manifold. We tested analytically that $\nabla V = 0$ for any of these rules. The three-parameter manifold then corresponds defines a three-dimensional space of flat directions of the half-maximal supergravity scalar potential.\footnote{One might argue that only two of the eight polynomials are sufficient to fully characterize the solution. That is, choosing any pair $(i,j) \in {1, \dots, 8}$ may suffice to extract a complete description. In practice, this is not entirely accurate. While such a pair can yield partial constraints -- for example, recovering eq.~\eqref{eq:rulex8x10} -- it may also produce alternative (and potentially less general) parameterisations. Upon inspection, all such partial rules are found to be consistent with, and included in, the most general expressions given in eq.~\eqref{eq:rulex8x10}.}
+
+	The supergravity solution can be shown to preserve a ${\rm U}(1)\times{\rm U}(1)$ gauged symmetry. Using the parametrisation~\eqref{eq:rulex8x10}, the $(x_{1},x_{2},x_{4})$ moduli space is most nicely parametrised using the change of coordinates
+	\begin{equation}
+		x_{1} = r\cos(\theta)\cos(\Phi), \quad x_{2} = r\cos(\theta)\sin(\Phi) \quad {\rm and} \quad x_{4} = r\sin(\theta),
+	\end{equation}
+	for which the Zamolodchikov metric reads
+	\begin{equation}
+		\d^{2}s_{\rm Zam.} = -\,\d r^{2} - r^{2}\,\bigg(\d \theta^{2} - r\cos(\theta)\,\d \theta\d\Phi + \sin(\theta)\,\d r\d\Phi + \frac{1}{2}\,\big(3+r^{2}-\cos(2\theta)\big)\,\d\Phi^{2} \bigg).
+	\end{equation}
+
+\section{Conclusion}
+
+In this work, we have presented a novel machine learning approach to systematically identify and characterize flat directions in supergravity scalar potentials. Our methodology combines gradient descent sampling with annealed importance sampling for symbolic regression, demonstrating its effectiveness on a 5-scalar subsector of 3d (1,1) supergravity derived from 
+$AdS_3 \times S^3 \times T^4$ compactifications of IIB supergravity.
+
+We developed a robust pipeline that transitions from numerical exploration to analytical understanding. The gradient descent procedure successfully samples the flat direction manifold, while local PCA analysis reveals its intrinsic dimensionality. Most notably, our annealed importance sampling approach to symbolic regression automatically discovers polynomial constraints characterizing the manifold, bypassing the computational complexity that renders direct symbolic manipulation intractable.
+
+Our analysis reveals that the 5-dimensional scalar space contains a 3-dimensional conformal manifold, with one direction potentially gauge-fixable. The discovered solution preserves $U(1) \times U(1)$ gauged symmetry and exhibits a rich spectrum structure. The Zamolodchikov metric on the moduli space, parametrized by spherical-like coordinates, provides a concrete geometric description of the conformal manifold.
+
+The method demonstrates remarkable efficiency and reliability. The algorithm discovers eight distinct polynomial relations with varying frequencies, suggesting a hierarchical structure in constraint discovery. Futhermore, upon 1000 the algorithm failed at finding any solution in only 3 cases, demonstrating the robustness of the method. 
+
+This approach opens several promising avenues for advancement. The scalability to higher-dimensional cases represents the most immediate challenge and opportunity. By increasing the number of particles, refining the annealing schedule, and optimizing polynomial search strategies, we anticipate extending this methodology to the full 13-scalar theory and potentially to other supergravity models. 
+
+Beyond technical improvements, this work suggests a broader paradigm for exctrating conformal manifolds in string theory and supergravity. This analytical constraints from numerical data could prove invaluable for classifying flat directions across different theories, understanding moduli stabilization mechanisms, and exploring the landscape of consistent supergravity backgrounds.
+
+The marriage of machine learning techniques with traditional supergravity analysis represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, we envision this methodology becoming a standard tool for exploring the intricate relationships between geometry, symmetry, and dynamics in supergravity theories.
+
+While the specific solution found in this 5-scalar model may have limited direct physical applications, the demonstrated feasibility of our approach and its potential for systematic classification of flat directions across the supergravity landscape make it a valuable addition to the theoretical physicist's toolkit.
+
+\appendix
+\section{Comparison with AIFeynman} \ce{Appendix?}
 In comparaison with state of the art technique, we have used the AIFeynman algorithm on our data set, with again $x_8 = \exp(\tilde{x}_8)$, such that we again look for polynomial expressions. We have run it with the following configuration 
 \begin{equation}
 	\begin{aligned}
@@ -850,123 +923,6 @@ which after identifying the numerical factor with $\sqrt 2$ and inverting the re
 	- \sqrt 2 x_1 + \sqrt 2 x_1 x_8 + x_2 x_8  x_{10} -\sqrt 2 x_2 x_4 x_8 = 0
 \end{equation}
 which corresponds to $p_1$ of Eq. \eqref{eq:pols}. While the AIFeynman code is able to recover one of the constraints, it exhibits several drawbacks compared to our method. First, it is significantly slower: it required TIME (to be specified) compared to approximately 600 seconds for a single run of our ASMC algorithm. Moreover, the AIFeynman framework is based on expressing one variable as a function of the others, which assumes the invertibility of the underlying relation. In general, this is not guaranteed for the class of polynomials in Eq. \eqref{eq:pols}, and obtaining a closed-form inverse can be nontrivial or even impossible for higher-degree expressions. In our case, each polynomial involves at most quadratic terms in any single variable, ensuring invertibility, but this property would not hold for more complex models. In addition, AIFeynman is limited to recovering one constraint per run, whereas our ASMC method can discover multiple constraints simultaneously. This is reflected in our results, where each run identified an average of 2.15 polynomials, with up to 4 found in the best case. Finally, the brute-force regression strategy used by AIFeynman makes it less effective for identifying higher-degree polynomials, whose complexity increases the search difficulty. In contrast, our method treats all polynomials as equally probable, regardless of their degree, enabling it to uncover more intricate structures more efficiently \footnote{Note that we do not claim that we have used the AIFeynman in the most optimal way.}.
-
-\begin{figure}[h!]
-	\centering
-	\includegraphics[scale=0.5]{Figures/piechart_results_n_pol_each_run.png}
-	\caption{Pie chart showing the repartition of the number of distinct polynomials found in the runs. Note that there is also the failure case, which corresponds 3 different runs.}
-	\label{fig:piechart}
-\end{figure}
-
-\section{Conclusion}
-
-In this work, we have presented a novel machine learning approach to systematically identify and characterize flat directions in supergravity scalar potentials. Our methodology combines gradient descent sampling with annealed importance sampling for symbolic regression, demonstrating its effectiveness on a 5-scalar subsector of 3d (1,1) supergravity derived from 
-$AdS_3 \times S^3 \times T^4$ compactifications of IIB supergravity.
-
-We developed a robust pipeline that transitions from numerical exploration to analytical understanding. The gradient descent procedure successfully samples the flat direction manifold, while local PCA analysis reveals its intrinsic dimensionality. Most notably, our annealed importance sampling approach to symbolic regression automatically discovers polynomial constraints characterizing the manifold, bypassing the computational complexity that renders direct symbolic manipulation intractable.
-
-Our analysis reveals that the 5-dimensional scalar space contains a 3-dimensional conformal manifold, with one direction potentially gauge-fixable. The discovered solution preserves $U(1) \times U(1)$ gauged symmetry and exhibits a rich spectrum structure. The Zamolodchikov metric on the moduli space, parametrized by spherical-like coordinates, provides a concrete geometric description of the conformal manifold.
-
-The method demonstrates remarkable efficiency and reliability. The algorithm discovers eight distinct polynomial relations with varying frequencies, suggesting a hierarchical structure in constraint discovery. Futhermore, upon 1000 the algorithm failed at finding any solution in only 3 cases, demonstrating the robustness of the method. 
-
-This approach opens several promising avenues for advancement. The scalability to higher-dimensional cases represents the most immediate challenge and opportunity. By increasing the number of particles, refining the annealing schedule, and optimizing polynomial search strategies, we anticipate extending this methodology to the full 13-scalar theory and potentially to other supergravity models. 
-
-Beyond technical improvements, this work suggests a broader paradigm for exctrating conformal manifolds in string theory and supergravity. This analytical constraints from numerical data could prove invaluable for classifying flat directions across different theories, understanding moduli stabilization mechanisms, and exploring the landscape of consistent supergravity backgrounds.
-
-The marriage of machine learning techniques with traditional supergravity analysis represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, we envision this methodology becoming a standard tool for exploring the intricate relationships between geometry, symmetry, and dynamics in supergravity theories.
-
-While the specific solution found in this 5-scalar model may have limited direct physical applications, the demonstrated feasibility of our approach and its potential for systematic classification of flat directions across the supergravity landscape make it a valuable addition to the theoretical physicist's toolkit.
-
-\appendix
-\section{Supergravity solutions}
-%\begin{itemize}[label=\textbullet]
-%	\item For each couple of candidate polynomials, we get the same expression for the solution, and it indeed defines a unique vacuum of the 3d SUGRA.
-%	\item Discussion of the vacuum: gauge group, Zham. metric, change of variables, 3d spectrum (and stability), spin 2 spectrum on $S^{3}$, one parameter seems to be a gauge parameter, uplift?
-%\end{itemize}
-
-%For every couples $(p_{i},p_{j})$ of polynomials in eq.~\eqref{eq:pols}, the system
-%\begin{equation}
-%	\begin{cases}
-	%		p_{i} = 0, \\
-	%		p_{j} = 0,
-	%	\end{cases}
-%\end{equation}
-%gives the same solution \ce{That's not true! For example, $x_{1}=x_{2}=0$ solves all polynomials but is not a sugra solution. Mention tests on the sugra?}
-
-In the previous section, we introduced a numerical method that enabled symbolic regression, yielding a set of polynomials that vanish on our dataset, as presented in Eq.~\ref{eq:pols}. We can now solve the system
-\begin{equation}\label{eq:solvepol}
-	p_i = 0, \quad \forall i \in {1,\dots,7}
-\end{equation}
-which leads to the following expressions:
-\begin{equation}
-	\begin{cases}
-		\displaystyle x_{1} = \frac{x_{2}}{\sqrt{2}}\,\frac{e^{x_{8}/2}}{e^{x_{8}}-1}\,\Big(-x_{5}\,e^{x_{8}/2} + \sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}\Big),\\[8pt]
-		\displaystyle x_{4} = \frac{e^{-x_{8}/2}}{\sqrt{2}}\,\sqrt{2-4\,e^{x_{8}}+e^{2x_{8}}\big(2+x_{10}^{2}\big)}.
-	\end{cases}
-\end{equation}
-
-Alternatively, the system can be recast as:
-\begin{equation}\label{eq:rulex8x10}
-	\begin{cases}
-		\displaystyle \tilde{x}_{8} = \frac{x{1}^{2}+x_{2}^{2}}{x_{2}^{2} + \big(x_{1}-x_{2}x_{4}\big)^{2}},\\[10pt]
-		\displaystyle x_{10} = \sqrt{2},x_{4},\frac{x_{2}^{2} - x_{1}^{2}+x_{1}x_{2}x_{4}}{x_{1}^{2}+x_{2}^{2}}.
-	\end{cases}
-\end{equation}
-
-As anticipated, this defines a three-parameter solution corresponding to a three-dimensional slice of the half-maximal supergravity scalar potential.
-
-Let us make a few remarks at this stage. First, it is possible to find solutions to Eq.~\ref{eq:solvepol} which, however, are not solutions of $\nabla V = 0$. For instance $x_1 = x_2 = 0$; such cases are excluded, as they do not satisfy the stationarity condition and therefore do not correspond to valid physical solutions.
-
-Secondly, one might argue that only two of the seven polynomials are sufficient to fully characterize the solution. That is, choosing any pair $(i,j) \in {1, \dots, 7}$ may suffice to extract a complete description. In practice, this is not entirely accurate. While such a pair can yield partial constraints—for example, recovering Eq.\ref{eq:rulex8x10}—it may also produce alternative (and potentially less general) parameterizations. Upon inspection, all such partial rules are found to be consistent with, and included in, the most general expressions given in Eq.\ref{eq:rulex8x10}.
-
-The solution preserves a ${\rm U}(1)\times{\rm U}(1)$ gauged symmetry.
-
-%\paragraph{Moduli space}
-The $(x_{1},x_{2},x_{4})$ moduli space is most nicely parametrised using the change of coordinates
-\begin{equation}
-	x_{1} = r\cos(\theta)\cos(\Phi), \quad x_{2} = r\cos(\theta)\sin(\Phi) \quad {\rm and} \quad x_{4} = r\sin(\theta),
-\end{equation}
-for which the Zamolodchikov metric reads
-\begin{equation}
-	\d^{2}s_{\rm Zam.} = -\,\d r^{2} - r^{2}\,\bigg(\d \theta^{2} - r\cos(\theta)\,\d \theta\d\Phi + \sin(\theta)\,\d r\d\Phi + \frac{1}{2}\,\big(3+r^{2}-\cos(2\theta)\big)\,\d\Phi^{2} \bigg).
-\end{equation}
-\ce{Tests other change of variables? Test choices of variables other than $(x_{1},x_{2},x_{4})$?}
-
-\paragraph{Bosonic spectrum}
-Vector fields:
-\begin{equation}
-	\begin{aligned}	
-		m_{\sst{(1)}}\ell_{\rm AdS}:\quad &
-		0\ [2],	\quad
-		-2\ [5],	\quad
-		2\ [1],	\\[5pt]
-		&	-1\pm\sqrt{\left(1+r^2\right)^2-2\,r^2\,\cos(2\theta)}\ [2+2],	\\[5pt]
-		&	1\pm\sqrt{1+4\,r^2+r^{4}}\ [2+2].
-	\end{aligned}
-\end{equation}
-The integers between square brackets indicate the multiplicity of each eigenvalue. The spectrum includes two massless vectors corresponding to the unbroken ${\rm U}(1)\times {\rm U}(1)$ gauge symmetry, although in three dimensions they are non-propagating.
-
-
-Scalars:
-\begin{equation}
-	\begin{aligned}	
-		\left(m_{\sst{(0)}}\ell_{\rm AdS}\right)^2:\quad&
-		0\ [5],	\quad
-		8\ [1],	\quad
-		r^{2}\,\left(4+r^2\right)\ [8],	\\[5pt]
-		&	2r\,\Big(3\,r+r^{3}\pm(2+r^{2})\,\sqrt{2+r^2-2\,\cos(2\theta)}-r\cos(2\theta)\Big)\ [2+2].
-	\end{aligned}
-\end{equation}
-
-Gravitini:
-\begin{equation}
-	m_{{(\nicefrac32)}}\ell_{\rm AdS}:\quad 
-	\quad \dfrac1{2}\bigg[1\pm\sqrt{4+2\,r^{2}+r^{4}-2r^{2}\cos(2\theta)}\bigg]\ [4+4],
-\end{equation}
-no SUSY enhancements other than $r=0$.
-
-No dependence on $\Phi$.
-
 \newpage
 \section{Details on the algorithm}
 
