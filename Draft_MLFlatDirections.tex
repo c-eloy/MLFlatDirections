@@ -321,187 +321,102 @@ MI-HET-??? \\
 
 \section{Introduction}
 
-The AdS/CFT correspondence \cite{Maldacena:1997re} stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between gravitational theories in Anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries. This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. 
+The AdS/CFT correspondence stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between string theory solutions on anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries~\cite{Maldacena:1997re}. This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. The CFT side plays a crucial role in statistical physics, as CFT are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow and this is this latter point that is our interest in this paper. An interesting question is indeed to know whether those CFT are isolated fixed points of RG flows, or belong to a continuous family of CFT. If this is the case, the space of continuous deformations that takes from one CFT to another is called a conformal manifold. These deformations are parametrized by exactly marginal operator, or in other words operators that preserves the conformal symmetry, \textit{i.e.} whose $\beta$ functions exactly vanish. 
 
-Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. Studying the CFT side is very interesting : CFT play a crucial role in statistical physics where they are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow and this is this latter point that is our interest in this paper. An interesting question is indeed to know wether those CFT are isolated fixed points of RG flows, or belong to a continous family of CFT's. If this is the case, the space of deformations that takes from one CFT to another is called the conformal manifold. They are parametrized by exactely marginal operator, or in other words operators whose $\beta$ functions exactly vanish. 
+From the AdS/CFT correspondence perspective, conformal manifolds on the boundary theory are dual to flat directions in the scalar potential of the dual supergravity theory. Along these directions, the scalar field configurations vary continuously while the cosmological constant remains unchanged. Supersymmetry is believed to be necessary for the existence of holographic conformal manifolds, as non-supersymmetric AdS solutions are expected to be unstable~\cite{Ooguri:2016pdq,Palti:2019pca}. However, recent investigations have identified AdS$_4$ configurations that appear to evade this requirement, with no evidence of standard decay channels -- neither perturbative nor non-perturbative -- being present~\cite{Giambrone:2021wsm}. The situation is even richer in the context of AdS$_3$/CFT$_2$, as current-current deformations, given by products $J\bar J$ of (anti-)holomorphic conserved currents, are exactly marginal in two dimensions~\cite{Chaudhuri:1988qb}, although they may break supersymmetry. The question of the exact form of the gravity dual to $J\bar J$ deformations is however open. A well-known example is given in ref.~\cite{Aharony:2001dp,Dong:2014tsa}, and recent works have demonstrated the existence of vast families of classically marginal deformations of the ${\rm AdS}_{3}\times S^{3}\times {\rm T}^{4}$ and ${\rm AdS}_{3}\times S^{3}\times S^{3}\times S^{1}$ solutions of type IIB supergravity that are perturbatively stable though supersymmetry breaking~\cite{Eloy:2023zzh,Eloy:2023acy,Eloy:2024lwn}. These deformations were shown in ref.~\cite{Eloy:2024lwn} to be equivalent to current-current deformations of the worldsheet Wess-Zumino-Witten models~\cite{Gepner:1986wi} describing the undeformed solutions~\cite{Eberhardt:2017pty,Eberhardt:2018ouy}, giving strong indications that their CFT duals arise from $J\bar J$ deformations as well.
 
-From this perspective, the AdS/CFT correspondence relates conformal manifolds on the boundary theory to flat directions in the scalar potential of the dual supergravity theory. Along these directions, the scalar field configurations vary continuously while the cosmological constant remains fixed. In general, supersymmetry is believed to be necessary for the existence of holographic conformal manifolds, as non-supersymmetric AdS solutions are typically expected to be unstable \cite{Ooguri:2016pdq,Palti:2019pca}. However, recent investigations \cite{Giambrone:2021wsm} have identified AdS$_4$ configurations that appear to evade this requirement, with no evidence of standard decay channels—neither perturbative nor non-perturbative—being present. In the context of AdS$_3$/CFT$_2$, the situation may be even richer. A well-known counterexample has existed for some time \cite{Aharony:2001dp,Dong:2014tsa}, which is well understood from both the field theory and gravitational perspectives. More generally, within the supergravity approximation, continuous deformations correspond to classically marginal operators. These operators become exactly marginal only if their marginality persists at finite values of both the rank $N$ and the CFT coupling. Recent work \cite{Eloy:2024lwn} has demonstrated the existence of families of marginal deformations that are perturbatively stable, using the framework of Exceptional Field Theory (ExFT).
-
-In this work, we propose a novel approach, where we study directly the scalar potential of supergravity. As already mentionned, the classical marginal deformations of CFT's in the large $N$ limit, are in correspondance with the flat directions in the potential, i.e. when there is a continuous set a scalar fields such that $\nabla V = 0$. However, the explicit characterization of these flat directions presents formidable technical challenges. Supergravity scalar potentials, even in truncated models, typically involve dozens of scalar fields with intricate non-linear interactions. The resulting expressions for critical points—where all first derivatives vanish—quickly become too complex for traditional symbolic manipulation, rendering analytical approaches computationally intractable. 
+Although extensive, the families of deformations found in the aforementioned papers have not exhausted all possibilities for marginal deformations of three-dimensional supergravity solutions. A complete classification would require a systematic study of the flat directions in the supergravity scalar potential $V$ that defines the AdS configurations, as those directions are in correspondence with classical marginal deformations of the holographic CFT in the large $N$ limit. These flat directions are continuous sets in the space of scalar fields along which the value of the potential stay fixed, \textit{i.e.}  along which $\nabla V = 0$. However, the explicit characterization of flat directions presents formidable technical challenges. Supergravity scalar potentials, even in truncated models, typically involve dozens of scalar fields with intricate non-linear interactions. The resulting expressions for critical points -- where all first-order derivatives vanish -- quickly become too complex for traditional symbolic manipulation, rendering analytical approaches computationally intractable.
 
 The emergence of machine learning techniques in theoretical physics opens new avenues for addressing such complex problems. Instead of solving the full symbolic system analytically from the outset, one can employ numerical methods to sample the solution space and subsequently apply symbolic regression techniques to extract analytical patterns from the data. This hybrid approach has the potential to bypass the computational bottlenecks inherent in purely symbolic methods, while still having the potential to uncover exact analytical expressions.
 
 Machine learning strategies have previously been applied to identify new isolated vacua in $\mathrm{SO}(8)$ supergravity \cite{Comsa:2019rcz,Berman:2022jqn}. More broadly, there has been increasing interest in applying machine learning and numerical techniques across various domains of high-energy physics. This includes, for instance, the characterization of Calabi–Yau metrics and hypersurfaces \cite{Ashmore:2019wzb,Berman:2021mcw,Larfors:2022nep,Berglund:2022gvm,Jejjala:2020wcc,Douglas:2006rr,Larfors:2021pbb,He:2018jtw}, as well as broader efforts to explore the string theory landscape using machine learning techniques \cite{He:2017aed,Carifio:2017bov,Ruehle:2017mzq}. Additional applications include studies in CFT \cite{Chen:2020dxg}, investigations of the supergravity landscape \cite{Brady:2025zzi,Krishnan:2020sfg}, and explorations of the AdS/CFT correspondence \cite{Hashimoto:2018ftp}. More generally, machine learning has found utility in the study of string theory, geometry, and fundamental physics \cite{Ruehle:2020jrk,He:2023csq,Bao:2021auj}.
 
-In this work, we demonstrate the viability of the aformentionned machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of six-dimensional non-chiral $\mathcal{N} = (1,1)$ supergravity on $AdS_3 \times S^3$, or to type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with some symbolic regression technique. There exist a large litterature on symbolic regression, using methods from genetic programming \cite{koza1994genetic} such as \cite{virgolin2021improving,randall2022bingo,burlacu2019parsimony}, to deep machine learning \cite{petersen2019deep,kamienny2022end}, generative modelling \cite{valipour2021symbolicgpt}, diffusion models \cite{bastiani2025diffusion}, and equation learner with the nodes being symbolic operations \cite{2018arXiv180607259S}. Another state-of-the art algorithm is the AIFeynman methods \cite{Udrescu:2019mnk}. They use neural network to identify structure in the dataset (such as translational symmetries, multiplicative separability, compositionality, \dots) to recursively define simpler problems on which they can fit the solutions with polynomials.  However, in the spirit of trying to build a generalisable method, we develop here our own algorithm, which is based on symbolic regression using an Annealing Importance Sampling method (AIS) \cite{neal1998annealedimportancesampling}. In this paper, we will study a 5 parameter truncation, which is itself coming from a 13 parameter consistent truncation of $\mathcal{N} = (1,1)$ 6-dimensional supergravity. 
+In this work, we demonstrate the viability of the aforementioned machine learning approach by applying it to a five-scalar subsector of a 13 scalar consistent truncation of six-dimensional non-chiral $\mathcal{N} = (1,1)$ supergravity on $AdS_3 \times S^3$, or to type IIB supergravity on $AdS_3 \times S^3 \times T^4$. Our methodology combines gradient descent sampling of the flat direction manifold with some symbolic regression technique. There exists a large literature on symbolic regression, using methods from genetic programming \cite{koza1994genetic,virgolin2021improving,randall2022bingo,burlacu2019parsimony}, to deep machine learning \cite{petersen2019deep,kamienny2022end}, generative modelling \cite{valipour2021symbolicgpt}, diffusion models \cite{bastiani2025diffusion}, and equation learner with the nodes being symbolic operations \cite{2018arXiv180607259S}. Another state-of-the art algorithm is the AIFeynman methods \cite{Udrescu:2019mnk}. They use neural network to identify structure in the dataset (such as translational symmetries, multiplicative separability, compositionality\dots) to recursively define simpler problems on which they can fit the solutions with polynomials.  However, in the spirit of trying to build a generalisable method, we develop here our own algorithm, which is based on symbolic regression using an Annealing Importance Sampling method (AIS) \cite{neal1998annealedimportancesampling}. %In this paper, we will study a 5 parameter truncation, which is itself coming from a 13 parameter consistent truncation of $\mathcal{N} = (1,1)$ 6-dimensional supergravity. 
 
-The study of this 5 dimensional parameter potentiel is separated into several parts. We first use the gradient descent to efficiently sample the underlying conformal manifold. Combined with numerical analysis, such as principal component analysis and clustering, we can identify the existence of a 3-dimensional continuous family. We then use an AIS technique combined with a sequential Monte Carlo approach (SMC) \cite{del2006sequential} in order to do symbolic regression. As we will indeed demonstrate in the paper, there exist polynomial constraints on the 5 parameters, viewed as embedding coordinates, that projects them on the 3 dimensional manifolds. We manage to identify 8 of those constraints on the data, not all independent, which once solved gives that two of the embedding coordinates can be expressed in terms of the others. This provides an explicit 3 dimensional parameters family 
+The study of the five-parameter potential is separated into several parts. We first use the gradient descent to efficiently sample the underlying conformal manifold. Combined with numerical analysis, such as principal component analysis and clustering, we can identify the existence of a three-dimensional continuous family. We then use an AIS technique combined with a sequential Monte Carlo approach (SMC) \cite{del2006sequential} in order to do symbolic regression. As we will indeed demonstrate in the paper, there exist polynomial constraints on the 5 parameters, viewed as embedding coordinates, that projects them on the 3 dimensional manifolds. We manage to identify 8 of those constraints on the data, not all independent, which once solved gives that two of the embedding coordinates can be expressed in terms of the others. This provides an explicit three-dimensional family of solutions.
 
-The paper is organized as follows. Section 2 establishes the supergravity setup, presenting the scalar potential in its full complexity and motivating the truncation to five fields. Section 3 details our numerical methodology, covering both the gradient descent sampling procedure and the annealed importance sampling approach to symbolic regression. Finally, Section 4 concludes with prospects for extending this approach to higher-dimensional cases and its broader implications for systematic studies of conformal manifolds in holographic theories.
+\paragraph{}
+The paper is organized as follows. In sec.~\ref{sec:sugra}, we establish the supergravity setup, presenting the scalar potential in its full complexity and motivating the truncation to five fields. Sec.~\ref{sec:numanal} details our numerical methodology, covering both the gradient descent sampling procedure and the annealed importance sampling approach to symbolic regression. We present in sec.~\ref{sec:results} our main results, both numerical an analytical. Finally, sec.~\ref{sec:ccl} concludes with prospects for extending this approach to higher-dimensional cases and its broader implications for systematic studies of conformal manifolds in holographic theories.
 
 \section{Supergravity setup} \label{sec:sugra}
-Three-dimensional $\mathcal{N}=8$ (half-maximal) gauged supergravity is governed by the Lagrangian
+Three-dimensional $\mathcal{N}=8$ (half-maximal) gauged supergravity is governed by the Lagrangian~\cite{Nicolai:2001ac,deWit:2003ja}
 %
 \begin{equation}	\label{eq: lagrangian_rephrased} 
-	e^{-1}\mathcal{L}=R+\frac1{8}g^{\mu\nu}D_\mu M^{\bM\bN}D_\nu M_{\bM\bN}+e^{-1}\mathcal{L}_{\text{CS}}-V\,,
+	e^{-1}\mathcal{L}=R+\frac1{8}g^{\mu\nu}D_\mu M^{\bM\bN}D_\nu M_{\bM\bN}+e^{-1}\mathcal{L}_{\text{CS}}-V,
 \end{equation}
 %
-which comprises the Einstein-Hilbert term $R$, the kinetic term for scalar fields parametrized by the matrix $M_{\bM\bN}$, a Chern-Simons contribution $\mathcal{L}_{\text{CS}}$, and a scalar potential $V$.
-
-The gauging structure is encoded in an embedding tensor that takes the general form
-%
-\begin{equation}	\label{eq: embtensor_rephrased}
-	\Theta_{\bK\bL\vert\bM\bN}=\theta_{\bK\bL\bM\bN}+\frac12\Big(\eta_{\bM[\bK}\theta_{\bL]\bN}-\eta_{\bN[\bK}\theta_{\bL]\bM}\Big)+\theta\,\eta_{\bM[\bK}\eta_{\bL]\bN}\,.
-\end{equation}
-%
-where we have a fully antisymmetric component $\theta_{\bK\bL\bM\bN}=\theta_{[\bK\bL\bM\bN]}$, a symmetric traceless part $\theta_{\bL\bK}=\theta_{(\bL\bK)}$, and a constant parameter $\theta$. The metric $\eta_{\bK\bL}$ is the SO(8,4)-invariant bilinear form used for index contractions.
-
-The scalar degrees of freedom parametrize the coset space
+which comprises an Einstein-Hilbert term $R$, a kinetic term for scalar fields parametrized by the matrix $M_{\bM\bN}$, a Chern-Simons contribution $\mathcal{L}_{\text{CS}}$, and a scalar potential $V$, see app.~\ref{app:sugra} for details on the definition of the terms. The scalar degrees of freedom parametrise the coset space
 %
 \begin{equation}	\label{eq: scalarcoset_rephrased}
-	\frac{\text{SO}(8,4)}{\text{SO}(8)\times\text{SO}(4)}\,,
+	\frac{\text{SO}(8,4)}{\text{SO}(8)\times\text{SO}(4)},
 \end{equation}
 %
-through the symmetric matrix $M_{\bK\bL}=\mathcal{V}_{\bK}{}^{\bM}\mathcal{V}_{\bL}{}^{\bN}\delta_{\bM\bN}$, where $\mathcal{V}_{\bK}{}^{\bM}$ represents the coset representative. 
+through the symmetric matrix $M_{\bK\bL}$.\footnote{In full generality, the coset space of half-maximal supergravity in three dimensions is $\text{SO}(8,p)/\big(\text{SO}(8)\times\text{SO}(p)\big)$, we consider here the case $p=4$ only.} With appropriate gauging (see eq.~\eqref{eq:embedtens}), this $\text{SO}(8,4)$ theory is a consistent truncation of six-dimensional ${\cal N}=(1,1)$ supergravity on $S^{3}$~\cite{Cvetic:2000dm,Deger:2014ofa,Hohm:2017wtr}. It features an ${\rm AdS}_{3}$ stationary point at the scalar origin ($M_{\bK\bL}=\delta_{\bK\bL}$, the ${\rm SO}(8,4)$ identity matrix), corresponding to an ${\rm AdS}_{3}\times S^{3}$ solution in 6d. In the following, we will be interested in exploring flat directions of the potential $V$, \textit{i.e.} other stationary points that are continuously connected to the origin. In three dimensions, the flat directions constitute a family of ${\rm AdS}_{3}$ vacua sharing the same cosmological constant. The corresponding solutions in six dimensions are of the form ${\rm AdS}_{3}\times M^{3}$, with $M^{3}$ some deformation of the round sphere $S^{3}$, parametrised by the constant scalars defining the 3d vacua.
 
-The gauge covariant derivatives are constructed using the embedding tensor according to
-%
-\begin{equation}
-	D_\mu =\partial_\mu + A_\mu{}^{\bM\bN}\,\Theta_{\bM\bN\vert\bP\bQ}\, T^{\bP\bQ}\,,
+We parametrise the scalars of the theory following ref.~\cite{Eloy:2021fhc} (see also app.~\ref{app:sugra} for some details): 13 scalars parametrised by a symmetric ${\rm GL}(3,\mathbb{R})$ matrix $m = \nu\nu^{T}$ where
+\begin{equation} \label{eq:13scalars1}
+	\nu = e^{(6\,\tilde{x}_{7}+3\,\tilde{x}_{8}+\sqrt{3}\,\tilde{x}_{9})/6}
+				\begin{pmatrix}
+					1 & \frac{x_{10}}{\sqrt{2}} & \frac{x_{11}}{\sqrt{2}} + \frac{x_{10}x_{12}}{4} \\
+					0 & e^{-\tilde{x}_{8}} & \frac{e^{-\tilde{x}_{8}}\,x_{12}}{\sqrt{2}} \\
+					0 & 0 & e^{-(\tilde{x}_{8}+\sqrt{3}\,\tilde{x}_{9})/2}
+				\end{pmatrix},
 \end{equation}
-%
-where $A_\mu{}^{\bM\bN}$ are the gauge fields and $T^{\bP\bQ}$ are the generators of the SO(8,4) algebra satisfying
-%
-\begin{equation} \label{eq:so84gen_rephrased}
-	\big(T^{\bar M\bar N}\big){}_{\bar P}{}^{\bar Q} = 2\,\delta_{\bar P}{}^{[\bar M}\,\eta^{\bar N]\bar Q}\,.
+the matrices 
+\begin{equation} \label{eq:13scalars2}
+	\phi = 	\begin{pmatrix}
+					0 & x_{4} & x_{5} \\
+					-x_{4} & 0 & x_{6} \\
+					-x_{5} & -x_{6} & 0
+				\end{pmatrix}, \quad
+	\xi = \begin{pmatrix}
+				0 & 0 & 0 & x_{1} \\
+				0 & 0 & 0 & x_{2} \\
+				0 & 0 & 0 & x_{3}
+			\end{pmatrix}, \quad
+	\xi^{2} = \xi \xi^{T},
 \end{equation}
-%
-The covariant derivative acting on the scalar matrix becomes
-%
-\begin{equation}
-	D_\mu M_{\bM\bN}=\partial_\mu M_{\bM\bN}+4\,A_\mu{}^{\bP\bQ}\,\Theta_{\bP\bQ\vert(\bM}{}^{\bK}\, M_{\bN)\bK}\,,
-\end{equation}
-%
-ensuring gauge invariance of the scalar kinetic terms.
-
-The Chern-Simons contribution is given by
-%
-\begin{equation}
-	{\cal L}_{\rm CS}= -\varepsilon^{\,\mu\nu\rho}\,\Theta_{\bar M\bar N|\bar P\bar Q}\,A_{\mu}{}^{\bar M\bar N}\left(\partial_{\nu}\,A_{\rho}{}^{\bar P\bar Q}  + \frac{1}{3}\, \Theta_{\bar R\bar S|\bar U\bar V}\,f^{\bar P\bar Q,\bar R\bar S}{}_{\bar X\bar Y}\, A_{\nu}{}^{\bar U\bar V} A_{\rho}{}^{\bar X\bar Y} \right)\,,
-\end{equation}
-%
-where $f^{\bar M\bar N,\bar P\bar Q}{}_{\bar K\bar L} = 4\,\delta_{[\bar K}{}^{[\bar M}\eta^{\bar N][\bar P}\delta_{\bar L]}{}^{\bar Q]}$ are the structure constants of the SO(8,4) Lie algebra, and $\varepsilon^{\mu\nu\rho}$ is the three-dimensional Levi-Civita symbol.
-
-The scalar potential can be expressed in terms of the embedding tensor components as
-%
-{\setlength\arraycolsep{1.2pt}
-	\begin{equation}	\label{eq: scalarpot_rephrased}
-		\begin{aligned}
-			V	&=	\frac1{12}\,\theta_{\bK\bL\bM\bN}\theta_{\bP\bQ\bR\bS}\Big(M^{\bK\bP}M^{\bL\bQ}M^{\bM\bR}M^{\bN\bS}-6\,M^{\bK\bP}M^{\bL\bQ}\eta^{\bM\bR}\eta^{\bN\bS}\\
-			&\qquad\qquad\qquad\qquad\quad+8\,M^{\bK\bP}\eta^{\bL\bQ}\eta^{\bM\bR}\eta^{\bN\bS}-3\,\eta^{\bK\bP}\eta^{\bL\bQ}\eta^{\bM\bR}\eta^{\bN\bS}\Big)\\
-			&\quad +\frac1{8}\,\theta_{\bK\bL}\theta_{\bP\bQ}\Big(2\,M^{\bK\bP}M^{\bL\bQ}-2\,\eta^{\bK\bP}\eta^{\bL\bQ}-M^{\bK\bL}M^{\bP\bQ}\Big)+4\,\theta\theta_{\bK\bL}M^{\bK\bL}-32\,\theta^2\,.
-		\end{aligned}
-	\end{equation}
-}
-
-Decomposing SO(8,4) according to 
-%
-\begin{equation}	\label{eq: gl3gradingbar}
-	\begin{aligned}
-		\text{SO}(8,4)	&\longrightarrow	\enspace \text{GL}(3,\mathbb{R})\times\text{SO}(1,1)\times\text{SO}(4)_{\rm global}\,,	\\
-		X^{\bM}		&\longrightarrow	\quad \{X^{\bar m},\; X_{\bar m},\; X^\bzero,\; X_\bzero,\; X^\balpha\}\,,
-	\end{aligned}
-\end{equation}
-where $\bar m\in\llbracket1,3\rrbracket$ and $\balpha\in\llbracket9,12\rrbracket$ label the SL(3, $\mathbb{R}$) and SO(4)$_{\rm global}$ vector representations, respectively. In this basis, the SO(8,4)-invariant tensor reads
-%
-\begin{equation}	\label{eq: Paulieta}
-	\eta_{\bM\bN}=
-	\begin{pmatrix}
-		0 & \delta_{\bar m}{}^{\bar n} & 0 & 0 &0\\
-		\delta^{\bar m}{}_{\bar n} & 0 & 0 & 0 &0\\
-		0 & 0 & 0 & 1 & 0\\
-		0 & 0 & 1 & 0 & 0\\
-		0 & 0 & 0 & 0 & -\delta_{\balpha\bbeta}
-	\end{pmatrix}\,.
-\end{equation}
-
-Parametrizing the scalar matrix following \cite{Eloy:2021fhc}, we have for the scalar matrix 
-\begin{equation}	\label{eq: scalarmatrix}
-	M_{\bM\bN}
-	=
-	\begin{pmatrix}
-		m+(\xi^2+\phi)m^{-1}(\xi^2-\phi)+2\xi^2	& 	(\xi^2+\phi)m^{-1}		&	0	&  0  &	-\sqrt2\,[1+(\xi^2+\phi)m^{-1}]\xi	\\
-		m^{-1}(\xi^2-\phi)	& 	m^{-1}	&	0  	&  0  &	-\sqrt2\,m^{-1}\xi	\\
-		0		&	0		&	e^{2\tilde\varphi}	&	0				&	0		\\
-		0		&	0		&	0				&	e^{-2\tilde\varphi}	&	0		\\
-		-\sqrt2\,\xi^T[1+m^{-1}(\xi^2-\phi)]	&	-\sqrt2\,\xi^Tm^{-1}	&	0	&	0	&	1+2\,\xi^Tm^{-1}\xi	\\
-	\end{pmatrix}\,,
-\end{equation}
-which encodes 22 scalars of the theory ($22 = 32 - 10$, with 10 scalars gauge fixed using translations in the gauge group), which have been parametrized by 
-$m = \nu\nu^{T}\in{\rm GL}(3,\mathbb{R})$ parametrizing the coset ${\rm GL}(3,\mathbb{R})/{\rm SO}(3)$, $\phi$ a $3\times3$ antisymmetric matrix, $\xi$ a $3\times4$ matrix, and $\xi^{2} = \xi \xi^{T}$, a dilaton $\tilde{\varphi}$. With this parametrization, the potential takes the from ref.~\cite{Eloy:2021fhc}:
+and a dilaton $\tilde{\varphi} = \tilde{x}_{13}$. With this parametrization, the potential takes the form:
 \begin{equation} \label{eq:scalarpotential}
 	\begin{aligned}
 		V & = 4\,e^{-4\tilde\varphi}+2\,e^{-2\tilde\varphi}\Big[-\tr\left(m+m^{-1}\right)+\tr\left(\phi m^{-1}\phi\right) -2\,\tr\left(\phi m^{-1}\xi^{2}\right)-2\,\tr\left(\xi^{2}\right)\\
 		&\qquad\quad-\tr\left(\xi^{2}m^{-1}\xi^{2}\right)  +\frac{1}{2}\,\det\left(m^{-1}\right)\left(1-\tr\left(\phi^{2}\right)-\tr\left(\xi^{4}\right)+\tr\left(\xi^{2}\right)^{2}\right) \\
 		&\qquad\quad +\frac{1}{2}\,{\rm T}\left(m^{-1}(\xi^{2}-\phi),(\xi^{2}+\phi)m^{-1},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2}\right)\\
-		&\qquad\quad +\frac{1}{4}\,{\rm T}\left(m^{-1},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2}\right)\Big], 
+		&\qquad\quad +\frac{1}{4}\,{\rm T}\left(m^{-1},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2},m+(\xi^{2}+\phi)m^{-1}(\xi^{2}-\phi)+2\,\xi^{2}\right)\Big],
 	\end{aligned}
 \end{equation}
-where ${\rm T}\left(A,B,C\right)=\varepsilon_{mnp}\,\varepsilon_{qrs}\,A^{mq}B^{nr}C^{ps}$. We can further restrict ourselves to a set of 13 scalars which is still a consistent truncation, with 
-\begin{equation}
-	\begin{aligned}
-		\xi &= \begin{pmatrix}
-					0 & 0 & 0 & x_{1} \\
-					0 & 0 & 0 & x_{2} \\
-					0 & 0 & 0 & x_{3}
-				\end{pmatrix}, \\[5pt]
-		\phi &= \begin{pmatrix}
-					0 & x_{4} & x_{5} \\
-					-x_{4} & 0 & x_{6} \\
-					-x_{5} & -x_{6} & 0
-				\end{pmatrix}, \\[5pt]
-		\tilde{\varphi} &= \tilde{x}_{13}, \\[5pt]
-		\nu &= e^{(6\,\tilde{x}_{7}+3\,\tilde{x}_{8}+\sqrt{3}\,\tilde{x}_{9})/6}
-				\begin{pmatrix}
-					1 & \frac{x_{10}}{\sqrt{2}} & \frac{x_{11}}{\sqrt{2}} + \frac{x_{10}x_{12}}{4} \\
-					0 & e^{-\tilde{x}_{8}} & \frac{e^{-\tilde{x}_{8}}\,x_{12}}{\sqrt{2}} \\
-					0 & 0 & e^{-(\tilde{x}_{8}+\sqrt{3}\,\tilde{x}_{9})/2}
-				\end{pmatrix}.
-	\end{aligned}
-\end{equation}
+where ${\rm T}\left(A,B,C\right)=\varepsilon_{mnp}\,\varepsilon_{qrs}\,A^{mq}B^{nr}C^{ps}$.
 For later convenience, we define a thirteen-dimensional vector
 \begin{equation} \label{eq:defvecX}
 	% \vec{X} = (x_1,\dots,x_6,\tilde{x}_7,\tilde{x}_8,\tilde{x}_9,x_{10},\dots,x_{12},\tilde{x}_{13})
-	\vec{X} = (x_1, x_{2}, x_{3}, x_{4}, x_{5}, x_6, \tilde{x}_7, \tilde{x}_8, \tilde{x}_9,x_{10}, x_{11}, x_{12}, \tilde{x}_{13})
+	\vec{X} = (x_1, x_{2}, x_{3}, x_{4}, x_{5}, x_6, \tilde{x}_7, \tilde{x}_8, \tilde{x}_9,x_{10}, x_{11}, x_{12}, \tilde{x}_{13}),
 \end{equation}
 encompassing all parameters. Note here that all dilaton fields are denoted with a tilde. This convention is adopted in anticipation of a later redefinition of the form \( x_i = e^{\tilde{x}_i} \) for these fields. %By reserving the notation without tildes for the exponentiated variables, we maintain a clear and consistent distinction for use in subsequent expressions.
 
-A first numerical exploration suggests that attention can be focused on the five scalars $x_{1}, x_{2}, x_{4}, \tilde{x}_{8}$, and $x_{10}$. This subset, selected at random from the original set of thirteen scalar fields, serves to render the problem more tractable at the outset. It is important to emphasize, however, that this subset does not constitute a consistent truncation of the full theory. Consequently, the truncated theory involving only five scalar fields may not constitute a formally consistent truncation of the full thirteen-scalar theory, as higher-order interactions could, in principle, source the remaining scalar modes. As a result, the interpretation of the five-scalar theory as a consistent subsector of the original theory may no longer hold. Nonetheless, the five-scalar model remains a self-consistent theory in its own right and can be used independently. This distinction does not affect our numerical approach: the solutions we obtain remain valid solutions of the complete theory. This is because we identify the critical points of the scalar potential by first computing $\nabla V = 0$ with all scalar fields included, and only then setting the remaining fields
+\paragraph{}
+The search for flat directions of the potential~\eqref{eq:scalarpotential} can then start form a study of its gradient $\nabla V$. However, carrying out the search for stationary points analytically is by far too complex, even reducing the number of variables or using a symbolic solver such as Mathematica~\cite{Mathematica}: the resulting expressions are too complex to be simplified into a manageable form, and do not yield usable relationships that express some variables in terms of others. This complexity does not, however, rule out the possibility that simpler solutions satisfying the condition of vanishing gradient may exist although the solver does not find them. In this work, we aim to identify such solutions, which we seek using numerical methods. This approach has as additional advantage its broader applicability: it would be effective even in cases where an exact analytic expression for the potential is out of reach, like richer theories as the ${\rm SO}(8,8)$ 3d truncations of type IIB supergravity on ${\rm AdS}_{3}\times S^{3} \times {\rm T}^{4}$ or ${\rm AdS}_{3}\times S^{3}\times S^{3}\times S^{1}$.
+
+A first trial and error numerical exploration suggests that attention can be focused on the five scalars $x_{1}, x_{2}, x_{4}, \tilde{x}_{8}$, and $x_{10}$. This subset, selected at random from the original set of thirteen scalar fields, serves to render the problem more tractable at the outset. The potential~\eqref{eq:scalarpotential} then reduces to
+\begin{equation} \label{eq:scalarpotential124810}
+	\begin{aligned}
+		V &= \frac{1}{4}\, e^{-2\,\tilde{x}_{8}} \bigg[4 + 4\,x_{1}^4 + e^{4\,\tilde{x}_{8}} \big(2 + x_{10}^2\big)^2 \big(1 + x_{2}^4\big)\\
+		  & \quad\qquad\qquad - 4\,e^{3\,\tilde{x}_{8}}\,\big(2 + x_{10}^2\big) \Big(2 - x_{1}^2 + \sqrt{2}\,x_{1} x_{10} x_{2}^3 + x_{2}^4 + 
+     			2\,x_{1} x_{2} x_{4} + x_{4}^2 - x_{2}^2 \big(1 - x_{1}^2 + x_{4}^2\big)\Big)\\
+       & \quad\qquad\qquad - 8\,e^{\tilde{x}_{8}}\,\Big(2 + x_{1}^4 + \sqrt{2}\,x_{1}^3 x_{10} x_{2} - x_{2}^2 - 2\,x_{1} x_{2} x_{4} + 
+     			x_{4}^2 - x_{1}^2 \big(1 - x_{2}^2 + x_{4}^2\big)\Big)\\
+       & \quad\qquad\qquad + 4\,e^{2\,\tilde{x}_{8}}\,\Big(2 - 4\,x_{1}^2 + x_{1}^4 - 4\,x_{2}^2 + 4\,x_{1}^2 x_{2}^2 + x_{2}^4
+       			+ x_{10}^2\big(1 + 3\,x_{1}^2 x_{2}^2\big) + 4\,x_{4}^2 + x_{4}^4\Big)\\
+       & \quad\qquad\qquad + 8\sqrt{2}\,x_{10}\,e^{2\,\tilde{x}_{8}}\,\Big(x_{1}^3 x_{2} + x_{1}^2 x_{4} - x_{2}^2 x_{4} + x_{1} \big(x_{2}^3 - x_{2} x_{4}^2\big)\Big)\bigg].
+	\end{aligned}
+\end{equation}
+To compute the gradient, we exploit the fact that we possess an analytic expression for the scalar potential~\eqref{eq:scalarpotential124810}. Note however that it could have been fully done using a numerical approach as automatic differentiations methods. It is important to emphasize, however, that the $\{x_{1}, x_{2}, x_{4}, \tilde{x}_{8}, x_{10}\}$ subset does not constitute a consistent truncation of the full theory, as higher-order interactions could, in principle, source the remaining scalar modes. Nonetheless, the five-scalar model remains a self-consistent theory in its own right and can be used independently. This distinction does not affect our numerical approach: the solutions we obtain remain valid solutions of the complete theory. This is because we identify the critical points of the scalar potential by first computing $\nabla V$ with all scalar fields included, \textit{i.e.} using eq.~\eqref{eq:scalarpotential}, and only then setting the remaining fields,
 \begin{equation} \label{eq:defvecy}
-	\vec{y} = (x_3,x_5,x_6,\tilde{x}_7,\tilde{x}_9,x_{11},x_{12},\tilde{x}_{11})
+	\vec{y} = (x_3,x_5,x_6,\tilde{x}_7,\tilde{x}_9,x_{11},x_{12},\tilde{x}_{11}),
 \end{equation}
 to zero, as detailed in sec.~\ref{sec:graddes}. By performing the differentiation before the truncation, we ensure that the resulting configurations satisfy the full equations of motion and are therefore legitimate solutions of the complete theory.
 
-To compute the gradient, we exploit the fact that we possess an analytic expression for the scalar potential~\eqref{eq:scalarpotential}, which we implement in Mathematica for numerical analysis. Note however that it could have been fully done using a numerical approach, automatic differentiations methods (that we will use later to do the gradient descent for the loss function).
-%Under this truncation, the scalar potential~\eqref{eq:scalarpotential} reduces to:
-%\begin{equation} \label{eq:scalarpotential124810}
-%	\begin{aligned}
-%		V &= \frac{1}{8}\, e^{-2\,\tilde{x}_{8}} \bigg[4 + 4\,x_{1}^4 + e^{4\,\tilde{x}_{8}} \big(2 + x_{10}^2\big)^2 \big(1 + x_{2}^4\big)\\
-%		  & \quad\qquad\qquad - 4\,e^{3\,\tilde{x}_{8}}\,\big(2 + x_{10}^2\big) \Big(2 - x_{1}^2 + \sqrt{2}\,x_{1} x_{10} x_{2}^3 + x_{2}^4 + 
-%      			2\,x_{1} x_{2} x_{4} + x_{4}^2 - x_{2}^2 \big(1 - x_{1}^2 + x_{4}^2\big)\Big)\\
-%        & \quad\qquad\qquad - 8\,e^{\tilde{x}_{8}}\,\Big(2 + x_{1}^4 + \sqrt{2}\,x_{1}^3 x_{10} x_{2} - x_{2}^2 - 2\,x_{1} x_{2} x_{4} + 
-%      			x_{4}^2 - x_{1}^2 \big(1 - x_{2}^2 + x_{4}^2\big)\Big)\\
-%        & \quad\qquad\qquad + 4\,e^{2\,\tilde{x}_{8}}\,\Big(2 - 4\,x_{1}^2 + x_{1}^4 - 4\,x_{2}^2 + 4\,x_{1}^2 x_{2}^2 + x_{2}^4
-%        			+ x_{10}^2\big(1 + 3\,x_{1}^2 x_{2}^2\big) + 4\,x_{4}^2 + x_{4}^4\Big)\\
-%        & \quad\qquad\qquad + 8\sqrt{2}\,x_{10}\,e^{2\,\tilde{x}_{8}}\,\Big(x_{1}^3 x_{2} + x_{1}^2 x_{4} - x_{2}^2 x_{4} + x_{1} \big(x_{2}^3 - x_{2} x_{4}^2\big)\Big)\bigg].
-%	\end{aligned}
-%\end{equation}
 
-Let us make a comment at this point. Since we have an explicit parametrisation of the potential with \eqref{eq:scalarpotential}, one might argue that the problem of identifying flat directions could be addressed by directly computing the gradient of the expression, setting the appropriate scalar fields to zero and subsequently simplifying the resulting equations. However, attempting to carry out this procedure using a symbolic solver such as Mathematica quickly reveals its limitations: the resulting expressions are too complex to be simplified into a manageable form, and do not yield usable relationships that express some variables in terms of others. This complexity does not, however, rule out the possibility that simpler solutions satisfying the condition of vanishing gradient may exist. In this work, we aim to identify such solutions, which we seek using numerical methods. 
-
-An additional advantage of this approach is its broader applicability. In scenarios where an explicit analytic expression for the potential and its gradient is inaccessible—yet numerical evaluation remains feasible—our method retains its validity. In particular, one could replace the analytic gradient by automatic differentiation methods if one can only evaluate the potential. Hence, the numerical strategy adopted here may prove effective even in cases where an exact analytic expression for the potential is out of reach. \bd{other motivation? Example of this ? }
-
-\section{Numerical analysis}
+\section{Numerical analysis} \label{sec:numanal}
 To identify the flat directions in the potential, we will use numerical tools. The procedure is as follows: first, we sample the underlying manifold, and then we use numerical techniques to extract analytical information from the resulting cloud of points. The sampling of the manifold is done through a gradient descent. We then analyse its dimension and structure using a local Principal Component Analysis~(PCA) and clustering algorithms, and finally extract analytical constraints defining the manifold thanks to Symbolic Regression methods. We detail these different procedures in the following.
 
 	\subsection{Sampling the manifold: gradient descent} \label{sec:graddes}
@@ -916,8 +831,7 @@ To identify the flat directions in the potential, we will use numerical tools. T
 		\d^{2}s_{\rm Zam.} = -\,\d r^{2} - r^{2}\,\bigg(\d \theta^{2} - r\cos(\theta)\,\d \theta\d\Phi + \sin(\theta)\,\d r\d\Phi + \frac{1}{2}\,\big(3+r^{2}-\cos(2\theta)\big)\,\d\Phi^{2} \bigg).
 	\end{equation}
 
-\section{Conclusion}
-
+\section{Conclusion} \label{sec:ccl}
 We have presented a novel machine learning approach to systematically identify and characterise flat directions in supergravity scalar potentials. Our methodology combines gradient descent sampling with annealed importance sampling for symbolic regression on polynomials. We demonstrated its efficiency on a 5-scalar subsector of three-dimensional half-maximal supergravity, derived from the $AdS_3 \times S^3 \times T^4$ compactification of IIB supergravity.
 
 We developed a robust pipeline that transitions from numerical exploration to analytical understanding. The gradient descent procedure successfully samples the flat directions manifold, while local PCA analysis reveals its intrinsic dimensionality. Most notably, our annealed importance sampling approach to symbolic regression automatically and quickly discovers polynomial constraints characterizing the manifold, bypassing the computational complexity that renders direct symbolic manipulation intractable. The algorithm uncovered eight distinct polynomial relations with varying frequencies, suggesting a hierarchical structure in constraint discovery. Furthermore, upon 1000 runs the algorithm failed at finding any solution in only 3 cases, demonstrating the robustness of the method. 
@@ -932,9 +846,106 @@ The marriage of machine learning techniques with traditional supergravity analys
 
 While the specific solution found in this 5-scalar model may have limited direct physical applications, the demonstrated feasibility of our approach and its potential for systematic classification of flat directions across the supergravity landscape make it a valuable addition to the theoretical physicist's toolkit. \ce{Move above when discussing the sugra solution?}
 
+\ce{Open on the use of ExFT to uplift and compute the full KK spectrum.}
+
 \appendix
+\section{Some details on the supergravity setup} \label{app:sugra}
+We give here some details on the supergravity theory described schematically in sec~\ref{sec:sugra}, following ref.~\cite{Nicolai:2001ac,deWit:2003ja}.\footnote{See also ref.~\cite{Eloy:2021qol} for a review.} The Lagrangian is given in eq.~\eqref{eq: lagrangian_rephrased}. The gauging structure is encoded in an embedding tensor~\cite{Nicolai:2000sc,deWit:2002vt} that takes the general form
+%
+\begin{equation}	\label{eq: embtensor_rephrased}
+	\Theta_{\bK\bL\vert\bM\bN}=\theta_{\bK\bL\bM\bN}+\frac12\Big(\eta_{\bM[\bK}\theta_{\bL]\bN}-\eta_{\bN[\bK}\theta_{\bL]\bM}\Big)+\theta\,\eta_{\bM[\bK}\eta_{\bL]\bN},
+\end{equation}
+%
+where $\theta_{\bK\bL\bM\bN}=\theta_{[\bK\bL\bM\bN]}$ is fully antisymmetric, $\theta_{\bL\bK}=\theta_{(\bL\bK)}$ is symmetric and traceless, and $\theta$ is a scalar. The metric $\eta_{\bK\bL}$ is the SO(8,4)-invariant bilinear form used for index contractions. The gauge covariant derivatives are constructed using the embedding tensor according to
+%
+\begin{equation}
+	D_\mu =\partial_\mu + A_\mu{}^{\bM\bN}\,\Theta_{\bM\bN\vert\bP\bQ}\, T^{\bP\bQ},
+\end{equation}
+%
+where $A_\mu{}^{\bM\bN}$ are the gauge fields and
+%
+\begin{equation} \label{eq:so84gen_rephrased}
+	\big(T^{\bar M\bar N}\big){}_{\bar P}{}^{\bar Q} = 2\,\delta_{\bar P}{}^{[\bar M}\,\eta^{\bar N]\bar Q}
+\end{equation}
+%
+are the generators of the $\mathfrak{so}(8,4)$ algebra. The covariant derivative acting on the scalar matrix is thus
+%
+\begin{equation}
+	D_\mu M_{\bM\bN}=\partial_\mu M_{\bM\bN}+4\,A_\mu{}^{\bP\bQ}\,\Theta_{\bP\bQ\vert(\bM}{}^{\bK}\, M_{\bN)\bK},
+\end{equation}
+%
+ensuring gauge invariance of the scalar kinetic terms. The embedding tensor also defines the scalar potential as following~\cite{Samtleben:2019zrh,Schon:2006kz}:
+%
+{\setlength\arraycolsep{1.2pt}
+	\begin{equation}	\label{eq: scalarpot_rephrased}
+		\begin{aligned}
+			V	&=	\frac1{12}\,\theta_{\bK\bL\bM\bN}\theta_{\bP\bQ\bR\bS}\Big(M^{\bK\bP}M^{\bL\bQ}M^{\bM\bR}M^{\bN\bS}-6\,M^{\bK\bP}M^{\bL\bQ}\eta^{\bM\bR}\eta^{\bN\bS}\\
+			&\qquad\qquad\qquad\qquad\quad+8\,M^{\bK\bP}\eta^{\bL\bQ}\eta^{\bM\bR}\eta^{\bN\bS}-3\,\eta^{\bK\bP}\eta^{\bL\bQ}\eta^{\bM\bR}\eta^{\bN\bS}\Big)\\
+			&\quad +\frac1{8}\,\theta_{\bK\bL}\theta_{\bP\bQ}\Big(2\,M^{\bK\bP}M^{\bL\bQ}-2\,\eta^{\bK\bP}\eta^{\bL\bQ}-M^{\bK\bL}M^{\bP\bQ}\Big)+4\,\theta\theta_{\bK\bL}M^{\bK\bL}-32\,\theta^2.
+		\end{aligned}
+	\end{equation}
+}
+Finally, the dynamics of the vector fields is governed by the Chern-Simons contribution
+%
+\begin{equation}
+	{\cal L}_{\rm CS}= -\varepsilon^{\,\mu\nu\rho}\,\Theta_{\bar M\bar N|\bar P\bar Q}\,A_{\mu}{}^{\bar M\bar N}\left(\partial_{\nu}\,A_{\rho}{}^{\bar P\bar Q}  + \frac{1}{3}\, \Theta_{\bar R\bar S|\bar U\bar V}\,f^{\bar P\bar Q,\bar R\bar S}{}_{\bar X\bar Y}\, A_{\nu}{}^{\bar U\bar V} A_{\rho}{}^{\bar X\bar Y} \right),
+\end{equation}
+%
+where $f^{\bar M\bar N,\bar P\bar Q}{}_{\bar K\bar L} = 4\,\delta_{[\bar K}{}^{[\bar M}\eta^{\bar N][\bar P}\delta_{\bar L]}{}^{\bar Q]}$ are the structure constants of $\mathfrak{so}(8,4)$, and $\varepsilon^{\mu\nu\rho}$ is the three-dimensional Levi-Civita symbol.
+
+The parametrisation of the gauging to get the truncation of six-dimensional half-maximal supergravity on $S^{3}$ is best described through the decomposition of ${\rm SO}(8,4)$ as~\cite{Eloy:2021fhc} 
+%
+\begin{equation}	\label{eq: gl3gradingbar}
+	\begin{aligned}
+		\text{SO}(8,4)	&\longrightarrow	\enspace \text{GL}(3,\mathbb{R})\times\text{SO}(1,1)\times\text{SO}(4)_{\rm global}\,,	\\
+		X^{\bM}		&\longrightarrow	\quad \{X^{\bar m},\; X_{\bar m},\; X^\bzero,\; X_\bzero,\; X^\balpha\},
+	\end{aligned}
+\end{equation}
+where $\bar m\in\llbracket1,3\rrbracket$ and $\balpha\in\llbracket9,12\rrbracket$ label the ${\rm SL}(3, \mathbb{R})$ and ${\rm SO}(4)_{\rm global}$ vector representations. In this basis, the ${\rm SO}(8,4)$-invariant tensor has the expression
+%
+\begin{equation}
+	\eta_{\bM\bN}=
+	\begin{pmatrix}
+		0 & \delta_{\bar m}{}^{\bar n} & 0 & 0 &0\\
+		\delta^{\bar m}{}_{\bar n} & 0 & 0 & 0 &0\\
+		0 & 0 & 0 & 1 & 0\\
+		0 & 0 & 1 & 0 & 0\\
+		0 & 0 & 0 & 0 & -\delta_{\balpha\bbeta}
+	\end{pmatrix},
+\end{equation}
+and the embedding tensor has the following non-vanishing components:
+\begin{equation} \label{eq:embedtens}
+	\theta_{\bM\bN\bP\,\bzero}=-\frac{1}{\sqrt{2}}\,X_{\bM\bN\bP}\,,		\qquad	\theta_{\bzero\bzero}=-4\sqrt{2},	
+\end{equation}
+with 
+%
+\begin{equation}
+	X_{\bar m\bar n \bar p} = \varepsilon_{\bar m \bar n \bar p},		\qquad
+	X_{\bar m}{}^{\bar n \bar p} = \varepsilon_{\bar m \bar n \bar p},	\qquad
+	X^{\bar m}{}_{\bar n}{}^{\bar p} = \varepsilon_{\bar m \bar n \bar p},	\qquad
+	X^{\bar m\bar n}{}_{\bar p} = \varepsilon_{\bar m \bar n \bar p}.
+\end{equation}
+The gauge group is then
+\begin{equation}
+	(T^1)^4\times[\text{SO}(4)\ltimes(T^3\times T^3)],
+\end{equation}
+where $T^{n}$ is a translational group transforming in the representation of dimension $n$ of ${\rm SO}(4)$. A possible parametrisation of the scalar matrix is then
+\begin{equation}	\label{eq: scalarmatrix}
+	M_{\bM\bN}
+	=
+	\begin{pmatrix}
+		m+(\xi^2+\phi)m^{-1}(\xi^2-\phi)+2\xi^2	& 	(\xi^2+\phi)m^{-1}		&	0	&  0  &	-\sqrt2\,[1+(\xi^2+\phi)m^{-1}]\xi	\\
+		m^{-1}(\xi^2-\phi)	& 	m^{-1}	&	0  	&  0  &	-\sqrt2\,m^{-1}\xi	\\
+		0		&	0		&	e^{2\tilde\varphi}	&	0				&	0		\\
+		0		&	0		&	0				&	e^{-2\tilde\varphi}	&	0		\\
+		-\sqrt2\,\xi^T[1+m^{-1}(\xi^2-\phi)]	&	-\sqrt2\,\xi^Tm^{-1}	&	0	&	0	&	1+2\,\xi^Tm^{-1}\xi	\\
+	\end{pmatrix},
+\end{equation}
+in terms of a symmetric ${\rm GL}(3,\mathbb{R})$ matrix $m$, a $3\times3$ antisymmetric matrix $\phi$, a $3\times4$ matrix $\xi$, its $3\times 3$ square $\xi^{2} = \xi \xi^{T}$ and a dilaton $\tilde{\varphi}$. This encodes 22 out the 32 scalars of the theory, 10 of the scalars being gauge fixed using the translations in the gauge group. With this parametrisation, the potential takes the form~\eqref{eq:scalarpotential}. We can further consistently restrict ourselves to a set of 13 scalars by requiring invariance under the diagonal ${\rm SO}(3)$ subgroup of ${\rm SO}(4)_{\rm global}$~\cite{Eloy:2021fhc}, yielding to the parametrisation described in eq.~\eqref{eq:13scalars1} and~\eqref{eq:13scalars2}.
+
+
 \section{Comparison with AIFeynman} \ce{Appendix?}
-In comparaison with state of the art technique, we have used the AIFeynman algorithm on our data set, with again $x_8 = \exp(\tilde{x}_8)$, such that we again look for polynomial expressions. We have run it with the following configuration 
+In comparison with state of the art technique, we have used the AIFeynman algorithm on our data set, with again $x_8 = \exp(\tilde{x}_8)$, such that we again look for polynomial expressions. We have run it with the following configuration 
 \begin{equation}
 	\begin{aligned}
 		&\texttt{BF\_try\_time} = 300, \\
