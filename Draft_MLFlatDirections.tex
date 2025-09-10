@@ -412,7 +412,7 @@ To identify the flat directions in the potential, we will combine numerical and 
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-\section{Annealed Importance Sampling for Polynomial Symbolic Regression}
+\section{Annealed Importance Sampling for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
 	
 	%\item Annealed Importance Sampling: first explain general idea (construct density probability, role of temperature, links with Monte-Carlo), discuss $\beta$ to control exploration and exploitation phases.
 
@@ -534,10 +534,10 @@ Let us now explain in more detail how does this procedure goes. The goal is to r
 		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
 
 		We have adapted the classic approach outilned above. As can be seen in \eqref{eq:gamman}, what matters the most to determine $\gamma_{n}$ is not the inverse temperature, but rather the product of the inverse temperature and the loss function. Therefore, instead of implementing an arbitrary schedule for $\beta$, we employed an adaptive temperature approach. The number of particles accepted at each run is monitored. We aim at following the following schedule as function of the \texttt{epoch}:
-		\begin{equation} \label{eq:acceptanceratioschedule}
-			\texttt{acceptance\_ratio} = 0.8 - 0.5 \times \left(\frac{\texttt{epoch}}{\texttt{n\_epochs}}\right),
+		\begin{equation} \label{eq:eqadaptivetemperatureschedule}
+			\texttt{adaptive\_temperature\_ratio} = 0.8 - 0.5 \times \left(\frac{\texttt{epoch}}{\texttt{n\_epochs}}\right),
 		\end{equation}
-		where \texttt{n\_epochs} is the total number of epochs. If we accept more particle (in the 5 last epochs), we decrease the temperature by 5\%, if we accept less we increase it by 5\%. This encourages exploration during the early stages of training and gradually transitions to a more selective regime. \ce{So we don't use eq.~\eqref{eq:acceptanceratio} at all? This is not clear to me.} 
+		where \texttt{n\_epochs} is the total number of epochs. If we accept more particle (in the 5 last epochs), we decrease the temperature by 5\%, if we accept less we increase it by 5\%. This encourages exploration during the early stages of training and gradually transitions to a more selective regime. \bd{Move \ref{eq:eqadaptivetemperatureschedule} in seciton 4?}
 		
 		Before closing the section, we need to discuss what is the Loss function we choose. It is required to compute the unormalized distribution $\gamma_n$. Assume that we have $z = \sum_k c_k X_k$, where $c_k$ are the coefficients of the polynomials, and $X_k$ is a short notations for all the possible monomials up to a given degree (so if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_k$ are $1, x, y, x^2, y^2, x y$). For the Loss function, we decided to take : 
 		\begin{equation} \label{eq:lossreg}
@@ -556,10 +556,12 @@ Let us now explain in more detail how does this procedure goes. The goal is to r
 %%%%%%%%%%%%%%%%%%%%
 \section{Numerical Analysis and Results} \label{sec:results}
 
-For the supergravity theory introduced above and to be discussed below, this is a 3$d$ manifold embedded in a 5$d$ space. Therefore we can conclude that, in order to characterize the manifold, we need two independent constraints on the embedding coordinates $\vec{x} = (x_1,x_2,x_4,\tilde{x}_8,x_{10})$. If we have a look at the form of the potential, we can observe that if we use $x_{8} = e^{\tilde{x}_8}$, that, up to some potential global factor of the dilaton of the form $e^{\tilde{x}_8}$, this potential is actually a polynomial of the embedding coordinates. Therefore, the components of $|\nabla V|$ are also polynomials in those variables. We conclude that the constraints on the embedding coordinates we are looking for are polynomial constraints of the form $p(\vec{x}) = 0$, and that there should be at least two of those. Note that we are now taking $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. Of course if one takes directly the gradient of \eqref{eq:scalarpotential}, one ends up with such conditions, but none are usable directly to solve for two of the variables in terms of the others. The problem we are facing here is therefore a problem of symbolic regression: we are looking for analytic expressions (polynomial) that vanish once evaluated on our data points. 
+For the theory introduced above and to be discussed below, this is a 3$d$ manifold embedded in a 5$d$ space. Therefore we can conclude that, in order to characterize the manifold, we need two independent constraints on the embedding coordinates $\vec{x} = (x_1,x_2,x_4,\tilde{x}_8,x_{10})$. If we have a look at the form of the potential, we can observe that if we use $x_{8} = e^{\tilde{x}_8}$, that, up to some potential global factor of the dilaton of the form $e^{\tilde{x}_8}$, this potential is actually a polynomial of the embedding coordinates. Therefore, the components of $|\nabla V|$ are also polynomials in those variables. We conclude that the constraints on the embedding coordinates we are looking for are polynomial constraints of the form $p(\vec{x}) = 0$, and that there should be at least two of those. Note that we are now taking $\vec{x} = (x_1,x_2,x_4,x_8,x_{10})$. 
+
+Of course if one takes directly the gradient of \eqref{eq:scalarpotential}, one ends up with such conditions, but none are usable directly to solve for two of the variables in terms of the others. The problem we are facing here is therefore a problem of symbolic regression: we are looking for analytic expressions (polynomial) that vanish once evaluated on our data points. 
 
 	\subsection{Sampling the manifold: gradient descent} \label{sec:graddes}
-	To perform the gradient descent, we initialise randomly and uniformly points within a hypercube of range $[-2,2]$. This choice is important to ensure that points are not restricted to the inner range~$[-1,1]$, which will be crucial for the Symbolic Regression.\footnote{The rationale is that symbolic regression (SR) evaluates the data points $\vec{x}^{(i)}$ using a candidate polynomial function $p$. The loss function—used later to assess the quality of a given polynomial—is defined as $\sum_i p(\vec{x}^{(i)}$. When all data points lie within the interval $[-1, 1]$, the SR algorithm tends to favor high-degree polynomials, as these often yield smaller values over this range, thereby artificially lowering the loss. Introducing data points with absolute values greater than 1 mitigates this bias by discouraging the selection of overly complex polynomials that exploit this effect.} \ce{Put the footnote later in the SR section?} As the example we are focussing on has a five-dimensional parameter space, we choose to generate $n_{\rm points}=10^5$ points: we aim at populating all five directions and want approximately $\mathcal{O}(10)$ points per direction. As the solutions lie within the five dimensional space, its intrinsic dimension is less than or equal to 5. The value $10^5$ then serves as a conservative upper bound for the number of points needed to adequately sample the manifold.
+	To perform the gradient descent, we initialise randomly and uniformly points within a hypercube of range $[-2,2]$. This choice is important to ensure that points are not restricted to the inner range~$[-1,1]$, which will be crucial for the Symbolic Regression.\footnote{The rationale is that symbolic regression (SR) evaluates the data points $\vec{x}^{(i)}$ using a candidate polynomial function $p$. The loss function—used later to assess the quality of a given polynomial—is defined as $\sum_i p(\vec{x}^{(i)})$. When all data points lie within the interval $[-1, 1]$, the SR algorithm tends to favor high-degree polynomials, as these often yield smaller values over this range, thereby artificially lowering the loss. Introducing data points with absolute values greater than 1 mitigates this bias by discouraging the selection of polynomials that exploit this effect.} \ce{Put the footnote later in the SR section?} \bd{I believe here is great to justify the volume of the hypercube. Otherwise it remains a bit misterious}. As the example we are focussing on has a five-dimensional parameter space, we choose to generate $n_{\rm points}=10^5$ points: we aim at populating all five directions and want approximately $\mathcal{O}(10)$ points per direction. As the solutions lie within the five dimensional space, its intrinsic dimension is less than or equal to 5. The value $10^5$ then serves as a conservative upper bound for the number of points needed to adequately sample the manifold.
 	
 	We then perform a gradient descent on the points using TensorFlow’s automatic differentiation \cite{tensorflow2015-whitepaper}. The loss function is defined as
 	\begin{equation} \label{eq:lossgraddes}
@@ -575,7 +577,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 		\label{fig:loss_grad_des}
 	\end{figure}
 
-	The Adam optimizer was employed throughout the gradient descent procedure~\cite{kingma2017adammethodstochasticoptimization}. As an accelerator of convergence, we observed that periodically reinitialising the optimizer significantly improved the convergence rate. It was reinitialised at iterations {250, 500, 750}, with the learning rate $\alpha$ fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialised once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialisation was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 500 epochs. The evolution of the loss function~\eqref{eq:lossgraddes}, along with the learning rate schedule, is shown in fig.~\ref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is rebooted. We also observe that, following the last few reinitialisations, the loss exhibits a small bump immediately after the restart. We interpret this behaviour as follows: the learning rate gets internally adjusted by the Adam optimizer during the descent, and may well be smaller than the instructions when the reset occurs. The learning rate then gets suddenly increased, and some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence. This strategy introduces the risk of desampling certain regions in favour of others, introducing the risk to hide some flat directions in the potential. However, we believe that with enough points, it is very unlikely for a flat direction to be completely hidden from us and desampled. This method bears similarity to the concept of warm restarts introduced in ref.~\cite{loshchilov2017sgdrstochasticgradientdescent}, where the authors reset the learning rate to some value at each reset, without reinitialising the whole optimizer. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence. We interpret this as follows: when the optimizer is reinitialised, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case.
+	The Adam optimizer was employed throughout the gradient descent procedure~\cite{kingma2017adammethodstochasticoptimization}. As an accelerator of convergence, we observed that periodically reinitialising the optimizer significantly improved the convergence rate. It was reinitialised at iterations {250, 500, 750}, with the learning rate $\alpha$ fixed at $10^{-2}$. At iteration 1000, the optimizer was reinitialised once more, this time with a reduced learning rate of $10^{-3}$. A final reinitialisation was performed at iteration 1500, setting the learning rate to $10^{-4}$, and the optimization was continued for an additional 500 epochs. The evolution of the loss function~\eqref{eq:lossgraddes}, along with the learning rate schedule, is shown in fig.~\ref{fig:loss_grad_des}. As can be seen in this figure, the convergence rate improves significantly each time the optimizer is rebooted. We also observe that, following the last few reinitialisations, the loss exhibits a small bump immediately after the restart. We interpret this behaviour as follows: the learning rate gets internally adjusted by the Adam optimizer during the descent, and may well be smaller than the instructions when the reset occurs. The learning rate then gets suddenly increased, and some points that previously had low loss values may momentarily worsen before benefiting from faster convergence. This effect of faster convergence after the reinitialization is likely due to points initially located in regions with weak attractive basins being pushed toward areas where the potential gradient is steeper, thus accelerating their convergence. This strategy introduces the risk of desampling certain regions in favour of others, introducing the risk to hide some flat directions in the potential. However, we believe that with enough points, it is very unlikely for a flat direction to be completely hidden from us and desampled. This method bears similarity to the concept of warm restarts introduced in ref.~\cite{loshchilov2017sgdrstochasticgradientdescent}, where the authors reset the learning rate to some value at each reset, without reinitialising the whole optimizer. However, we found that simply scheduling the learning rate without resetting the optimizer yielded slower convergence. We interpret this as follows: when the optimizer is reinitialised, it effectively "forgets" its past gradient history. As a result, the actual learning rate used corresponds more closely to the specified value, rather than being internally adjusted based on accumulated past gradients. This effect seems to contribute to faster convergence in our case.
 	
 	\begin{figure}
 		\centering
@@ -593,7 +595,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 		\label{fig:Analyze_V_points}
 	\end{figure}
 	
-	Upon completion, the loss function converges around $0.002$. The distribution of the values of the gradient at each of the data points is plotted in fig.~\ref{fig:log_grad_V}. More than $93\%$ of the points converged to values of $\vert\nabla V\vert$ lower than $10^{-4}$, and more than $99\%$ of them exhibited gradient norms smaller than $10^{-3}$, yielding a satisfying sampling of the flat directions. As can be observed in fig.~\ref{fig:log_Vp4}, all data points converged to values close to $V(0)=-4$. Specifically, nearly all points attained $V(0)$ within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were of the order of $10^{-3}$ (not visible on the graph). As the origin $\vec{X}=0$ of the parameter space corresponds to the three-dimensional truncation of the round ${\rm AdS}_{3}\times S^{3}$ solution of half-maximal supergravity in six dimensions, this confirms that the data points lie within flat directions of the potential.
+	Upon completion, the loss function converges around $0.002$. The distribution of the values of the gradient at each of the data points is plotted in fig.~\ref{fig:log_grad_V}. More than $93\%$ of the points converged to values of $\vert\nabla V\vert$ lower than $10^{-4}$, and more than $99\%$ of them exhibited gradient norms smaller than $10^{-3}$, yielding a satisfying sampling of the flat directions. As can be observed in fig.~\ref{fig:log_Vp4}, all data points converged to values close to $V(0)=-4$. Specifically, nearly all points attained $V(0)$ within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were of the order of $10^{-3}$ (not visible on the graph). As the origin $\vec{X}=0$ of the parameter space corresponds to the three-dimensional truncation of the round ${\rm AdS}_{3}\times S^{3}$ solution of half-maximal supergravity in six dimensions with $V(0)=-4$, this confirms that the data points lie within flat directions of the potential.
 
 	\begin{figure}
 		\centering
@@ -605,7 +607,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 	As a first visualisation, we present a tomography of the data in fig.~\ref{triangular_plot_1_2_4_8_10}. This figure shows all possible 2d projections of the data, along with the 1d histograms of each coordinate after gradient descent. Note that all directions appear to be well populated. There also seems to be non-trivial correlations in the data, see for example the $x_1/x_2$, $x_4/\tilde{x}_8$ or $x_4/x_{10}$ graphs. They could be genuine correlations, or may result from larger basins of attraction. Thanks to the analysis of sec.~\ref{sec:results}, we will conclude that the structures in the $x_1/x_2$ plot are artefacts of the gradient descent, whereas the ones seen in the $x_4/\tilde{x}_8$ or $x_4/x_{10}$ plots reflect genuine features of the manifold. 
 
 	\subsection{Local analysis: extracting the dimension}
-	Once the gradient descent has been completed and the flat directions sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we first perform some exploratory analyses to better understand the data. Specifically, we aim at determining the dimension of the manifold and whether it consists of a single connected component or multiple disjoint components (\textit{e.g.} two intersecting hyperplanes). To this end, we apply a local Principal Component Analysis (PCA, see for example ref.~\cite{scikit-learn}). For each point, we identify its $k$ nearest neighbours and perform a PCA on that local neighbourhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point, \textit{i.e.} the dimension of its local tangent space. We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in fig.~\ref{fig:local_pca}. We observe that for every choice of $k$, there is a prominent peak at $d = 3$, suggesting that the underlying manifold is three-dimensional. For $k = 5$, a noticeable fraction of points are assigned dimension 2. This can be attributed to the fact that if the true dimension is 3, then selecting only 5 neighbours may not sufficiently populate all three directions, leading the algorithm to underestimate the dimensionality for a fraction of the points. Additionally, for $k \geq 20$, we observe an increasing number of points being assigned dimensions 4 or 5. This behaviour can be explained by the loss of locality when the number of neighbours becomes too large: increasing $k$ results in a coarser approximation, and the algorithm may then incorporate points that are no longer truly local. This artificial enlargement of the neighbourhood can cause the estimated local dimensionality to rise. We thus conclude that the manifold under investigation has an intrinsic dimension of 3.
+	Once the gradient descent has been completed and the flat directions sampled, the next step is to identify the structure of the underlying manifold. Our goal is to eventually obtain an analytical expression, not just a numerical description. Before applying symbolic regression to search for such an expression, we first perform some exploratory analyses to better understand the data. Specifically, we aim at determining the dimension of the manifold and whether it consists of a single connected component or multiple disjoint components (\textit{e.g.} two intersecting hyperplanes). To this end, we apply a local Principal Component Analysis (PCA\footnote{Principal Component Analysis is a dimensionality reduction technique that transforms high-dimensional data into a lower-dimensional space while preserving the maximum amount of variance. The method identifies orthogonal linear combinations of the original variables, called principal components, which are ordered by the proportion of total variance they explain. PCA operates by computing the eigenvalues and eigenvectors of the data covariance matrix, where the eigenvectors define the direction of maximum variance and the eigenvalues quantify the amount of variance captured along each direction. From a physicist point of view, as we are doing it locally, this gives access to information about the local tangent plane.}, see for example ref.~\cite{scikit-learn}). For each point, we identify its $k$ nearest neighbours and perform a PCA on that local neighbourhood. This procedure allows us to determine how many principal directions are needed to explain a given proportion $\epsilon$ of the data variance. In other words, it provides an estimate of the local dimensionality around each point, \textit{i.e.} the dimension of its local tangent space. We perform this analysis for several values of $k$, namely $k \in \{5, 10, 20, 50, 100\}$, and we fix $\epsilon = 0.99$. The results are presented in fig.~\ref{fig:local_pca}. We observe that for every choice of $k$, there is a prominent peak at $d = 3$, suggesting that the underlying manifold is three-dimensional. For $k = 5$, a noticeable fraction of points are assigned dimension 2. This can be attributed to the fact that if the genuine dimension is 3, then selecting only 5 neighbours may not sufficiently populate all three directions, leading the algorithm to underestimate the dimensionality for a fraction of the points. Additionally, for $k \geq 20$, we observe an increasing number of points being assigned dimensions 4 or 5. This behaviour can be explained by the loss of locality when the number of neighbours becomes too large: increasing $k$ results in a coarser approximation, and the algorithm may then incorporate points that are no longer truly local. This artificial enlargement of the neighbourhood can cause the estimated local dimensionality to rise. We thus conclude that the manifold under investigation has an intrinsic dimension of 3.
 
 	\begin{figure}
 		\centering
@@ -639,7 +641,11 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 
 
 
-	\subsection{Initialisation of the algorithm}
+	\subsection{AIS-SMC algorithm}  \label{sec:AIS-SMC_application}
+	Based on the preceding analysis, we have established that our objective is to identify a single, connected three-dimensional manifold. Having characterized those geometric structures, we proceed to present the symbolic regression problem, utilizing the points obtained through gradient descent as our training dataset. In the following section, we detail the implementation of the AIS-SMC framework previously outlined in Section \ref{Sec:AIS-SMC}.
+	
+	\subsubsection{Initialization of the algorithm}
+	
 	We initialized the algorithm with
 	\begin{equation}	\label{eq:sample10000adaptativetemp}
 		\begin{aligned}
@@ -650,7 +656,8 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 			&\texttt{p\_{multiply} = 0.25},\\
 			&\texttt{p\_{divide} = 0.25},\\
 			&\texttt{lambda = 1000},\\
-			&\texttt{sigma = 0.1}.
+			&\texttt{sigma = 0.1},\\
+			&\texttt{n\_particles = 1000}.
 		\end{aligned}
 	\end{equation}
 	\gl{link to notations in section 3}
@@ -663,14 +670,14 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 	\end{equation}
 	With these parameters and given that we are dealing with $5$ variables, $n_{\text{mon}} = 126$.
 
-	\subsection{Analysis of a typical run} \label{sec:singlerun}
-	After a run, the 1000 particles are typically distributed into less than 50 different type of polynomials. Each particles of a given type share the same monomials, but their coefficients fluctuate a bit. We analyse them using the following procedure. We select the particle that features the minimal loss (without the regularisation, $\lambda=0$, see eq.~\eqref{eq:lossreg}), we fine-tune the coefficients by running a quick exploitation phase of 10,000 steps during which we randomly select a coefficient and modify it with a perturbation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, with $\sigma_1=0.01$, and keep the new particle only if the loss function (without the regularisation) is getting smaller. There are two possible outputs after this phase. (i) The coefficients stay finite, and the particle is a candidate annihilator polynomial. We then filter out all  particles of the same type as this candidate, as they will ultimately give the same polynomial. Or (ii), the coefficients are just getting smaller and smaller during the exploration phase, indicating that the only way to minimize the loss with the given monomials is to have very small coefficients. The particle is then disregarded. We repeat the same steps on the best particles of the remaining set until we explored all the 1000 particles.
+	\subsubsection{Analysis of a typical run}
+	After a run, the 1000 particles are typically distributed into less than 50 different type of polynomials. Each particles of a given type share the same monomials, but their coefficients fluctuate a bit. We analyse them using the following procedure. We select the particle that features the minimal loss (without the regularisation, $\lambda=0$, see eq.~\eqref{eq:lossreg}), we fine-tune the coefficients by running a quick exploitation phase of 10,000 steps during which we randomly select a coefficient and modify it with a perturbation $\epsilon \sim \mathcal{N}(0, \sigma_1)$, with $\sigma_1=0.01$, and keep the new particle only if the loss function (without the regularisation) is getting smaller. There are two possible outputs after this phase. (i) The coefficients stay finite, and the particle is a candidate annihilator polynomial. We then filter out all  particles of the same type as this candidate, as they will ultimately give the same polynomial. Or (ii), the coefficients are just getting smaller and smaller during the exploitation phase, indicating that the only way to minimize the loss with the given monomials is to have very small coefficients. The particle is then disregarded. We repeat the same steps on the best particles of the remaining set until we explored all the 1000 particles.
 
 	Here is an example for a given run. The best particle after the Annealing loop is
 	 \begin{equation}
 	 	-0.035\,x_{1} + 0.673\,x_{2} + 0.305\,x_{1}x_{4} + 0.396\,x_{1}x_{10} - 0.630\,x_{2}x_{8} - 0.284\,x_{2}x_{8}x_{10}^{2},
 	 \end{equation}
-	 with loss $L^{(\lambda = 0)} \simeq 2 \times 10^{3}$. The coefficients have been rounded to the nearest thousandth. After 10,000 steps of exploitation, this particle becomes
+	 with loss $L^{(\lambda = 0)} \simeq 2 \times 10^{3}$ \bd{10e2 maybe?}. The coefficients have been rounded to the nearest thousandth. After 10,000 steps of exploitation, this particle becomes
 	  \begin{equation}
 	 	0.396\,x_{2} + 0.396\,x_{1}x_{4} + 0.280\,x_{1}x_{10} - 0.396\,x_{2}x_{8} - 0.198\,x_{2}x_{8}x_{10}^{2},
 	 \end{equation}
@@ -678,7 +685,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 	 \begin{equation} \label{eq:expol1}
 	 	2\,x_{2} + 2.000\,x_{1}x_{4} + 1.415\,x_{1}x_{10} - 2.000\,x_{2}x_{8} - 1.000\,x_{2}x_{8}x_{10}^{2}.
 	 \end{equation}
-	 where we normalised the coefficients by setting the one of $x_{2}$ to $2$. We are in case (i),the polynomial is a candidate annihilator polynomial. After filtering out the 971 particles that are of the same type, the next best particle is
+	 where we normalised the coefficients by setting the one of $x_{2}$ to $2$. We removed $x_1$ monomial, because its coefficient was smaller that $10^{-3}$. We are in case (i), the polynomial is a candidate annihilator polynomial. After filtering out the 971 particles that are of the same type, the next best particle is
 	 \begin{equation}
 	 	1.039\,x_{2} + 0.383\,x_{1}x_{4} + 0.466\,x_{1}x_{10} - 0.955\,x_{2}x_{8} - 0.233\,x_{2}x_{10}^{2} - 0.006\,x_{1}x_{2}x_{8}x_{10},
 	 \end{equation}
@@ -703,8 +710,8 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 		\end{gathered}
 	\end{equation}
 
-	\subsection{Statistics}
-	We performed 1000 independent runs with the same parameters as above, each involving 1000 particles. It takes approximately 10\,min to do a single run on a regular computer. \ce{That's with the local search done as described in the previous section.} The code finds the 8 different following polynomials:
+	\paragraph{Statistics}
+	We performed 1000 independent runs with the same parameters as above, each involving 1000 particles. It takes approximately 10\,min to do a single run on a regular computer, including annealing loop and local search described in the previous section. \ce{That's with the local search done as described in the previous section.} The code finds the 8 different following polynomials:
 	\begin{subequations} \label{eq:pols}
 	 \begin{align}
 	   p_{1} &= -\sqrt{2}\,x_{1} + \sqrt{2}\,x_{1}x_8 + x_{2}x_8x_{10} - \sqrt{2}\,x_{2}x_{4}x_8,\\
@@ -763,7 +770,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 	  
 	We have tracked the appearance of the polynomials~\eqref{eq:pols} during each of the 1000 runs. To do so, we have counted at each epoch the number of particles including the same monomials as the annihilator polynomials.\footnote{Thus, a particle featuring the same monomials as one of the polynomials~\eqref{eq:pols} will be counted, even if the coefficients do not match, and if there are additional monomials.} The total number of particles reproducing at least one of the annihilator polynomials listed in eq.~\eqref{eq:pols} is plotted in fig.~\ref{fig:count_pol_all_beta}, together with the evolution of the inverse temperature $\beta$, both averaged on the 1000 runs. The proportion of annihilator polynomials among the particles start to be significant after approximately 700 epochs. It then increases quickly and, towards the end of each run, an average of $88\%$ of the particles do reproduce one of the annihilator polynomials, with a standard deviation of $20\%$. The evolution of this proportion is explained by the structure of the method: the code favours the particles with highest weights, and thus those that cause a significant improvement to the loss function, at each resampling. Once an annihilator polynomials is reached, it colonises larger and larger proportions of the particles at each resampling.
 
-	The evolution of the inverse temperature is dictated by eq.~\eqref{eq:acceptanceratioschedule}. Note that $\beta$ is equal to $0.02$ in average at the end of the runs. The temperature is thus still quite high, which favours diversity. This is a key ingredient to get more than one candidate polynomials per run. The end value of $\beta$ is intimately linked to the choice of target acceptance ratio in eq.~\eqref{eq:acceptanceratioschedule}: the lower the acceptance ratio, the higher the inverse temperature $\beta$. On the one hand, if the ratio is too low, very few particles get mutated and it's difficult to explore the space of polynomials and to have diverse outputs. On the other hand, if the ratio is too high, there are too many mutations: the output features a large number of polynomials, but lots of them do not converge to an annihilator polynomials because the algorithm is not selective enough. It is a matter of balance between exploration and exploitation.
+	The evolution of the inverse temperature is dictated by eq.~\eqref{eq:eqadaptivetemperatureschedule}. Note that $\beta$ is equal to $0.02$ on average at the end of the runs. The temperature is thus still quite high, which favours diversity. This is a key ingredient to get more than one candidate polynomials per run. The end value of $\beta$ is intimately linked to the choice of target adaptative temperature ratio in eq.~\eqref{eq:eqadaptivetemperatureschedule}: the lower the acceptance ratio, the higher the inverse temperature $\beta$. On the one hand, if the ratio is too low, very few particles get mutated and it's difficult to explore the space of polynomials and to have diverse outputs. On the other hand, if the ratio is too high, there are too many mutations: the output features a large number of polynomials, but lots of them do not converge to an annihilator polynomials because the algorithm is not selective enough. It is a matter of balance between exploration and exploitation.
 
 	\begin{figure}
 		\centering
@@ -783,7 +790,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 
 	The dynamics of appearance of each annihilator polynomial is plotted in fig.~\ref{fig:count_pol_indiv}, averaged on the 1000 runs. The dynamics depend strongly on the polynomial and we observe three different classes. In the first case, for $p_{1}, p_{2}$ and $p_{4}$, the first occurrences appear typically after only few dozen of epochs; and in the the second one, constituted of $p_{3}, p_{5}, p_{7}$ and $p_{8}$, after few hundreds of epochs. The last class has $p_{6}$ as its only representative. This polynomial is very difficult to produce, and when it appears it is only towards the end of the runs. The stair-step patterns, with sudden jumps in the population of the polynomials alternating with phases of stagnation, are due to the use of resampling in the algorithm. When a particle get close enough to an annihilating polynomials, its loss gets lowered significantly faster than the one of the other particles. This induces an increase of its weight and it will populate a large part of the sample at the next resampling. The coefficients get improved during the stagnation phases, inducing an increase of the polynomials weights, and thus even larger colonizations during the following resamplings. This also induces a competition between the annihilator polynomials, the ones that get bettered the more easily (typically those with fewest terms) are favoured. This mechanism explains the decrease in the averaged population of the polynomial $p_{8}$ observed after 800 epochs in fig.~\ref{fig:count_pol_indiv}.
 
-	The best loss for each of the 1000 runs is shown in fig.~\ref{fig:lossallASMC} in blue, together with their mean value in yellow, with a logarithmic $y$-axis. The losses here do include the regularisation factor $\lambda$, see eq.~\eqref{eq:lossreg}, and are given without the exploitation phase discussed in sec.~\ref{sec:singlerun}. For a given run, we are plotting the best loss at each epoch, the curves thus do not follow single particles. On average the loss get bettered by two orders of magnitude during a run, illustrating the convergence of the algorithm. The best loss is however quite high at the last epoch. This is linked to the very low value of $\beta$: the exploration is favoured on exploitation during all the process. Although the loss is high, 1000 epochs are sufficient to select candidate annihilator polynomials thanks to the exploitation phase performed on the best particles, as illustrated in sec.~\ref{sec:singlerun}.
+	The best loss for each of the 1000 runs is shown in fig.~\ref{fig:lossallASMC} in blue, together with their mean value in yellow, with a logarithmic $y$-axis. The losses here do include the regularisation factor $\lambda$, see eq.~\eqref{eq:lossreg}, and are given without the exploitation phase discussed in sec.~\ref{sec:AIS-SMC_application}. For a given run, we are plotting the best loss at each epoch, the curves thus do not follow single particles. On average the loss get bettered by two orders of magnitude during a run, illustrating the convergence of the algorithm. The best loss is however quite high at the last epoch. This is linked to the very low value of $\beta$: the exploration is favoured on exploitation during all the process. Although the loss is high, 1000 epochs are sufficient to select candidate annihilator polynomials thanks to the exploitation phase performed on the best particles, as illustrated in sec.~\ref{sec:AIS-SMC_application}.
 
 	\begin{figure}
 		\centering
@@ -968,48 +975,48 @@ which after identifying the numerical factor with $\sqrt 2$ and inverting the re
 	- \sqrt 2 x_1 + \sqrt 2 x_1 x_8 + x_2 x_8  x_{10} -\sqrt 2 x_2 x_4 x_8 = 0
 \end{equation}
 which corresponds to $p_1$ of Eq. \eqref{eq:pols}. While the AIFeynman code is able to recover one of the constraints, it exhibits several drawbacks compared to our method. First, it is significantly slower: it required TIME (to be specified) compared to approximately 600 seconds for a single run of our ASMC algorithm. Moreover, the AIFeynman framework is based on expressing one variable as a function of the others, which assumes the invertibility of the underlying relation. In general, this is not guaranteed for the class of polynomials in Eq. \eqref{eq:pols}, and obtaining a closed-form inverse can be nontrivial or even impossible for higher-degree expressions. In our case, each polynomial involves at most quadratic terms in any single variable, ensuring invertibility, but this property would not hold for more complex models. In addition, AIFeynman is limited to recovering one constraint per run, whereas our ASMC method can discover multiple constraints simultaneously. This is reflected in our results, where each run identified an average of 2.15 polynomials, with up to 4 found in the best case. Finally, the brute-force regression strategy used by AIFeynman makes it less effective for identifying higher-degree polynomials, whose complexity increases the search difficulty. In contrast, our method treats all polynomials as equally probable, regardless of their degree, enabling it to uncover more intricate structures more efficiently \footnote{Note that we do not claim that we have used the AIFeynman in the most optimal way.}.
-\newpage
-\section{Details on the algorithm}
-
-\begin{algorithm}
-	\caption{Local Dimension Estimation using PCA}
-	\label{alg:local-dim}
-	\begin{algorithmic}[1]
-		
-		\State \textbf{Function} \textsc{LocalDim1Point}($\texttt{x}$, $\texttt{var\_thres}$)
-		\State \hspace{0.5cm} Apply PCA to data matrix $\texttt{x}$
-		\State \hspace{0.5cm} Compute explained variance ratios: $\texttt{lambda\_1, lambda\_2,} \ldots, \texttt{lambda\_d}$
-		\State \hspace{0.5cm} Compute cumulative variance: $\texttt{cumvar\_k} = \sum_{\texttt{i=1}}^\texttt{k} \texttt{lambda\_i}$ for $\texttt{k = 1, }\ldots\texttt{, d}$
-		\State \hspace{0.5cm} Find $\texttt{dim = min\{k : cumvar\_k} \geq \texttt{var\_thres\}}$
-		\State \hspace{0.5cm} \textbf{return} $\texttt{dim}$
-		\State
-		
-%		\State \textbf{Function} \textsc{ComputeLocalDim}(\texttt{i, data, neighbors\_idx, var\_thres})
-%		\State \hspace{0.5cm} Extract local neighbors : \texttt{local\_neighbors} $\leftarrow$ \texttt{data[neighbors\_idx[i]]}
-%		\State \hspace{0.5cm} \texttt{dim} $\leftarrow$ \textsc{LocalDim1Point}(\texttt{local\_neighbors, var\_thres})
-%		\State \hspace{0.5cm} \textbf{return} \texttt{[dim, i]}
+%\newpage
+%\section{Details on the algorithm}
+%
+%\begin{algorithm}
+%	\caption{Local Dimension Estimation using PCA}
+%	\label{alg:local-dim}
+%	\begin{algorithmic}[1]
+%		
+%		\State \textbf{Function} \textsc{LocalDim1Point}($\texttt{x}$, $\texttt{var\_thres}$)
+%		\State \hspace{0.5cm} Apply PCA to data matrix $\texttt{x}$
+%		\State \hspace{0.5cm} Compute explained variance ratios: $\texttt{lambda\_1, lambda\_2,} \ldots, \texttt{lambda\_d}$
+%		\State \hspace{0.5cm} Compute cumulative variance: $\texttt{cumvar\_k} = \sum_{\texttt{i=1}}^\texttt{k} \texttt{lambda\_i}$ for $\texttt{k = 1, }\ldots\texttt{, d}$
+%		\State \hspace{0.5cm} Find $\texttt{dim = min\{k : cumvar\_k} \geq \texttt{var\_thres\}}$
+%		\State \hspace{0.5cm} \textbf{return} $\texttt{dim}$
 %		\State
-
-%		\Require \texttt{data} (input data matrix of size \texttt{n $\times$ d}), \texttt{n\_neig} (number of neighbors), \texttt{var\_thres} (variance threshold)
-%		\Ensure Local dimensions for all points
-
-		\State \textbf{Function} \textsc{LocalDimNPoints}(\texttt{data, n\_neig, var\_thres})
-		\State \hspace{0.5cm} \texttt{n\_points} $\leftarrow$ number of rows in \texttt{data}
-		\State \hspace{0.5cm} Initialize \texttt{results} $\leftarrow \emptyset$
-%		\State \hspace{0.5cm} Fit KD-Tree on \texttt{data} with \texttt{n\_neig} neighbors \Comment{Find k-nearest neighbors using KD-Tree}
-		\State \hspace{0.5cm} Compute \texttt{neighbors\_idx} for all points in \texttt{data}
-		\For{\texttt{i = 1} to \texttt{n\_points}} \Comment{Compute local dimensions for all points}
-		\State \texttt{result\_i} $\leftarrow$ \textsc{ComputeLocalDim}(\texttt{i, data, neighbors\_idx, var\_thres})
-		\State Append \texttt{result\_i} to \texttt{results}
-		\EndFor
-
-		
-		\Return \texttt{results}
-	\end{algorithmic}
-\end{algorithm}
-
-
-In this appendix, we detail the different algorithm that we used. We first here provide a pseudo-code for the AIS-SMC algorithm : 
+%		
+%%		\State \textbf{Function} \textsc{ComputeLocalDim}(\texttt{i, data, neighbors\_idx, var\_thres})
+%%		\State \hspace{0.5cm} Extract local neighbors : \texttt{local\_neighbors} $\leftarrow$ \texttt{data[neighbors\_idx[i]]}
+%%		\State \hspace{0.5cm} \texttt{dim} $\leftarrow$ \textsc{LocalDim1Point}(\texttt{local\_neighbors, var\_thres})
+%%		\State \hspace{0.5cm} \textbf{return} \texttt{[dim, i]}
+%%		\State
+%
+%%		\Require \texttt{data} (input data matrix of size \texttt{n $\times$ d}), \texttt{n\_neig} (number of neighbors), \texttt{var\_thres} (variance threshold)
+%%		\Ensure Local dimensions for all points
+%
+%		\State \textbf{Function} \textsc{LocalDimNPoints}(\texttt{data, n\_neig, var\_thres})
+%		\State \hspace{0.5cm} \texttt{n\_points} $\leftarrow$ number of rows in \texttt{data}
+%		\State \hspace{0.5cm} Initialize \texttt{results} $\leftarrow \emptyset$
+%%		\State \hspace{0.5cm} Fit KD-Tree on \texttt{data} with \texttt{n\_neig} neighbors \Comment{Find k-nearest neighbors using KD-Tree}
+%		\State \hspace{0.5cm} Compute \texttt{neighbors\_idx} for all points in \texttt{data}
+%		\For{\texttt{i = 1} to \texttt{n\_points}} \Comment{Compute local dimensions for all points}
+%		\State \texttt{result\_i} $\leftarrow$ \textsc{ComputeLocalDim}(\texttt{i, data, neighbors\_idx, var\_thres})
+%		\State Append \texttt{result\_i} to \texttt{results}
+%		\EndFor
+%
+%		
+%		\Return \texttt{results}
+%	\end{algorithmic}
+%\end{algorithm}
+%
+%
+%In this appendix, we detail the different algorithm that we used. We first here provide a pseudo-code for the AIS-SMC algorithm : 
 
 %\begin{algorithm}
 %	\caption{Annealing Importance Sampling for Polynomial Discovery}
@@ -1071,102 +1078,102 @@ In this appendix, we detail the different algorithm that we used. We first here 
 %		\Return final particles, final losses, final weights
 %	\end{algorithmic}
 %\end{algorithm}
-
-\begin{algorithm}
-	\caption{Annealing Importance Sampling for Polynomial Discovery}
-	\label{alg:annealing-is}
-	\begin{algorithmic}[1]
-		\Require \texttt{n\_iter} (number of iterations), \texttt{n\_particles} (number of particles), \texttt{target\_acc\_rate}$(\cdot,\cdot)$ (target acceptance rate), \texttt{adaptation\_strength} (temperature adaptation parameter)
-		
-		\State Initialize particles $\{\texttt{z\_0}^{(k)}\}_{k=1}^{\texttt{n\_particles}}$ with sparse polynomials
-		\State Set $\texttt{w\_0}^{\texttt{(k)}} = 1/\texttt{n\_particles}$ and $\texttt{w\_unorm\_0}^{\texttt{(k)}} = 1$ for all $\texttt k$ \Comment{normalized and unnormalized weights}
-		\State $\texttt{z\_prev} \leftarrow \texttt{z\_0}$, $\texttt{best\_loss} \leftarrow \infty$, $\texttt{acceptance\_history} \leftarrow \emptyset$, $\texttt{q\_ratio}^{\texttt{(k)}}=1$ for all $k$, $\texttt{beta\_0} \leftarrow \texttt{init\_beta}$ \Comment{q is the proposal ratio}
-		
-		\For{$\texttt{i = 1}$ to \texttt{n\_iter}} \Comment{Temperature adaptation}
-		\State $\texttt{beta\_{prev}} \leftarrow \texttt{beta\_current}$
-		\State $\texttt{avg\_acc} \leftarrow$ mean$(\texttt{acceptance\_history})$ \Comment{only of the last 5 epochs}
-		\If{$\texttt{avg\_acc < target\_acc\_rate(i, n\_iter) - 0.05}$}
-		\State $\texttt{beta\_current} \leftarrow \texttt{beta\_current} \times \texttt{(1 - adaptation\_strength)}$
-		\ElsIf{$\texttt{avg\_acc > target\_acc\_rate(i, n\_iter) + 0.05}$}
-		\State $\texttt{beta\_current} \leftarrow \texttt{beta\_current} \times \texttt{(1 + adaptation\_strength)}$
-		\EndIf
-		
-		\For{$\texttt{k = 1}$ to \texttt{n\_particles}} \Comment{Reweighting step}
-		\State Compute $\texttt{log(gamma\_i(z\_i}^{\texttt{(k)}} \texttt{)) = - beta\_current} \times \texttt{loss}(\texttt{z\_i}^{\texttt{(k)}}) $
-		\State Compute $\texttt{log(gamma\_(i-1)}(\texttt{z\_(i-1)}^{\texttt{(k)}}\texttt{)) = - beta\_prev} \times \texttt{loss}(\texttt{z\_prev}^{\texttt{(k)}})$
-		\State $\Delta \log \texttt{w\_i}^{\texttt{(k)}} \leftarrow \texttt{log(gamma\_i(\texttt{z\_i}}^{\texttt{(k)}}  \texttt{) - log(gamma\_(i-1)(z\_(i-1)}^{\texttt{(k)}} \texttt{) + log(q\_ratio}^{\texttt{(k)}}\texttt)$
-		\EndFor
-		
-		\State Update unnormalized weights: $\texttt{w\_unorm\_i}^{\texttt{(k)}} \leftarrow \texttt{w\_unorm\_(i-1)}^{\texttt{(k)}} \times \texttt{exp(}\Delta \texttt{log w\_i}^{\texttt{(k)}}\texttt)$
-		\State Normalize weights: $\texttt{w\_i}^{\texttt{(k)}} \leftarrow \texttt{w\_unorm\_i}^{\texttt{(k)}} \texttt/ \sum_{\texttt{j=1}}^{\texttt{n\_particles}} \texttt{w\_unorm\_i}^{\texttt{(j)}}$
-		\State Compute ESS: $\texttt{ESS = 1 /} \sum_{\texttt{k=1}}^{\texttt{n\_particles}} \texttt{(w\_i}^{\texttt{(k)}})^\texttt2$
-		
-		\If{$\texttt{ESS < n\_particles / 2}$} \Comment{Resampling}
-		\State Resample particles: $\{\texttt{z\_i}^{\texttt{(k)}}\}_{\texttt{k=1}}^{\texttt{n\_particles}} \sim \texttt{Multinomial}(\texttt{n\_particles}, \{\texttt{w\_i}^{\texttt{(k)}}\}_{\texttt{k=1}}^{\texttt{n\_particles}})$
-		\State Reset weights: $\texttt{w\_i}^{\texttt{(k)}} = \texttt{1/n\_particles}$, $\texttt{w\_unorm\_i}^{\texttt{(k)}} \texttt{= 1}$ for all $\texttt k$
-		\State Update $\texttt{z\_prev}$ accordingly
-		\EndIf
-		
-		\State $\texttt{z\_before\_mutation} \leftarrow \texttt{z\_i}$ (save current particles)
-		\For{$\texttt{k = 1}$ to \texttt{n\_particles}} \Comment{Mutating with Metropolis-Hasting}
-		\State Propose $\texttt{z}'^{\texttt{(k)}} \sim \texttt{q}(\texttt{z}'^{\texttt{(k)}} | \texttt{z\_i}^{\texttt{(k)}})$ using specialized MH proposal
-		\State Compute $ \texttt{log(p\_current}^{\texttt{(k)}} \texttt{) = - beta\_current} \times \texttt{loss}(\texttt{z\_i}^{\texttt{(k)}}) + \texttt{sparsity\_prior}(\texttt{z\_i}^{\texttt{(k)}})$
-		\State Compute $\texttt{log(p\_proposed}^{\texttt{(k)}} \texttt{) = - beta\_current} \times \texttt{loss}(\texttt{z}'^{\texttt{(k)}}) + \texttt{sparsity\_prior}(\texttt{z}'^{\texttt{(k)}})$
-		\State $\texttt{log(alpha}^{\texttt{(k)}} \texttt) \leftarrow  \texttt{log(p\_proposed}^{\texttt{(k)}}  \texttt{) -  log(p\_current}^{\texttt{(k)}}  \texttt{) + log(q\_ratio}^{\texttt{(k)}}\texttt)$
-		\State Generate $\texttt{u}^{\texttt{(k)}} \sim \mathcal{U}\texttt{(0,1)}$
-		\If{$\texttt{u}^{\texttt{(k)}} \texttt{ < alpha}^{\texttt{(k)}}$}
-		\State $\texttt{z\_i}^{\texttt{(k)}} \leftarrow \texttt{z}'^{\texttt{(k)}}$ (accept proposal)
-		\EndIf
-		\EndFor
-		
-		\State $\texttt{acceptance\_rate} \leftarrow$ fraction of accepted proposals
-		\State Add $\texttt{acceptance\_rate}$ to $\texttt{acceptance\_history}$
-		\State $\texttt{z\_prev} \leftarrow \texttt{z\_before\_mutation}$ (update for next iteration)
-		
-		\EndFor
-		
-		\Return \texttt{final particles, final losses, final weights}
-	\end{algorithmic}
-\end{algorithm}
-
-This pseudo code sketch how does our annealing loops work. Here is the pseudo-code for the initialization of each individual polynomial. We chose to generate more terms with a high number of monomials, because in principle there are more possibilities of polynomials with larger number of monomials. This does not prevent the code from finding polynomials with lower number of monomials as we can see on the results. The polynomial that the code find the most often is the polynomial $p_1$ which only has 4 terms instead of 5 or 6 for all others polynomials. The code can find such polynomials by putting gradually one or several of the coefficients to zero. Note also that we could include the possibility in the MH process too add/remove monomials. However, in the spirit of making "small" steps in the search space, we decided not to for now. 
-
-\begin{algorithm}
-	\caption{Initialize Sparse Polynomials}
-	\label{alg:initialize-sparse}
-	\begin{algorithmic}[1]
-		\Require $\texttt{n\_particles}$ (number of particles), $\texttt{max\_degree}$ (maximum polynomial degree), $\texttt{num\_vars}$ (number of variables), $\texttt{max\_num\_monomials}$ (maximum number of monomials per polynomial), $\texttt{num\_terms}$ (total number of possible terms)
-		
-		\State $\texttt{particles} \leftarrow \mathbf{0}_{\texttt{n\_particles} \times \texttt{num\_terms}}$
-		\State $\texttt{max\_monomials} \leftarrow \texttt{max\_num\_monomials}$
-		
-		\State $\texttt{n\_mon\_to\_max\_order} \leftarrow \binom{\texttt{max\_degree + num\_vars}}{\texttt{max\_degree}}$ \Comment{Compute total number of possible monomials up to max degree}
-		
-		\State $\texttt{n\_mon\_all\_coeff} \leftarrow \emptyset$
-		\State $\texttt{n\_tot\_pol} \leftarrow \texttt{0}$ 
-		\For{$\texttt{i = 1}$ to $\texttt{max\_num\_monomials}$} \Comment{Compute probability distribution over number of monomials}
-		\State $\texttt{n\_mon\_i\_coeff} \leftarrow \binom{\texttt{n\_mon\_to\_max\_order}}{i}$ \Comment{Number of polynomials with exactly $i$ monomials}
-		\State $\texttt{n\_tot\_pol} \leftarrow \texttt{n\_tot\_pol + n\_mon\_i\_coeff}$
-		\State Append $\texttt{n\_mon\_i\_coeff}$ to $\texttt{n\_mon\_all\_coeff}$
-		\EndFor
-		
-		\State $\texttt{proba} \leftarrow \texttt{n\_mon\_all\_coeff / n\_tot\_pol}$ \Comment{Normalize to get probabilities}
-
-		\For{$\texttt{i = 1}$ to $\texttt{n\_particles}$} \Comment{Generate particles}
-
-		\State $\texttt{num\_monomials} \sim \texttt{Categorical(\{1, 2, \ldots, max\_monomials\}, proba)}$ \Comment{Sample number of monomials according to computed distribution}
-		
-		\State $\texttt{nonzero\_indices}\leftarrow$ sample $\texttt{num\_monomials}$ indices from $\{\texttt{1, 2, }\ldots, \texttt{num\_terms}\}$ without replacement \Comment{Randomly select which monomials will be non-zero}
-		
-		\For{\texttt{j} $ \in \texttt{nonzero\_indices}$} \Comment{Generate random coefficients}
-		\State $\texttt{particles[i, j] }\leftarrow \mathcal{U}(-2,2)$ 
-		\Comment{Uniform in $[-2, 2]$}
-		\EndFor
-		\EndFor
-		
-		\Return $\texttt{particles}$
-	\end{algorithmic}
-\end{algorithm}
+%
+%\begin{algorithm}
+%	\caption{Annealing Importance Sampling for Polynomial Discovery}
+%	\label{alg:annealing-is}
+%	\begin{algorithmic}[1]
+%		\Require \texttt{n\_iter} (number of iterations), \texttt{n\_particles} (number of particles), \texttt{target\_acc\_rate}$(\cdot,\cdot)$ (target acceptance rate), \texttt{adaptation\_strength} (temperature adaptation parameter)
+%		
+%		\State Initialize particles $\{\texttt{z\_0}^{(k)}\}_{k=1}^{\texttt{n\_particles}}$ with sparse polynomials
+%		\State Set $\texttt{w\_0}^{\texttt{(k)}} = 1/\texttt{n\_particles}$ and $\texttt{w\_unorm\_0}^{\texttt{(k)}} = 1$ for all $\texttt k$ \Comment{normalized and unnormalized weights}
+%		\State $\texttt{z\_prev} \leftarrow \texttt{z\_0}$, $\texttt{best\_loss} \leftarrow \infty$, $\texttt{acceptance\_history} \leftarrow \emptyset$, $\texttt{q\_ratio}^{\texttt{(k)}}=1$ for all $k$, $\texttt{beta\_0} \leftarrow \texttt{init\_beta}$ \Comment{q is the proposal ratio}
+%		
+%		\For{$\texttt{i = 1}$ to \texttt{n\_iter}} \Comment{Temperature adaptation}
+%		\State $\texttt{beta\_{prev}} \leftarrow \texttt{beta\_current}$
+%		\State $\texttt{avg\_acc} \leftarrow$ mean$(\texttt{acceptance\_history})$ \Comment{only of the last 5 epochs}
+%		\If{$\texttt{avg\_acc < target\_acc\_rate(i, n\_iter) - 0.05}$}
+%		\State $\texttt{beta\_current} \leftarrow \texttt{beta\_current} \times \texttt{(1 - adaptation\_strength)}$
+%		\ElsIf{$\texttt{avg\_acc > target\_acc\_rate(i, n\_iter) + 0.05}$}
+%		\State $\texttt{beta\_current} \leftarrow \texttt{beta\_current} \times \texttt{(1 + adaptation\_strength)}$
+%		\EndIf
+%		
+%		\For{$\texttt{k = 1}$ to \texttt{n\_particles}} \Comment{Reweighting step}
+%		\State Compute $\texttt{log(gamma\_i(z\_i}^{\texttt{(k)}} \texttt{)) = - beta\_current} \times \texttt{loss}(\texttt{z\_i}^{\texttt{(k)}}) $
+%		\State Compute $\texttt{log(gamma\_(i-1)}(\texttt{z\_(i-1)}^{\texttt{(k)}}\texttt{)) = - beta\_prev} \times \texttt{loss}(\texttt{z\_prev}^{\texttt{(k)}})$
+%		\State $\Delta \log \texttt{w\_i}^{\texttt{(k)}} \leftarrow \texttt{log(gamma\_i(\texttt{z\_i}}^{\texttt{(k)}}  \texttt{) - log(gamma\_(i-1)(z\_(i-1)}^{\texttt{(k)}} \texttt{) + log(q\_ratio}^{\texttt{(k)}}\texttt)$
+%		\EndFor
+%		
+%		\State Update unnormalized weights: $\texttt{w\_unorm\_i}^{\texttt{(k)}} \leftarrow \texttt{w\_unorm\_(i-1)}^{\texttt{(k)}} \times \texttt{exp(}\Delta \texttt{log w\_i}^{\texttt{(k)}}\texttt)$
+%		\State Normalize weights: $\texttt{w\_i}^{\texttt{(k)}} \leftarrow \texttt{w\_unorm\_i}^{\texttt{(k)}} \texttt/ \sum_{\texttt{j=1}}^{\texttt{n\_particles}} \texttt{w\_unorm\_i}^{\texttt{(j)}}$
+%		\State Compute ESS: $\texttt{ESS = 1 /} \sum_{\texttt{k=1}}^{\texttt{n\_particles}} \texttt{(w\_i}^{\texttt{(k)}})^\texttt2$
+%		
+%		\If{$\texttt{ESS < n\_particles / 2}$} \Comment{Resampling}
+%		\State Resample particles: $\{\texttt{z\_i}^{\texttt{(k)}}\}_{\texttt{k=1}}^{\texttt{n\_particles}} \sim \texttt{Multinomial}(\texttt{n\_particles}, \{\texttt{w\_i}^{\texttt{(k)}}\}_{\texttt{k=1}}^{\texttt{n\_particles}})$
+%		\State Reset weights: $\texttt{w\_i}^{\texttt{(k)}} = \texttt{1/n\_particles}$, $\texttt{w\_unorm\_i}^{\texttt{(k)}} \texttt{= 1}$ for all $\texttt k$
+%		\State Update $\texttt{z\_prev}$ accordingly
+%		\EndIf
+%		
+%		\State $\texttt{z\_before\_mutation} \leftarrow \texttt{z\_i}$ (save current particles)
+%		\For{$\texttt{k = 1}$ to \texttt{n\_particles}} \Comment{Mutating with Metropolis-Hasting}
+%		\State Propose $\texttt{z}'^{\texttt{(k)}} \sim \texttt{q}(\texttt{z}'^{\texttt{(k)}} | \texttt{z\_i}^{\texttt{(k)}})$ using specialized MH proposal
+%		\State Compute $ \texttt{log(p\_current}^{\texttt{(k)}} \texttt{) = - beta\_current} \times \texttt{loss}(\texttt{z\_i}^{\texttt{(k)}}) + \texttt{sparsity\_prior}(\texttt{z\_i}^{\texttt{(k)}})$
+%		\State Compute $\texttt{log(p\_proposed}^{\texttt{(k)}} \texttt{) = - beta\_current} \times \texttt{loss}(\texttt{z}'^{\texttt{(k)}}) + \texttt{sparsity\_prior}(\texttt{z}'^{\texttt{(k)}})$
+%		\State $\texttt{log(alpha}^{\texttt{(k)}} \texttt) \leftarrow  \texttt{log(p\_proposed}^{\texttt{(k)}}  \texttt{) -  log(p\_current}^{\texttt{(k)}}  \texttt{) + log(q\_ratio}^{\texttt{(k)}}\texttt)$
+%		\State Generate $\texttt{u}^{\texttt{(k)}} \sim \mathcal{U}\texttt{(0,1)}$
+%		\If{$\texttt{u}^{\texttt{(k)}} \texttt{ < alpha}^{\texttt{(k)}}$}
+%		\State $\texttt{z\_i}^{\texttt{(k)}} \leftarrow \texttt{z}'^{\texttt{(k)}}$ (accept proposal)
+%		\EndIf
+%		\EndFor
+%		
+%		\State $\texttt{acceptance\_rate} \leftarrow$ fraction of accepted proposals
+%		\State Add $\texttt{acceptance\_rate}$ to $\texttt{acceptance\_history}$
+%		\State $\texttt{z\_prev} \leftarrow \texttt{z\_before\_mutation}$ (update for next iteration)
+%		
+%		\EndFor
+%		
+%		\Return \texttt{final particles, final losses, final weights}
+%	\end{algorithmic}
+%\end{algorithm}
+%
+%This pseudo code sketch how does our annealing loops work. Here is the pseudo-code for the initialization of each individual polynomial. We chose to generate more terms with a high number of monomials, because in principle there are more possibilities of polynomials with larger number of monomials. This does not prevent the code from finding polynomials with lower number of monomials as we can see on the results. The polynomial that the code find the most often is the polynomial $p_1$ which only has 4 terms instead of 5 or 6 for all others polynomials. The code can find such polynomials by putting gradually one or several of the coefficients to zero. Note also that we could include the possibility in the MH process too add/remove monomials. However, in the spirit of making "small" steps in the search space, we decided not to for now. 
+%
+%\begin{algorithm}
+%	\caption{Initialize Sparse Polynomials}
+%	\label{alg:initialize-sparse}
+%	\begin{algorithmic}[1]
+%		\Require $\texttt{n\_particles}$ (number of particles), $\texttt{max\_degree}$ (maximum polynomial degree), $\texttt{num\_vars}$ (number of variables), $\texttt{max\_num\_monomials}$ (maximum number of monomials per polynomial), $\texttt{num\_terms}$ (total number of possible terms)
+%		
+%		\State $\texttt{particles} \leftarrow \mathbf{0}_{\texttt{n\_particles} \times \texttt{num\_terms}}$
+%		\State $\texttt{max\_monomials} \leftarrow \texttt{max\_num\_monomials}$
+%		
+%		\State $\texttt{n\_mon\_to\_max\_order} \leftarrow \binom{\texttt{max\_degree + num\_vars}}{\texttt{max\_degree}}$ \Comment{Compute total number of possible monomials up to max degree}
+%		
+%		\State $\texttt{n\_mon\_all\_coeff} \leftarrow \emptyset$
+%		\State $\texttt{n\_tot\_pol} \leftarrow \texttt{0}$ 
+%		\For{$\texttt{i = 1}$ to $\texttt{max\_num\_monomials}$} \Comment{Compute probability distribution over number of monomials}
+%		\State $\texttt{n\_mon\_i\_coeff} \leftarrow \binom{\texttt{n\_mon\_to\_max\_order}}{i}$ \Comment{Number of polynomials with exactly $i$ monomials}
+%		\State $\texttt{n\_tot\_pol} \leftarrow \texttt{n\_tot\_pol + n\_mon\_i\_coeff}$
+%		\State Append $\texttt{n\_mon\_i\_coeff}$ to $\texttt{n\_mon\_all\_coeff}$
+%		\EndFor
+%		
+%		\State $\texttt{proba} \leftarrow \texttt{n\_mon\_all\_coeff / n\_tot\_pol}$ \Comment{Normalize to get probabilities}
+%
+%		\For{$\texttt{i = 1}$ to $\texttt{n\_particles}$} \Comment{Generate particles}
+%
+%		\State $\texttt{num\_monomials} \sim \texttt{Categorical(\{1, 2, \ldots, max\_monomials\}, proba)}$ \Comment{Sample number of monomials according to computed distribution}
+%		
+%		\State $\texttt{nonzero\_indices}\leftarrow$ sample $\texttt{num\_monomials}$ indices from $\{\texttt{1, 2, }\ldots, \texttt{num\_terms}\}$ without replacement \Comment{Randomly select which monomials will be non-zero}
+%		
+%		\For{\texttt{j} $ \in \texttt{nonzero\_indices}$} \Comment{Generate random coefficients}
+%		\State $\texttt{particles[i, j] }\leftarrow \mathcal{U}(-2,2)$ 
+%		\Comment{Uniform in $[-2, 2]$}
+%		\EndFor
+%		\EndFor
+%		
+%		\Return $\texttt{particles}$
+%	\end{algorithmic}
+%\end{algorithm}
 
 \bibliography{references}
 
