@@ -266,6 +266,10 @@ C.~Eloy, G.~Larios, and H.~Samtleben, {\it {Triality and the consistent
 {Wolfram Research Inc.}, ``Mathematica, {V}ersion 14.2.''
 \newblock Champaign, IL, 2024.
 
+\bibitem{naesseth2024elementssequentialmontecarlo}
+C.~A. Naesseth, F.~Lindsten, and T.~B. Schön, {\it Elements of sequential
+  monte carlo},  2024.
+
 \bibitem{tensorflow2015-whitepaper}
 M.~Abadi, A.~Agarwal, P.~Barham, E.~Brevdo, Z.~Chen, C.~Citro, G.~S. Corrado,
   A.~Davis, J.~Dean, M.~Devin, S.~Ghemawat, I.~Goodfellow, A.~Harp, G.~Irving,
@@ -298,6 +302,10 @@ R.~J. G.~B. Campello, D.~Moulavi, and J.~Sander, {\it Density-based clustering
   Discovery and Data Mining} (J.~Pei, V.~S. Tseng, L.~Cao, H.~Motoda, and
   G.~Xu, eds.), (Berlin, Heidelberg), pp.~160--172, Springer Berlin Heidelberg,
   2013.
+
+\bibitem{Breitenlohner:1982jf}
+P.~Breitenlohner and D.~Z. Freedman, {\it {Stability in Gauged Extended
+  Supergravity}},  {\em Annals Phys.} {\bf 144} (1982) 249.
 
 \bibitem{Hohm:2014fxa}
 O.~Hohm and H.~Samtleben, {\it {Exceptional field theory. III. E$_{8(8)}$}},
