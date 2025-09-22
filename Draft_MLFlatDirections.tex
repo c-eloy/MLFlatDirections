@@ -299,7 +299,7 @@ color=charcoal
 
 \begin{abstract}
 	We investigate the structure of conformal manifolds around AdS$_3 \times S^3$ which lift from continuous flat directions in the scalar potential of gauged supergravity resulting from six-dimensional $\mathcal{N}=(1,1)$.
-	Our approach combines numerical exploration and symbolic inference. For the latter, we develop a symbolic regression algorithm based on Sequential Importance Sampling (AIS) combined with Sequential Monte Carlo (SMC), well-suited to uncovering polynomial constraints in high-dimensional parameter spaces. 
+	Our approach combines numerical exploration and symbolic inference. For the latter, we develop a symbolic regression algorithm based on Annealed Importance Sampling (AIS) combined with Sequential Monte Carlo (SMC), well-suited to uncovering polynomial constraints in high-dimensional parameter spaces. 
 	The algorithm reconstructs a set of polynomial relations that provides an explicit analytic parametrization of a new family of solutions. 
 \end{abstract}
 
@@ -513,7 +513,7 @@ At each epoch, we $\pi_{n}$ can be approximated via a set of particles and weigh
 		 	\pi_n(z) \approx \sum_k w_{n}^k\ \delta(z-z_{n}^k)\,,
 		 \end{equation}
 To obtain a new set $\{z_{n+1}^k,\ w_{n+1}^k\}$ approximating $\pi_{n+1}$, we sample from the forward propagation kernel $q_{n+1}(z_{n+1}\vert z_n)$ that defines how we generate the state at time $n+1$ given the state at time $n$.
-Similarly, the evolution of the weights is given by
+Similarly, the evolution of the weights is given by \gl{for $k>1$, this is a bit schematic...}
 \[
 	w_{n+1} = \frac{\gamma_{n+1}}{q_{n+1}} = \frac{\gamma_{n+1}}{q_{n}\ q_{n+1 \vert n}} = w_{n}\ \alpha_{n+1}\,,
 \]
@@ -545,12 +545,12 @@ The moves that have been allowed in our implementation are:
 		Each of these operations is chosen randomly, with probabilities $p_{\rm shift}$, $p_{\rm multiply}$, and $p_{\rm divide}$.
 %		For the case of coefficient perturbations, the transition is symmetric. 
 %		However, this symmetry does not hold in general. For other types of operations—such as multiplication or division by a variable—the transition from \( z_{n-1}^k \) to \( z_n^k \) is generally not equivalent to the reverse transition from \( z_n^k \) to \( z_{n-1}^k \). In such cases $q(z_n^k \mid z_{n-1}^k) \ne q(z_{n-1}^k \mid z_n^k)$ and particular care must be taken in the computation of the backward propagation kernel.
-After performing these updates, the change is accepted based on the temperature-dependent rate
+After performing these updates, the change is accepted based on the temperature-dependent rate \gl{need to double check this}
 		\begin{equation}\label{eq:acceptanceratio}
 			A(z_n,z_{n-1}) = \mathrm{min} \left(1,\frac{ \gamma_n(z_n^k) q(z_{n-1}^k | z_n^k) }{ \gamma_{n-1}(z_{n-1}^k) q(z_n^k | z_{n-1}^k) }  \right)\,.
 		\end{equation}
 		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
-		The kernels $q$ and $\tilde{q}$ thus encapsulate the effects of performing these operations on the polynomials at step $n$.
+		The kernel $q(z_{n-1}^k | z_n^k)$ thus encapsulates the effects of performing these operations on the polynomials at step $n$.
 		
 		To compute the weights and kernels via \eqref{eq: incremental_importance} and \eqref{eq:acceptanceratio} we need to consider the loss function in \eqref{eq:gamman}.
 In the present context, we use the following loss, where the polynomials have been parameterised as $z = \sum_k c_k X_k$ with $X_k$ denoting the possible monomials up to a given degree,%
