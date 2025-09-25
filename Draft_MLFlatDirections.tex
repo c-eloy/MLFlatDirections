@@ -578,28 +578,37 @@ Together with the loss function, we also need to specify a cooling schedule for 
 	Finding annihilating polynomials involves navigating a vast, discrete, and often rugged search space of possible symbolic models, which poses significant challenges for traditional sampling methods. 
 	Markov Chain Monte Carlo (MCMC) techniques such as Metropolis-Hastings or Gibbs sampling, while widely used, can struggle with poor mixing and often get trapped in local optima, especially in high-dimensional or multimodal spaces \cite{??}. \ce{Citation.}
 
-	To address these challenges, we formulate the search for annihilating polynomials as a determination of a density probability on the space of polynomials that stresses higher probabilities on polynomials $p$ that minimises $\displaystyle \sum_{i=1}^{n_{\rm points}}p(\vec{x}^{(i)})^{2}$. Such a probability density is \textit{a priori} hard to find, but can be approximated using variations of Important Sampling methods~\cite{910e8e7d-2e70-317c-adf6-e21cd50755a1}. Importance sampling is a method to parametrise expectation values with respect to a target distribution $d$, from a weighted average using another distribution $\pi$. It is based on the observation that the expectation
+	To address these challenges, we formulate the search for annihilating polynomials as a determination of a density probability on the space of polynomials that stresses higher probabilities on polynomials $p$ that minimises $\displaystyle \sum_{i=1}^{n_{\rm points}}p(\vec{x}^{(i)})^{2}$. Such a probability density is \textit{a priori} hard to find, but can be approximated using variations of Important Sampling methods~\cite{910e8e7d-2e70-317c-adf6-e21cd50755a1}. Importance sampling is a method to parametrise expectation values with respect to a target distribution $d$, for which you can compute $d(z)$ for some sample $z$, but for which you do not know how to draw from. IS uses another distribution $\pi$ whose density probabilty is proportional to $d$, but from which you know how to draw from. IS then parametrizes the density $d$ with a sequence of weights $w^{(k)}$ and is based on the observation that the expectation
 	\begin{equation}
 		\mathbb{E}_{d}[f] = \int f(z)d(z)\ \d z
 	\end{equation}
-	of a function $f$ with respect to $d$ can be computed from the expectation $\mathbb{E}_{\pi}[w f]$, now computed with respect to the distribution $\pi$, with unnormalised $w(z) = d(z)/\pi(z)$. Therefore, if it is easier to draw a sample $\{z^{(k)}\}_{k\in\llbracket 1, n_{\rm particles}\rrbracket}$ from $\pi$ than from $d$, one can estimate $\mathbb{E}_{d}[f]$ from the weighted average
+	for some function $f$ with respect to $d$ can be computed from the expectation $\mathbb{E}_{\pi}[w f]$, now computed with respect to the distribution $\pi$, with unnormalised $w^{(k)} = d(z^{k})/\pi(z^{(k)})$. Therefore, if it is easier to draw a sample $\{z^{(k)}\}_{k\in\llbracket 1, n_{\rm particles}\rrbracket}$ from $\pi$ than from $d$, one can estimate $\mathbb{E}_{d}[f]$ from the weighted average
 	\begin{equation}
-		\mathbb{E}_{d}[f] \simeq \frac{\displaystyle \sum_{k=1}^{n_{\rm particles}} w(z^{(k)})\,f(z^{(k)})}{\displaystyle \sum_{i=1}^{n_{\rm particles}} w(z^{(k)})}.
+		\mathbb{E}_{d}[f] \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} w(z^{(k)})\,f(z^{(k)})/\displaystyle \sum_{i=1}^{n_{\rm particles}} w(z^{(k)}).
 	\end{equation}
-	The accuracy of this estimation depends on the size of the sample and, crucially, on the choice of the distribution $\pi$. \ce{Add conclusion saying that you can parametrise $d$ using a sample and weights, and eq. as (4.4).}
-
-	To have an accurate estimation of $d$, we employ an Annealed Importance Sampling (AIS) \cite{neal1998annealedimportancesampling} combined with Sequential Monte Carlo (SMC) methods \cite{del2006sequential,naesseth2024elementssequentialmontecarlo}. AIS aims at estimating $d$ sequentially from multiple intermediate distributions $\pi_{n}$ that smoothly transition from an initial, tractable distribution $d_{0}$ (chosen to be easy to sample from) to the complex target distribution $d$.
-	These distributions are approximated by weighted samples $\{z^{(k)}_{n},w^{(k)}_{n}\}$ of particles, each representing a candidate symbolic expression, such that the resulting weighted average estimates $\pi_{n}$: \ce{Normalise the weights?}
+	or stated differently 
+	\begin{equation} \label{eq:}
+		d(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}\,\delta(z-z^{(k)})/\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}.
+	\end{equation}	
+	The accuracy of this estimation depends on the size of the sample and, crucially, on the choice of the distribution $\pi$. 
+	
+	However, providing a good $\pi$ distribution may still remains an hard problem. In order to fix this point, we employ a so called Annealed Importance Sampling (AIS) \cite{neal1998annealedimportancesampling}. AIS aims at estimating $\pi$ sequentially from multiple intermediate distributions $\pi_{n}$ that smoothly transition from an initial, tractable distribution $\pi_{0}$ (chosen to be easy to sample from) to the complex target distribution $\pi$.
+	These distributions are approximated by weighted samples $\{z^{(k)}_{n},w^{(k)}_{n}\}$ of particles, such that the resulting weighted average estimates $\pi_{n}$
 	\begin{equation}
-		\frac{\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}\,f(z^{(k)}_{n})}{\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}} \underset{n_{\rm particles}\rightarrow+\infty}{\longrightarrow} \mathbb{E}_{\pi_{n}}[f],
+		\mathbb{E}_{\pi_{n}}[f] \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,f(z^{(k)}_{n})
 	\end{equation}
 	or equivalently
 	\begin{equation} \label{eq:pifromweights}
-		\pi_{n}(z) \simeq \frac{\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}\,\delta(z-z^{(k)}_{n})}{\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}}.
+		\pi_{n}(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,\delta(z-z^{(k)}_{n}).
 	\end{equation}
-	The $\pi_{n}$ are incrementally deformed using a Markov kernel to gradually reproduce the target $d$ and the particles get reweighed. This annealing process is guided by a temperature-like parameter that gradually emphasises the data likelihood, allowing for more efficient and tunable exploration of the polynomials landscape.
-
-	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. We use SMC methods to incorporate a resampling procedure to AIS, thus focussing computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
+	with  $\tilde{w}^{(k)}_n  = w^{(k)}_n/\sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}$ the normalised weights. The $\pi_{n}$ are incrementally deformed using a Markov kernel to gradually reproduce the target $d$ and the particles get reweighed. This annealing process is guided by a temperature-like parameter that gradually emphasises the data likelihood, allowing for more efficient and tunable exploration of the polynomials landscape. The approximation procedure can be sum up as follow 
+	\begin{equation}
+	\pi_0(z) \underset{\rm Annealing}{\longrightarrow}\pi_n(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,\delta(z-z^{(k)}_{n}) \underset{\rm{n} \rightarrow +\infty}{\longrightarrow} \pi(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}\,\delta(z-z^{(k)}) \underset{\rm{n_{particles}} \rightarrow +\infty}{\longrightarrow} d(z)
+	\nonumber
+	\end{equation}
+	Therefore, we start from an intial, easy to sample distribution $\pi_0$, that is parametrised by a set of particles and weights $\{z_0^{(k)},w_0^{(k)}\}$. We gradually mutate them with an annealing procedure to get a set of $\{z_n^{(k)},w_n^{(k)}\}$, which are used to parametrise $\pi_n$. As $n$ increases, the procedure converges to the distribution $\pi$, which itself is used to parametrise the target distribution $d$. 
+	
+	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. We combine the previously mentionne AIS technique with SMC methods  \cite{del2006sequential,naesseth2024elementssequentialmontecarlo} to incorporate a resampling procedure, thus focussing computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
 
 	\subsection{Detailed procedure}
 		
