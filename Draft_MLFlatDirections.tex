@@ -569,49 +569,98 @@ Together with the loss function, we also need to specify a cooling schedule for 
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-\section{Annealed Importance Sampling for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
+\section{Sequential Monte Carlo sampler for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
 
 	\subsection{General idea}
 	The numerical sampling of the space of vacua described above results in clouds of points embedded in a higher-dimensional space. 
 	The aim of symbolic regression is to uncover interpretable mathematical expressions that best describe the embedding of these loci of solutions. 
-	In the present context, the form of the supergravity potential \eqref{eq:scalarpotential} determining the solutions implies that the loci can be defined through polynomials $p_{m}$ such that $p_{m}(\vec{x}^{(i)}) = 0$, with $i \in \{1, \dots, n_{\rm points}\}$. Such polynomials will be called ``annihilating polynomials'' in the following.
+	In the present context, the form of the supergravity potential \eqref{eq:scalarpotential} determining the solutions implies that the loci can be defined through polynomials $p_{m}$ such that $p_{m}\big(\vec{x}^{(i)}\big) = 0$, with $i \in \{1, \dots, n_{\rm points}\}$. Such polynomials will be called ``annihilating polynomials'' in the following.
 	Finding annihilating polynomials involves navigating a vast, discrete, and often rugged search space of possible symbolic models, which poses significant challenges for traditional sampling methods. 
-	Markov Chain Monte Carlo (MCMC) techniques such as Metropolis-Hastings or Gibbs sampling, while widely used, can struggle with poor mixing and often get trapped in local optima, especially in high-dimensional or multimodal spaces \cite{??}. \ce{Citation.}
+	Markov Chain Monte Carlo (MCMC) techniques such as Metropolis-Hastings or Gibbs sampling, while widely used, can struggle with poor mixing and often get trapped in local optima, especially in high-dimensional or multimodal spaces.
 
-	To address these challenges, we formulate the search for annihilating polynomials as a determination of a density probability on the space of polynomials that stresses higher probabilities on polynomials $p$ that minimises $\displaystyle \sum_{i=1}^{n_{\rm points}}p(\vec{x}^{(i)})^{2}$. Such a probability density is \textit{a priori} hard to find, but can be approximated using variations of Important Sampling methods~\cite{910e8e7d-2e70-317c-adf6-e21cd50755a1}. Importance sampling is a method to parametrise expectation values with respect to a target distribution $d$, for which you can compute $d(z)$ for some sample $z$, but for which you do not know how to draw from. IS uses another distribution $\pi$ whose density probabilty is proportional to $d$, but from which you know how to draw from. IS then parametrizes the density $d$ with a sequence of weights $w^{(k)}$ and is based on the observation that the expectation
+	To address these challenges, we formulate the search for annihilating polynomials as a determination of a probability density on the space of polynomials that stresses higher probabilities on polynomials $p$ that minimises $\displaystyle \sum_{i=1}^{n_{\rm points}}p\big(\vec{x}^{(i)}\big)^{2}$. Polynomials sampled from this density would thus be annihilating polynomials. Such a probability density is \textit{a priori} hard to find, but can be approximated using algorithms based on Sequential Important Sampling~\cite{Doucet2001,Liu2004} such as Sequential Monte Carlo samplers~\cite{del2006sequential}. They are inspired from Important Sampling (IS)~\cite{osti_4441935,RobertCasella2004}, a method to parametrise expectation values with respect to a target distribution $d$, that can be evaluated pointwise, but from which one does not know how to draw samples. IS uses another, usually simpler, distribution $\pi$ (called importance distribution) from which you know how to draw from. It is based on the observation that the expectation value
 	\begin{equation}
 		\mathbb{E}_{d}[f] = \int f(z)d(z)\ \d z
 	\end{equation}
-	for some function $f$ with respect to $d$ can be computed from the expectation $\mathbb{E}_{\pi}[w f]$, now computed with respect to the distribution $\pi$, with unnormalised $w^{(k)} = d(z^{k})/\pi(z^{(k)})$. Therefore, if it is easier to draw a sample $\{z^{(k)}\}_{k\in\llbracket 1, n_{\rm particles}\rrbracket}$ from $\pi$ than from $d$, one can estimate $\mathbb{E}_{d}[f]$ from the weighted average
+	for some function $f$ with respect to $d$ can be computed from the expectation $\mathbb{E}_{\pi}[w f]$, now computed with respect to the distribution $\pi$, with unnormalised weights $w = d/\pi$. Therefore, one can estimate $\mathbb{E}_{d}[f]$ from a Monte Carlo method: we draw a sample $\{z^{(k)}\}_{k\in\llbracket 1, n_{\rm particles}\rrbracket}$ from $\pi$ and use the weighted average
 	\begin{equation}
-		\mathbb{E}_{d}[f] \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} w(z^{(k)})\,f(z^{(k)})/\displaystyle \sum_{i=1}^{n_{\rm particles}} w(z^{(k)}).
+		\mathbb{E}_{d}[f] \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} w\big(z^{(k)}\big)\,f\big(z^{(k)}\big)/\displaystyle \sum_{i=1}^{n_{\rm particles}} w\big(z^{(k)}\big).
 	\end{equation}
-	or stated differently 
-	\begin{equation} \label{eq:}
-		d(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}\,\delta(z-z^{(k)})/\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}.
-	\end{equation}	
-	The accuracy of this estimation depends on the size of the sample and, crucially, on the choice of the distribution $\pi$. 
+	Stated differently, the target distribution $d$ can be approximated from a weighted collection of particles $\{z^{(k)},w^{(k)}\}_{k\in\llbracket 1, n_{\rm particles}\rrbracket}$ drawn from the importance distribution $\pi$ :
+	\begin{equation}
+		d(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)}\,\delta\big(z-z^{(k)}\big)/\displaystyle \sum_{k=1}^{n_{\rm particles}} w^{(k)},
+	\end{equation}
+	where $w^{(k)} = w\big(z^{(k)}\big)$. The sample admits $d$ as marginal distribution asymptotically when $n_{\rm particles}\rightarrow+\infty$. The accuracy of this estimation depends on the size of the sample and, crucially, on the choice of the distribution $\pi$, that needs to be close enough to $d$. 
 	
-	However, providing a good $\pi$ distribution may still remains an hard problem. In order to fix this point, we employ a so called Annealed Importance Sampling (AIS) \cite{neal1998annealedimportancesampling} which is a class of Sequetial Monte Carlo algorithm (SMC) \cite{del2006sequential,naesseth2024elementssequentialmontecarlo}. AIS aims at estimating $\pi$ sequentially from multiple intermediate distributions $\pi_{n}$ that smoothly transition from an initial, tractable distribution $\pi_{0}$ (chosen to be easy to sample from) to the complex target distribution $\pi$.
-	These distributions are approximated by weighted samples $\{z^{(k)}_{n},w^{(k)}_{n}\}$ of particles, such that the resulting weighted average estimates $\pi_{n}$
-	\begin{equation}
-		\mathbb{E}_{\pi_{n}}[f] \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,f(z^{(k)}_{n})
-	\end{equation}
-	or equivalently
+	However, providing a good importance distribution $\pi$ remains a hard problem. In order to fix this point, we employ a Sequential Monte Carlo sampler (SMC)~\cite{del2006sequential,DoucetTutorial,naesseth2024elementssequentialmontecarlo} mixed with inspirations from Annealed Importance Sampling (AIS)~\cite{neal1998annealedimportancesampling}. SMC aims at estimating $\pi$ sequentially from multiple intermediate distributions $\pi_{n}$ that smoothly transition from an initial, tractable distribution $\pi_{0}$ (chosen to be easy to sample from) to the complex distribution $\pi$. These distributions are approximated by weighted samples of particles $\big\{z^{(k)}_{n},w^{(k)}_{n}\big\}$ approximating $\pi_{n}$:
 	\begin{equation} \label{eq:pifromweights}
-		\pi_{n}(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,\delta(z-z^{(k)}_{n}).
+		\pi_{n}(z) \simeq \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,\delta(z-z^{(k)}_{n}),
 	\end{equation}
-	with  $\tilde{w}^{(k)}_n  = w^{(k)}_n/\sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}$ the normalised weights. The $\pi_{n}$ are incrementally deformed using a Markov kernel to gradually reproduce the target $d$ and the particles get reweighed. This process is guided by a temperature-like parameter that gradually emphasises the data likelihood, allowing for more efficient and tunable exploration of the polynomials landscape. The approximation procedure can be sum up as follow 
-	\begin{equation}
-	\pi_0(z) \underset{\rm Annealing}{\longrightarrow}\pi_n(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,\delta(z-z^{(k)}_{n}) \underset{\rm{n} \rightarrow +\infty}{\longrightarrow} \pi(z) \simeq \displaystyle \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}\,\delta(z-z^{(k)}) \underset{\rm{n_{particles}} \rightarrow +\infty}{\longrightarrow} d(z)
-	\nonumber
-	\end{equation}
-	Therefore, we start from an intial, easy to sample distribution $\pi_0$, that is parametrised by a set of particles and weights $\{z_0^{(k)},w_0^{(k)}\}$. We gradually mutate them with an annealing procedure to get a set of $\{z_n^{(k)},w_n^{(k)}\}$, which are used to parametrise $\pi_n$. As $n$ increases, the procedure converges to the distribution $\pi$, which itself is used to parametrise the target distribution $d$. 
+	with  $\displaystyle \tilde{w}^{(k)}_n  = w^{(k)}_n/\sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}$ the normalised weights. The particles are incrementally deformed and reweighed using a Markov kernel to gradually sample the target distribution $d$. This process is guided by a temperature-like parameter that gradually emphasises the data likelihood, allowing for more efficient and tunable exploration of the polynomials landscape. The approximation procedure can be summed up as follows. We define the schedule of intermediate distributions $\pi_{n}$ using a temperature-like parameter, starting from an initial, easy to sample distribution $\pi_0$ which is parametrised by a set of particles and weights $\big\{z_0^{(k)},w_0^{(k)}\big\}$. We gradually mutate them with an annealing procedure to get a set of $\{z_n^{(k)},w_n^{(k)}\}$, which are used to parametrise $\pi_n$. As $n$ increases, the procedure converges such that the particles sample the distribution $\pi$, which itself is used to parametrise the target distribution $d$. 
 	
-	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. We combine the previously mentionned AIS-SMC with a resampling procedure, thus focussing computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
+	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. AIS-SMC includes a resampling procedure, thus focussing computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
 
-	\subsection{Detailed procedure}
-		
+	\subsection{Detailed procedure}	
+	Let us now explain in more detail the procedure, based on ref.~\cite{del2006sequential,DoucetTutorial,naesseth2024elementssequentialmontecarlo}. 
+	The goal is to obtain particles sampled from a probability distribution $d(z)$, where $z$ runs over a space of polynomials, that assigns high probabilities to those polynomials that annihilate the data, and therefore will be used to identify their symbolic expressions. We reconstruct this density function $d$ by series of density functions $\pi_n(z)$, $n\in\llbracket0,n_{\rm epochs}\rrbracket$, such that $\pi_n\to d$ as $n\to n_{\rm epochs}$. On every annealing step, $\pi_n$ is defined in terms of an unnormalised density $\gamma_n$ and a normalisation constant as $\pi_n(z) = \gamma_n(z)/Z_n$. The unnormalised density at level $n$ is given in terms of a prior distribution $d_0(z)$ over the space of polynomials and a loss function $L(z)$, as
+		\begin{equation}\label{eq:gamman}
+			\gamma_n(z) = d_0(z) \: \exp \Big( -\beta_n L(z)\Big),
+		\end{equation}
+	where the inverse temperature constants $\beta_n$ are taken to evolve monotonically as $\beta_0 < \beta_1 <\dots< \beta_{n_{\rm epochs}}$. The importance given to each polynomial $z$ is thus updated at each steps, with polynomials $z$ with high loss being disfavoured. This update is controlled by the inverse temperature constants, enabling deeper exploration during the early stages and protecting the procedure from being trapped in local minima. The loss function is chosen to be minimal on annihilating polynomials, its design will be discussed at the end of the section. We choose the prior distribution $d_{0}$ to be flat on the space of polynomials, giving equal importance to all of them, which makes easy the initial sampling of the weighted particles $\big\{z^{(k)}_{0},w^{(k)}_{0} = 1/n_{\rm particles}\big\}$.
+
+	At each epoch $n\geq1$, we do not directly approximate $\pi_{n}$, but rather a distribution $\tilde{\pi}_{n}\big(z_{0:n}^{(k)}\big) = \tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)/\tilde{Z}_{n}$, with $z_{0:n}^{(k)} = \big(z_{0}^{(k)},\ldots,z_{n}^{(k)}\big)$, that knows about the whole path of the particles until step $n$. $\tilde{\gamma}_{n}$ is defined thanks to a backward propagation kernel $K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big)$:
+	\begin{equation}
+		\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big) = \gamma_{n}\big(z_{n}^{(k)}\big)\,\prod_{i=1}^{n} K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big).
+	\end{equation}
+	This way, the distribution $\tilde{\pi}_{n}$ describes $\pi_{n}$ as well as the trajectory that followed the particles from epochs $0$ to $n$. This allows for more accuracy, correcting potential bias introduced by the mutations, and results in a setup that is more tunable.
+	
+	At the beginning of epoch $n\geq1$, $\tilde{\pi}_{n-1}$ is approximated \textit{via} Importance Sampling from an importance distribution $\eta_{n-1}$, \textit{i.e.} from a set of particles and weights $\big\{z_{n-1}^{(k)},\ w_{n-1}^{(k)}\big\}$ using eq.~\eqref{eq:pifromweights}, with $\big\{z_{n-1}^{(k)}\big\}$ drawn from $\eta_{n-1}$ and $w_{n-1}^{(k)} = \tilde{\gamma}_{n-1}\big(z_{0:n-1}^{(k)}\big)/\eta_{n-1}\big(z_{0:n-1}^{(k)}\big)$.\footnote{We define $\eta_{0} = \pi_{0} = \tilde{\pi}_{0} = d_{0}$.} The importance density $\eta_{n-1}$ get mutated using a forward propagation Markov kernel $q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)$, defining the probability to get $z^{(k)}_{n}$ when the current state is $z^{(k)}_{n-1}$:
+	\begin{equation}
+		\eta_{n}\big(z_{0:n}^{(k)}\big) = \eta_{n-1}\big(z_{0:n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big).
+	\end{equation}
+	We then use Importance Sampling to approximate $\tilde{\pi}_{n}$: we draw particles $\big\{z^{(k)}_{n}\big\}$ from $\eta_{n}$, and compute the weights
+	% \begin{equation}
+	% 	w_{n}^{(k)} = \frac{\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)}{\eta_{n}\big(z_{0:n}^{(k)}\big)} = \frac{\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)}{\eta_{n-1}\big(z_{0:n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)} = w_{n-1}^{(k)}\,\frac{\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)}{\tilde{\gamma}_{n-1}\big(z_{0:n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)}= w_{n-1}^{(k)}\,\frac{\gamma_{n}\big(z_{n}^{(k)}\big)\,L\big(z^{(k)}_{n-1}\vert z^{(k)}_{n}\big)}{\gamma_{n-1}\big(z_{n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)}.
+	% \end{equation}
+	\begin{equation} \label{eq:weightsupdate}
+		w_{n}^{(k)} = \frac{\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)}{\eta_{n}\big(z_{0:n}^{(k)}\big)} = w_{n-1}^{(k)}\,\alpha_{n}^{(k)},
+	\end{equation}
+	with the incremental importance weights $\alpha_{n}^{(k)}$ defined as
+	\begin{equation}	\label{eq: incremental_importance}
+			\alpha^{(k)}_{n} =  \frac{\gamma_{n}\big(z_{n}^{(k)}\big)\,K\big(z^{(k)}_{n-1}\vert z^{(k)}_{n}\big)}{\gamma_{n-1}\big(z_{n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)} = \frac{\exp\Big(-\beta_{n+1}L\big(z_{n+1}^{(k)}\big)\Big)}{\exp\Big(-\beta_{n}L\big(z_{n}^{(k)}\big)\Big)}\,\frac{K\big(z^{(k)}_{n}\vert z^{(k)}_{n+1}\big)}{q\big(z^{(k)}_{n+1}\vert z^{(k)}_{n}\big)}.
+	\end{equation}
+
+	For the implementation of the forward propagation kernel, we perform an AIS-style MCMC algorithm. On every epoch, we make some move in the space of polynomials, and then accept or reject those new polynomials based on a fixed rate. The moves that have been allowed in our implementation are the following.
+	\begin{itemize}
+		\item \textbf{Coefficient perturbation}\quad Given a polynomial, we choose one of its coefficients at random and modify it by a Gaussian noise distributed as $\mathcal{N}(0,\sigma^2)$, \textit{e.g.}
+		\begin{equation}
+			2\, x_1x_{2} + 3\, x_2^2 \longmapsto  2.1\, x_1x_{2} + 3\, x_2^2.
+		\end{equation}
+		\item \textbf{Variable multiplication}\quad Given a polynomial, we pick randomly one of its monomials, and multiply it by one of the available variables, \textit{e.g.}
+		\begin{equation}
+			2\, x_1x_{2} + 3\, x_2^2 \longmapsto  2\, x_1 x_2^{2} + 3\, x_2^2.
+		\end{equation}
+		\item \textbf{Variable division}\quad Given a polynomial, we choose randomly one of its monomials, and divide it by one of its variables, \textit{e.g.}
+		\begin{equation}
+			2\,x_1 x_2 + 3\, x_2^2 \longmapsto  2\, x_1 + 3\, x_2^2.
+		\end{equation}
+	\end{itemize}
+	Each of these operations is chosen randomly, with probabilities $p_{\rm shift}$, $p_{\rm multiply}$, and $p_{\rm divide}$.
+	%		For the case of coefficient perturbations, the transition is symmetric. 
+	%		However, this symmetry does not hold in general. For other types of operations—such as multiplication or division by a variable—the transition from \( z_{n-1}^k \) to \( z_n^k \) is generally not equivalent to the reverse transition from \( z_n^k \) to \( z_{n-1}^k \). In such cases $q(z_n^k \mid z_{n-1}^k) \ne q(z_{n-1}^k \mid z_n^k)$ and particular care must be taken in the computation of the backward propagation kernel.
+	A common choice of backward kernel in such context is the reversed forward kernel $K\big(z^{(k)}_{n-1}\vert z^{(k)}_{n}\big) = q\big(z^{(k)}_{n-1}\vert z^{(k)}_{n}\big)$.
+	After performing these updates, the change is accepted based on the temperature-dependent rate
+	\begin{equation}\label{eq:acceptanceratio}
+		A\big(z_{n}^{(k)},z_{n-1}^{(k)}\big) = \mathrm{min} \left(1,\alpha_{n}^{(k)}\right) = \mathrm{min} \left(1,\frac{\gamma_{n}\big(z_{n}^{(k)}\big)\,q\big(z^{(k)}_{n-1}\vert z^{(k)}_{n}\big)}{\gamma_{n-1}\big(z_{n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)}  \right).
+	\end{equation}
+	We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A\big(z_{n+1}^{(k)},z_{n}^{(k)}\big)$ and reject it otherwise. This way we accept systematically all moves that increase the weights, and some of those that lower the weights, allowing for some exploration of the space of polynomials.	Once the particles have been mutated, the evolution of the weights is computed using eq.~\eqref{eq:weightsupdate}.
+
+	To ensure an efficient exploration of the landscape, we would like to avoid having too many particles with low weights: as the algorithm progresses, particles with negligible weights contribute minimally to the approximation of the target distribution (see eq.~\eqref{eq:pifromweights}), leading to a concentration of the effective sample on a subset of particles with substantial weights. This can be estimated using the effective sample size~\cite{ca54d442-d5bd-32ea-a920-38aa7d8a4043}
+	\begin{equation}
+		{\rm ESS}_{n} = \Bigg(\sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}{}^{2}\Bigg)^{-1},
+	\end{equation}
+	where the $\tilde{w}^{(k)}_{n}$ are normalised weights deduced from the $w^{(k)}_{n}$. ${\rm ESS}_{n}$ takes values between $1$ (complete degeneracy, there is only one meaningful particle) and $n_{\rm particles}$ (no degeneracy, all particles contribute equally). We resample the particles when the ESS falls below a predetermined threshold, typically $n_{\rm particles}/2$. During resampling, new particles are drawn from the empirical distribution defined by the current particle weights $\tilde{w}^{(k)}_{n}$.	This procedure results in a new particle set where high-weight particles may appear multiple times, while low-weight particles may be eliminated entirely. Following resampling, all particle weights are reset to uniform values $w_{n}^{(k)} = 1/n_{\rm particles}$, as the information previously encoded in the weight distribution has been incorporated into the spatial distribution of the resampled particles. This resampling mechanism ensures that computational resources are concentrated on exploring the most promising regions of the state space.
+
 	\begin{figure}[h!]
 			\centering
 			\begin{minipage}{15cm}
@@ -680,65 +729,11 @@ Together with the loss function, we also need to specify a cooling schedule for 
 			\caption{Flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm}
 			\label{ASMCflowchart}
 		\end{figure}
-		
-		%\item Then more details: discuss hypotheses to compute the weights, choice of transformations, choice of $\beta$, choice of loss, prior, initial sampling, choice of representation for the polynomials.
-
-	
-	Let us now explain in more detail the procedure. 
-	The goal is to obtain a probability distribution $d(z)$, where $z$ runs over a space of polynomials, that assigns high probabilities to those polynomials that annihilate the data, and therefore will be used to identify their symbolic expressions.
-	We reconstruct this density function $d$ by series of density functions $\pi_n(z)$, $n\in\llbracket1,n_{\rm epochs}\rrbracket$, such that $\pi_n\to d$ as $n\to n_{\rm epochs}$. 
-	On every annealing step, $\pi_n$ is defined in terms of an unnormalised density $\gamma_n$ and a normalisation constant as $\pi_n(z) = \gamma_n(z)/Z_n$.
-	The unnormalised density at level $n$ is given in terms of a prior distribution $d_0(z)$ over the space of polynomials and a loss function $L(z)$, as \ce{Citation.}
-			\begin{equation}\label{eq:gamman}
-				\gamma_n(z) = d_0(z) \: \exp \Big( -\beta_n L(z)\Big),
-			\end{equation} 
-	where the inverse temperature constants $\beta_n$ are taken to evolve monotonically as $\beta_1 < \beta_2 <\dots< \beta_{n_{\rm epochs}}$. The importance given to each polynomial $z$ is thus updated at each steps, with polynomials $z$ with high loss being disfavoured. This update is controlled by the inverse temperature constants, enabling deeper exploration during the early stages and protecting the procedure from being trapped in local minima. The loss function is chosen to be minimal on annihilating polynomials, its design will be discussed at the end of the section. We chose the prior distribution $d_{0}$ to be flat on the space of polynomials, giving equal importance to all of them, which makes easy the initial sampling of the particles $\{z^{(k)}_{0}\}$.
-
-	At each epoch $n$, $\pi_{n}$ is approximated \textit{via} a set of particles and weights $\{z_{n}^{(k)},\ w_{n}^{(k)}\}$ in the sense of eq.~\eqref{eq:pifromweights}. The sample of particles $z^{(k)}_{n}$ get mutated using a forward propagation Markov kernel $q(z^{(k)}_{n+1}\vert z^{(k)}_{n})$, defining the probability to get $z^{(k)}_{n+1}$ when the current state is $z^{(k)}_{n}$. For the implementation of the forward propagation kernel, we perform an AIS-style MCMC algorithm. 
-	On every epoch, we make some move in the space of polynomials, and then accept or reject those new polynomials based on a fixed rate.
-	The moves that have been allowed in our implementation are the following.
-	\begin{itemize}
-		\item \textbf{Coefficient perturbation}\quad Given a polynomial, we choose one of its coefficients at random and modify it by a Gaussian noise distributed as $\mathcal{N}(0,\sigma^2)$, \textit{e.g.}
-		\begin{equation}
-			2 x_1x_{2} + 3 x_2^2 \longmapsto  2.1 x_1x_{2} + 3 x_2^2\,.
-		\end{equation}
-		\item \textbf{Variable multiplication}\quad Given a polynomial, we pick randomly one of its monomials, and multiply it by one of the available variables, \textit{e.g.}
-		\begin{equation}
-			2 x_1x_{2} + 3 x_2^2 \longmapsto  2 x_1 x_2^{2} + 3 x_2^2\,.
-		\end{equation}
-		\item \textbf{Variable division}\quad Given a polynomial, we choose randomly one of its monomials, and divide it by one of its variables, \textit{e.g.}
-		\begin{equation}
-			2 x_1 x_2 + 3 x_2^2 \longmapsto  2 x_1 + 3 x_2^2\,.
-		\end{equation}
-	\end{itemize}
-	Each of these operations is chosen randomly, with probabilities $p_{\rm shift}$, $p_{\rm multiply}$, and $p_{\rm divide}$.
-	%		For the case of coefficient perturbations, the transition is symmetric. 
-	%		However, this symmetry does not hold in general. For other types of operations—such as multiplication or division by a variable—the transition from \( z_{n-1}^k \) to \( z_n^k \) is generally not equivalent to the reverse transition from \( z_n^k \) to \( z_{n-1}^k \). In such cases $q(z_n^k \mid z_{n-1}^k) \ne q(z_{n-1}^k \mid z_n^k)$ and particular care must be taken in the computation of the backward propagation kernel.
-	After performing these updates, the change is accepted based on the temperature-dependent rate
-	\begin{equation}\label{eq:acceptanceratio}
-		A(z_{n+1}^{(k)},z_{n}^{(k)}) = \mathrm{min} \left(1,\frac{ \gamma_{n+1}(z_{n+1}^{(k)}) q(z_{n}^{(k)} | z_{n+1}^{(k)}) }{ \gamma_{n}(z_{n}^{(k)}) q(z_{n+1}^{(k)} | z_{n}^{(k)}) }  \right)\,.
-	\end{equation}
-	We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_{n+1}^{(k)},z_{n}^{(k)})$ and reject it otherwise.
-
-	Once the particles have been mutated, the evolution of the weights is given by
-	\begin{equation}
-		w_{n+1}^{(k)} = w_{n}^{(k)}\ \alpha_{n+1}^{(k)},
-	\end{equation}
-	where the incremental importance weights $\alpha_{n+1}^{(k)}$ are given by\footnote{The incremental weight is in general defined as $\alpha^{(k)}_{n+1} = \frac{\gamma_{n+1}(z_{n+1}^{(k)})}{\gamma_{n}(z_n^{(k)})}\,\frac{K(z^{(k)}_{n}\vert z^{(k)}_{n+1})}{q(z^{(k)}_{n+1}\vert z^{(k)}_{n})}$, where $K(z^{(k)}_{n}\vert z^{(k)}_{n+1})$ is the backward propagation kernel~\cite{del2006sequential}. For simplicity, we chose to identify $K$ to the forward propagation kernel $q$.}~\cite{del2006sequential}
-	\begin{equation}	\label{eq: incremental_importance}
-			\alpha^{(k)}_{n+1} = \frac{\gamma_{n+1}(z_{n+1}^{(k)})}{\gamma_{n}(z_n^{(k)})}\,\frac{q(z^{(k)}_{n}\vert z^{(k)}_{n+1})}{q(z^{(k)}_{n+1}\vert z^{(k)}_{n})}=\frac{\exp\big(-\beta_{n+1}L(z_{n+1}^{(k)})\big)}{\exp\big(-\beta_{n}L(z_{n}^{(k)})\big)}\,\frac{q(z^{(k)}_{n}\vert z^{(k)}_{n+1})}{q(z^{(k)}_{n+1}\vert z^{(k)}_{n})}.
-	\end{equation}
-
-	To ensure an efficient exploration of the landscape, we would like to avoid having to many particles with low weights: as the algorithm progresses, particles with negligible weights contribute minimally to the approximation of the target distribution (see eq.~\eqref{eq:pifromweights}), leading to a concentration of the effective sample on a subset of particles with substantial weights. This can be estimated using the effective sample size~\cite{Liu01091998}
-	\begin{equation}
-		{\rm ESS}_{n+1} = \Bigg(\sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n+1}{}^{2}\Bigg)^{-1},
-	\end{equation}
-	where the $\tilde{w}^{(k)}_{n+1}$ are normalised weights deduced from the $w^{(k)}_{n+1}$. ${\rm ESS}_{n+1}$ takes values between $1$ (complete degeneracy, there is only one meaningful particle) and $n_{\rm particles}$ (no degeneracy, all particles contribute equally). We resample the particles when the ESS falls below a predetermined threshold, typically $n_{\rm particles}/2$. During resampling, new particles are drawn from the empirical distribution defined by the current particle weights $\tilde{w}^{(k)}_{n+1}$.	This procedure results in a new particle set where high-weight particles may appear multiple times, while low-weight particles may be eliminated entirely. Following resampling, all particle weights are reset to uniform values $w_{n+1}^{(k)} = 1/n_{\rm particles}$, as the information previously encoded in the weight distribution has been incorporated into the spatial distribution of the resampled particles. This resampling mechanism ensures that computational resources are concentrated on exploring the most promising regions of the state space.
 
 	A flow chart of the full AIS-SMC procedure is given in fig.~\ref{ASMCflowchart}. Note that in practice the reweighing and resampling of particles $z_{n-1}^{(k)}$ are done at the beginning of the epoch $n$.
 
 	\paragraph{}
-	To compute the acceptance ratio and weights \textit{via} eq.~\eqref{eq:acceptanceratio} and \eqref{eq: incremental_importance} and we need to consider the loss function in~\eqref{eq:gamman}.
+	To compute the acceptance ratio and weights \textit{via} eq.~\eqref{eq:acceptanceratio} and \eqref{eq: incremental_importance} and we need to consider the loss function in eq~\eqref{eq:gamman}.
 	In the present context, we use the following loss, where the polynomials have been parameterised as $z = \sum_m c_m X_m$ with $X_m$ denoting the possible monomials up to a given degree,%
 	\footnote{So, if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_m$ are $1, x, y, x^2, y^2, x y$.}
 	\begin{equation} \label{eq:lossreg}
