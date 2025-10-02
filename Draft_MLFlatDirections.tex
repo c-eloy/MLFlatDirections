@@ -320,7 +320,12 @@ color=charcoal
 
 \section{Introduction}
 
-The AdS/CFT correspondence stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between string theory solutions on anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries~\cite{Maldacena:1997re}. This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. The CFT side plays a crucial role in statistical physics, as CFT are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow and this is this latter aspect that is our interest in this paper. An interesting question is indeed to know whether those CFT are isolated fixed points of RG flows, or belong to a continuous family of CFT. If this is the case, the space of continuous deformations that takes from one CFT to another is called a conformal manifold. These deformations are parametrised by exactly marginal operators, or in other words operators that preserves the conformal symmetry, \textit{i.e.} whose $\beta$ functions exactly vanish. \ce{Needs some modifications.}
+The AdS/CFT correspondence stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between string theory solutions on anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries~\cite{Maldacena:1997re}. 
+This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. 
+Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. On the other side, CFT’s appear in multiple scenarios, providing nice descriptions of phase transitions in statistical physics, and from a fundamental perspective, they are of utmost importance in quantum field theories (QFTs), where they describe fixed points of Renormalisation Group flow. 
+From the latter perspective, an interesting question is  whether CFTs are isolated fixed points or instead belong to a continuous families. 
+In that case, the space of continuous deformations that takes from one CFT to another is called a conformal manifold. 
+These deformations are parametrised by exactly marginal operators, or in other words, operators that preserve the conformal symmetry, \textit{i.e.} whose $\beta$ functions exactly vanish. \ce{Bastien: changed here.}
 
 From the AdS/CFT correspondence perspective, conformal manifolds on the boundary theory are dual to continuous families of AdS solutions where the (possibly warped) AdS factor stays undeformed. If a consistent truncation on these solutions exists, conformal manifolds can also be identified as flat directions in the scalar potential of the truncation. Along these directions, the scalar field configurations vary continuously while the cosmological constant remains unchanged. Supersymmetry is believed to be necessary for the existence of holographic conformal manifolds, as non-supersymmetric AdS solutions are expected to be unstable~\cite{Ooguri:2016pdq,Palti:2019pca}. However, recent investigations have identified AdS$_4$ configurations that appear to evade this requirement, with no evidence of standard decay channels -- neither perturbative nor non-perturbative -- being present~\cite{Giambrone:2021wsm}. The situation is even richer in the context of AdS$_3$/CFT$_2$, as current-current deformations, given by products $J\bar J$ of (anti-)holomorphic conserved currents, are exactly marginal in two dimensions~\cite{Chaudhuri:1988qb}, although they may break supersymmetry. The question of the exact form of the gravity dual to $J\bar J$ deformations is however open. A well-known example is given in ref.~\cite{Aharony:2001dp,Dong:2014tsa}, and recent works have demonstrated the existence of vast families of classically marginal deformations of the ${\rm AdS}_{3}\times S^{3}\times {\rm T}^{4}$ and ${\rm AdS}_{3}\times S^{3}\times S^{3}\times S^{1}$ solutions of type IIB supergravity that are perturbatively stable despite supersymmetry breaking~\cite{Eloy:2023zzh,Eloy:2023acy,Eloy:2024lwn}. These deformations were shown in ref.~\cite{Eloy:2024lwn} to be equivalent to current-current deformations of the worldsheet Wess-Zumino-Witten models~\cite{Gepner:1986wi} describing the undeformed solutions~\cite{Eberhardt:2017pty,Eberhardt:2018ouy}, giving strong indications that their CFT duals arise from $J\bar J$ deformations as well.
 
@@ -410,179 +415,20 @@ To identify the flat directions in the potential, we will combine numerical and 
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-\section{Annealed Importance Sampling for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
-	
-	%\item Annealed Importance Sampling: first explain general idea (construct density probability, role of temperature, links with Monte-Carlo), discuss $\beta$ to control exploration and exploitation phases.
-
-The numerical sampling of the space of vacua described above results in clouds of points embedded in a higher-dimensional space. 
-In the realm of symbolic regression, the aim is to uncover interpretable mathematical expressions that best describe the embedding of these loci of solutions. 
-In the present context, the form of the supergravity potential \eqref{eq:scalarpotential} determining the solutions implies that the loci can be defined through polynomial expressions such that $p(\vec{x}^{\,i}) = 0$, with $i \in \{1, \dots, \texttt{n\_{sample}}\}$. 
-Finding such polynomials involves navigating a vast, discrete, and often rugged search space of possible symbolic models, which poses significant challenges for traditional sampling methods. 
-Markov Chain Monte Carlo (MCMC) techniques such as Metropolis-Hastings or Gibbs sampling, while widely used, can struggle with poor mixing and often get trapped in local optima, especially in high-dimensional or multimodal spaces \cite{??}.
-
-To address these challenges, we employ an Annealed Importance Sampling (AIS) \cite{neal1998annealedimportancesampling} combined with Sequential Monte Carlo (SMC) methods \cite{naesseth2024elementssequentialmontecarlo}. 
-AIS aims to estimate ratios of partition functions by constructing a sequence of intermediate distributions that smoothly transition from an initial, tractable distribution (e.g. a prior over symbolic expressions) to the complex target posterior distribution. This annealing process is guided by a temperature-like parameter that gradually emphasises the data likelihood, allowing for more efficient exploration of the probability landscape. 
-
-SMC realises this procedure by encoding the probability distributions into a set of particles—each representing a candidate symbolic expression— and weights, and making them evolve so as to focus computational effort on high-probability regions. This combination of importance sampling, resampling, and mutation maintains diversity among the particles and prevents premature convergence to suboptimal models.
-These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
-		
-	\begin{figure}[h!]
-			\centering
-			\begin{minipage}{15cm}
-				\begin{tcolorbox}[
-					colback=white,
-					colframe=myblue,
-					title=\textbf{ASMC Algorithm},
-					fonttitle=\sffamily\large,
-					halign title=flush center,
-					boxrule=2pt,
-					left=6pt,
-					right=6pt,
-					top=8pt,
-					bottom=8pt
-					]
-					\begin{tikzpicture}[node distance=1.6cm and 0.8cm, scale=0.85, transform shape]
-						
-						% Nœuds
-						\node (start) [startstop] {Start};
-						
-						\node (init_particles) [process, below of=start] {Initialize particles \& weights};
-						
-						\node (compute_beta) [process, below of=init_particles] {Compute/adapt inverse temperature $\beta$};
-						
-						\node (weight_update) [process, below of=compute_beta] {Compute losses and update weights};
-						
-						\node (ess_check) [decision, below of=weight_update] {Effective Sample Size $<$ Threshold?};
-						
-						\node (resample) [process, right=3.8cm of ess_check] {Resample particles};
-						
-						\node (mutation) [process, below of=ess_check, yshift=-0.4cm] {Mutate particles with MCMC kernel};
-						
-						\node (acceptance) [process, below of=mutation] {Accept/Reject particles};
-						
-						\node (end_iter) [decision, below of=acceptance] {Last step?};
-						
-						\node (exploit) [process, below of=end_iter, yshift=-0.4cm] {Optional local search};
-						
-						\node (output) [process, below of=exploit] {Return particles};
-						
-						\node (stop) [startstop, below of=output] {End};
-						
-						% Flèches avec étiquettes améliorées
-						\draw [arrow] (start) -- (init_particles);
-						\draw [arrow] (init_particles) -- (compute_beta);
-						\draw [arrow] (compute_beta) -- (weight_update);
-						\draw [arrow] (weight_update) -- (ess_check);
-						
-						\draw [arrow] (ess_check) -- node[above, arrow_label] {Yes} (resample);
-						\draw [arrow] (resample) |- (mutation);
-						
-						\draw [arrow] (ess_check) -- node[left, arrow_label] {No} (mutation);
-						\draw [arrow] (mutation) -- (acceptance);
-						\draw [arrow] (acceptance) -- (end_iter);
-						
-						% Boucle de retour améliorée
-						\draw [arrow] (end_iter) -| node[pos=0.25, below, arrow_label] {No} ++(-4.5,0) |- (compute_beta);
-						
-						\draw [arrow] (end_iter) -- node[right, arrow_label] {Yes} (exploit);
-						\draw [arrow] (exploit) -- (output);
-						\draw [arrow] (output) -- (stop);
-						
-					\end{tikzpicture}
-				\end{tcolorbox}
-			\end{minipage}
-			\caption{Flow chart of the Annealed Importance Sampling - Sequential Monte Carlo algorithm}
-			\label{ASMCflowchart}
-		\end{figure}
-		
-		%\item Then more details: discuss hypotheses to compute the weights, choice of transformations, choice of $\beta$, choice of loss, prior, initial sampling, choice of representation for the polynomials.
-		
-Let us now explain in more detail the procedure. 
-The goal is to obtain a probability distribution $d(z)$, where $z$ runs over a space of polynomials. 
-This function assigns high probabilities to those polynomials that annihilate the data, and therefore will be used to identify such symbolic expressions.
-We reconstruct this density function by series of density functions $\pi_n(z)$ such that $\pi_n\to d(z)$ as $n\to\infty$. 
-On every annealing step, $\pi_n$ is defined in terms of an unnormalised density $\gamma_n$ and a normalisation constant as $\pi_n(z) = \gamma_n(z)/Z_n$.
-The unnormalised density at level $n$ is given in terms of a prior distribution $d_0(z)$ over the hypothesis space and a loss function $L(z)$:
-		\begin{equation}\label{eq:gamman}
-			\gamma_n(z) = d_0(z) \: \exp \left( -\beta_n L(z) \right),
-		\end{equation} 
-where the inverse temperature constants $\beta_n$ are taken to evolve monotonically as $\beta_1 < \beta_2 <\dots< \beta_N$. 
-
-		Sequential importance sampling \cite{...} further assumes that the density functions $\pi_n(z)$ can be given in terms of importance densities $q^k_n(z)$ and weights $w^k_n$ as $\pi_n(z) = \sum w^k_n q^k_n(z)/Z_n$, and these importance densities can be sequentially given as
-		 \begin{equation}
-		 	q_n(z_n) = q_{n-1}(z_{n-1}) q_{n\vert n-1}(z_n\vert z_{n-1})\,.
-		 \end{equation}
-At each epoch, we $\pi_{n}$ can be approximated via a set of particles and weights $\{z_{n}^k,\ w_{n}^k\}$  so that\footnote{In the following, we always normalise the weights so that $\sum_k w_{n}^k=1$.}
-		 \begin{equation}
-		 	\pi_n(z) \approx \sum_k w_{n}^k\ \delta(z-z_{n}^k)\,,
-		 \end{equation}
-To obtain a new set $\{z_{n+1}^k,\ w_{n+1}^k\}$ approximating $\pi_{n+1}$, we sample from the forward propagation kernel $q_{n+1}(z_{n+1}\vert z_n)$ that defines how we generate the state at time $n+1$ given the state at time $n$.
-Similarly, the evolution of the weights is given by \gl{for $k>1$, this is a bit schematic...}
-\[
-	w_{n+1} = \frac{\gamma_{n+1}}{q_{n+1}} = \frac{\gamma_{n+1}}{q_{n}\ q_{n+1 \vert n}} = w_{n}\ \alpha_{n+1}\,,
-\]
-where the incremental importance weights $\alpha_{n}^k$ are given by
-		\begin{equation}	\label{eq: incremental_importance}
-			\begin{aligned}
-				\alpha^k_{n+1} &= \frac{\gamma_{n+1}(z_{n+1})}{\gamma_{n}(z_n)}\frac1{q^k_{n+1 \vert n}(z_{n+1}\vert z_{n})}	\\
-				&=e^{-\beta_nL(z_n)+\beta_{n+1}L(z_{n+1})}\frac1{q^k_{n+1 \vert n}(z_{n+1}\vert z_{n})}\,.
-			\end{aligned}
-		\end{equation}
-		
-		For the implementation of the forward propagation kernel, we perform an AIS-style MCMC algorithm. 
-On every step, we make some move in the space of polynomials, and then accept or reject those new polynomials based on a fixed rate.
-The moves that have been allowed in our implementation are:
-		\begin{itemize}
-			\item \textbf{Coefficient pertubation}. Given a polynomial $z_{n}$, we choose one of its coefficients at random and modify it by a Gaussian noise distributed as $\mathcal{N}(0,\sigma^2)$. E.g.
-			\[
-				2 x_1 + 3 x_2^2 \mapsto  2.1 x_1 + 3 x_2^2\,.
-			\]
-			\item \textbf{Variable multiplication}. Given a polynomial $z_{n}$, we pick randomly one of its monomials, and multiply it by one of the available variables. E.g.
-			\[
-				2 x_1 + 3 x_2^2 \mapsto  2 x_1 x_2 + 3 x_2^2\,.
-			\]
-			\item \textbf{Variable division}. Given a polynomial $z_{n}$, we choose randomly one of its monomials, and divide it by one of its variables. E.g.
-			\[
-				2 x_1 x_2 + 3 x_2^2 \mapsto  2 x_1 + 3 x_2^2\,.
-			\]
-		\end{itemize}
-		Each of these operations is chosen randomly, with probabilities $p_{\rm shift}$, $p_{\rm multiply}$, and $p_{\rm divide}$.
-%		For the case of coefficient perturbations, the transition is symmetric. 
-%		However, this symmetry does not hold in general. For other types of operations—such as multiplication or division by a variable—the transition from \( z_{n-1}^k \) to \( z_n^k \) is generally not equivalent to the reverse transition from \( z_n^k \) to \( z_{n-1}^k \). In such cases $q(z_n^k \mid z_{n-1}^k) \ne q(z_{n-1}^k \mid z_n^k)$ and particular care must be taken in the computation of the backward propagation kernel.
-After performing these updates, the change is accepted based on the temperature-dependent rate \gl{need to double check this}
-		\begin{equation}\label{eq:acceptanceratio}
-			A(z_n,z_{n-1}) = \mathrm{min} \left(1,\frac{ \gamma_n(z_n^k) q(z_{n-1}^k | z_n^k) }{ \gamma_{n-1}(z_{n-1}^k) q(z_n^k | z_{n-1}^k) }  \right)\,.
-		\end{equation}
-		We then draw $u\sim \mathrm{Uniform}(0,1)$, accept the new particle if $u<A(z_n,z_{n-1})$ and reject it otherwise.
-		The kernel $q(z_{n-1}^k | z_n^k)$ thus encapsulates the effects of performing these operations on the polynomials at step $n$.
-		
-		To compute the weights and kernels via \eqref{eq: incremental_importance} and \eqref{eq:acceptanceratio} we need to consider the loss function in \eqref{eq:gamman}.
-In the present context, we use the following loss, where the polynomials have been parameterised as $z = \sum_k c_k X_k$ with $X_k$ denoting the possible monomials up to a given degree,%
-\footnote{So, if we have $x$ and $y$ as variables, and the maximum degree is 2, then $X_k$ are $1, x, y, x^2, y^2, x y$.}
-		\begin{equation} \label{eq:lossreg}
-			L(z) = \sum_{i} z(x_i)^2 + \frac{\lambda}{\sum_k |c_k|}\,.
-		\end{equation}
-Here, the first term is just the sum of the square of the polynomial evaluated on the data, and is therefore minimal when the polynomial annihilates the data. 
-The second term is a regularisation factor that prevents the algorithm to send all the coefficient to 0, which would give a trivial solution to the problem. 
-We typically take $\lambda \sim \mathcal{O}(10^3)$. 
-Together with the loss function, we also need to specify a cooling schedule for $\beta$. We will discuss different approaches in the next section.
-		
-Once the AIS-SMC loop is over, we end up with a total of $n_{\rm sample}$ particles, which in principle should be close to annihilate our data, but whose coefficients may need some refinement. To deal with it, for each polynomial we now only modify its coefficients with a perturbation $\epsilon \sim \mathcal{N}(0, \sigma')$ and keep the particles when the loss function decreases.
-
-
-
-%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%
-\section{Annealed Sequential Monte Carlo sampler for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
+\section{Annealed Sequential Monte Carlo Sampler for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
 
 	\subsection{General idea}
 	The numerical sampling of the space of vacua (described in sec.~\ref{sec:graddes}) results in clouds of points embedded in a higher-dimensional space. 
 	The aim of symbolic regression is to uncover interpretable mathematical expressions that best describe the embedding of these loci of solutions. 
 	In the present context, the form of the supergravity potential \eqref{eq:scalarpotential} determining the solutions implies that the loci can be defined through polynomials $p_{m}$ such that $p_{m}\big(\vec{x}^{(i)}\big) = 0$, with $i \in \{1, \dots, n_{\rm points}\}$. Such polynomials will be called ``annihilating polynomials'' in the following.
 	Finding annihilating polynomials involves navigating a vast, discrete, and often rugged search space of possible symbolic models, which poses significant challenges for traditional sampling methods. 
-	Markov Chain Monte Carlo (MCMC) techniques such as Metropolis-Hastings or Gibbs sampling, while widely used, can struggle with poor mixing and often get trapped in local optima, especially in high-dimensional or multimodal spaces.
+	Markov Chain Monte Carlo (MCMC) techniques such as Metropolis-Hastings or Gibbs sampling, while widely used, can struggle with poor mixing and often get trapped in local optima, especially in high-dimensional or multimodal spaces. \ce{Try to find a ref.}
 
-	To address these challenges, we formulate the search for annihilating polynomials as a determination of a probability density on the space of polynomials that stresses higher probabilities on polynomials $p$ that minimises $\displaystyle \sum_{i=1}^{n_{\rm points}}p\big(\vec{x}^{(i)}\big)^{2}$. Polynomials sampled from this density would thus be annihilating polynomials. Such a probability density is \textit{a priori} hard to find, but can be approximated using algorithms based on Sequential Important Sampling~\cite{Doucet2001,Liu2004} such as Sequential Monte Carlo samplers~\cite{del2006sequential}. They are inspired from Important Sampling (IS)~\cite{osti_4441935,RobertCasella2004}, a method to parametrise expectation values with respect to a target distribution $d$, that can be evaluated pointwise, but from which one does not know how to draw samples. IS uses another, usually simpler, distribution $\pi$ (called importance distribution) from which you know how to draw from. It is based on the observation that the expectation value
+	To address these challenges, we formulate the search for annihilating polynomials as a determination of a probability density on the space of polynomials that stresses higher probabilities on polynomials $p$ that minimise the error \ce{Bastien: changed here.}
+	\begin{equation}
+		\sum_{i=1}^{n_{\rm points}}p\big(\vec{x}^{(i)}\big)^{2}.
+	\end{equation}
+	Polynomials sampled from this density would thus be good approximations to annihilating polynomials. Such a probability density is \textit{a priori} hard to find, but can be approximated using algorithms based on Sequential Important Sampling~\cite{Doucet2001,Liu2004} such as Sequential Monte Carlo samplers~\cite{del2006sequential}. They are inspired from Important Sampling (IS)~\cite{osti_4441935,RobertCasella2004}, a method to parametrise expectation values with respect to a target distribution $d$, that can be evaluated pointwise, but from which one does not know how to draw samples. IS uses another, usually simpler, distribution $\pi$ (called importance distribution) that one knows how to draw from. It is based on the observation that the expectation value \ce{Change $\pi$ to $\eta$, $d$ to $\pi$.}
 	\begin{equation}
 		\mathbb{E}_{d}[f] = \int f(z)d(z)\ \d z
 	\end{equation}
@@ -602,25 +448,25 @@ Once the AIS-SMC loop is over, we end up with a total of $n_{\rm sample}$ partic
 	\end{equation}
 	with  $\displaystyle \tilde{w}^{(k)}_n  = w^{(k)}_n/\sum_{k=1}^{n_{\rm particles}} w^{(k)}_{n}$ the normalised weights. The particles are incrementally deformed and reweighed using a Markov kernel to gradually sample the target distribution $d$. This process is guided by a temperature-like parameter that gradually emphasises the data likelihood, allowing for more efficient and tunable exploration of the polynomials landscape. The approximation procedure can be summed up as follows. We define the schedule of intermediate distributions $\pi_{n}$ using a temperature-like parameter, starting from an initial, easy to sample distribution $\pi_0$ which is parametrised by a set of particles and weights $\big\{z_0^{(k)},w_0^{(k)}\big\}$. We gradually mutate them with an annealing procedure to get a set of $\{z_n^{(k)},w_n^{(k)}\}$, which are used to parametrise $\pi_n$. As $n$ increases, the procedure converges such that the particles sample the distribution $\pi$, which itself is used to parametrise the target distribution $d$. 
 	
-	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. AIS-SMC includes a resampling procedure, thus focussing computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
+	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. AIS-SMC includes a resampling procedure, that focusses computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
 
 	\subsection{Detailed procedure}	\label{sec:detailedAISSMC}
 	Let us now explain in more detail the procedure, based on ref.~\cite{del2006sequential,DoucetTutorial,naesseth2024elementssequentialmontecarlo}. 
-	The goal is to obtain particles sampled from a probability distribution $d(z)$, where $z$ runs over a space of polynomials, that assigns high probabilities to those polynomials that annihilate the data, and therefore will be used to identify their symbolic expressions. We reconstruct this density function $d$ by series of density functions $\pi_n(z)$, $n\in\llbracket0,n_{\rm epochs}\rrbracket$, such that $\pi_n\to d$ as $n\to n_{\rm epochs}$. On every annealing step, $\pi_n$ is defined in terms of an unnormalised density $\gamma_n$ and a normalisation constant as $\pi_n(z) = \gamma_n(z)/Z_n$. The unnormalised density at level $n$ is given in terms of a prior distribution $d_0(z)$ over the space of polynomials and a loss function $L(z)$, as
+	The goal is to obtain particles sampled from a probability distribution $d(z)$, where $z$ runs over a space of polynomials \ce{Here we should say what this space is, and stress that this space is finite dimensional.}, that assigns high probabilities to those polynomials that annihilate the data, and therefore will be used to identify their symbolic expressions. We reconstruct this density function $d$ by series of density functions $\pi_n(z)$, $n\in\llbracket0,n_{\rm epochs}\rrbracket$, such that $\pi_n\to d$ as $n\to n_{\rm epochs}$. On every annealing step, $\pi_n$ is defined in terms of an unnormalised density $\gamma_n$ and a normalisation constant as $\pi_n(z) = \gamma_n(z)/Z_n$. The unnormalised density at level $n$ is given in terms of a prior distribution $d_0(z)$ over the space of polynomials and a loss function $L(z)$, as
 		\begin{equation}\label{eq:gamman}
 			\gamma_n(z) = d_0(z) \: \exp \Big( -\beta_n L(z)\Big),
 		\end{equation}
-	where the inverse temperature constants $\beta_n$ are taken to evolve monotonically as $\beta_0 < \beta_1 <\dots< \beta_{n_{\rm epochs}}$. The importance given to each polynomial $z$ is thus updated at each steps, with polynomials $z$ with high loss being disfavoured. This update is controlled by the inverse temperature constants, enabling deeper exploration during the early stages and protecting the procedure from being trapped in local minima. The loss function is chosen to be minimal on annihilating polynomials, its design will be discussed at the end of the section. We choose the prior distribution $d_{0}$ to be flat on the space of polynomials, giving equal importance to all of them, which makes easy the initial sampling of the weighted particles $\big\{z^{(k)}_{0},w^{(k)}_{0} = 1/n_{\rm particles}\big\}$.
+	where the inverse temperature constants $\beta_n$ are taken to evolve monotonically as $\beta_0 < \beta_1 <\dots< \beta_{n_{\rm epochs}}$. The importance given to each polynomial $z$ is thus updated at each step, with polynomials $z$ with high loss being disfavoured. This update is controlled by the inverse temperature constants, enabling deeper exploration during the early stages and protecting the procedure from being trapped in local minima. The loss function is chosen to be minimal on annihilating polynomials and its design will be discussed at the end of the section. We choose the prior distribution $d_{0}$ to be flat on the space of polynomials, giving equal importance to all of them, which makes easy the initial sampling of the weighted particles $\big\{z^{(k)}_{0},w^{(k)}_{0} = 1/n_{\rm particles}\big\}$. \ce{Change sentence.}
 
-	At each epoch $n\geq1$, we do not directly approximate $\pi_{n}$, but rather a distribution $\tilde{\pi}_{n}\big(z_{0:n}^{(k)}\big) = \tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)/\tilde{Z}_{n}$, with $z_{0:n}^{(k)} = \big(z_{0}^{(k)},\ldots,z_{n}^{(k)}\big)$, that describes the global trajectory of the particles until step~$n$. $\tilde{\gamma}_{n}$ is defined thanks to a backward propagation kernel $K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big)$:
+	At each epoch $n\geq1$, we do not directly approximate $\pi_{n}$, but rather a distribution $\tilde{\pi}_{n}\big(z_{0:n}\big) = \tilde{\gamma}_{n}\big(z_{0:n}\big)/\tilde{Z}_{n}$, with $z_{0:n} = \big(z_{0},\ldots,z_{n}\big)$, that describes the global trajectory of the particles until step~$n$. $\tilde{\gamma}_{n}$ is defined thanks to a backward propagation kernel $K\big(z_{i-1}\vert z_{i}\big)$:\footnote{Note that $\pi_{n}$ is a function on the cartesian product blabla.} \ce{Footnote.}
 	\begin{equation}
-		\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big) = \gamma_{n}\big(z_{n}^{(k)}\big)\,\prod_{i=1}^{n} K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big).
+		\tilde{\gamma}_{n}\big(z_{0:n}\big) = \gamma_{n}\big(z_{n}\big)\,\prod_{i=1}^{n} K\big(z_{i-1}\vert z_{i}\big).
 	\end{equation}
 	This way, the distribution $\tilde{\pi}_{n}$ describes $\pi_{n}$ as well as the path that followed the particles from epochs $0$ to $n$. This allows for more accuracy, correcting potential bias introduced by the mutations, and results in a setup that is more tunable.
 	
-	At the beginning of epoch $n\geq1$, $\tilde{\pi}_{n-1}$ is approximated \textit{via} Importance Sampling from an importance distribution $\eta_{n-1}$, \textit{i.e.} from a set of particles and weights $\big\{z_{n-1}^{(k)},\ w_{n-1}^{(k)}\big\}$ using eq.~\eqref{eq:pifromweights}, with $\big\{z_{n-1}^{(k)}\big\}$ drawn from $\eta_{n-1}$ and $w_{n-1}^{(k)} = \tilde{\gamma}_{n-1}\big(z_{0:n-1}^{(k)}\big)/\eta_{n-1}\big(z_{0:n-1}^{(k)}\big)$.\footnote{We define $\eta_{0} = \pi_{0} = \tilde{\pi}_{0} = d_{0}$.} The importance density $\eta_{n-1}$ get mutated using a forward propagation Markov kernel $q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)$, defining the probability to get $z^{(k)}_{n}$ when the current state is $z^{(k)}_{n-1}$:
+	At the beginning of epoch $n\geq1$, $\tilde{\pi}_{n-1}$ is approximated \textit{via} Importance Sampling from an importance distribution $\eta_{n-1}$, \textit{i.e.} from a set of particles and weights $\big\{z_{n-1}^{(k)},\ w_{n-1}^{(k)}\big\}$ using eq.~\eqref{eq:pifromweights}, with $\big\{z_{n-1}^{(k)}\big\}$ drawn from $\eta_{n-1}$ and $w_{n-1}^{(k)} = \tilde{\gamma}_{n-1}\big(z_{0:n-1}^{(k)}\big)/\eta_{n-1}\big(z_{0:n-1}^{(k)}\big)$.\footnote{We define $\eta_{0} = \pi_{0} = \tilde{\pi}_{0} = d_{0}$.} \ce{Footnote.} The importance density $\eta_{n-1}$ gets mutated using a forward propagation Markov kernel $q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)$, defining the probability to get $z^{(k)}_{n}$ when the current state is $z^{(k)}_{n-1}$:
 	\begin{equation}
-		\eta_{n}\big(z_{0:n}^{(k)}\big) = \eta_{n-1}\big(z_{0:n-1}^{(k)}\big)\,q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big).
+		\eta_{n}\big(z_{0:n}\big) = \eta_{n-1}\big(z_{0:n-1}\big)\,q\big(z_{n}\vert z_{n-1}\big).
 	\end{equation}
 	We then use Importance Sampling to approximate $\tilde{\pi}_{n}$: we draw particles $\big\{z^{(k)}_{n}\big\}$ from $\eta_{n}$, and compute the weights
 	% \begin{equation}
@@ -878,7 +724,6 @@ The algorithm identifies one cluster made of 5 points, one other with 71,993 poi
 			&\texttt{sigma = 0.1}.
 		\end{aligned}
 	\end{equation}
-	\gl{link to notations in section 3}
 	The convenience of these parameters was determined empirically --a systematic analysis of its optimization is left for future work. For the representation of polynomials, we adopt a vectorial approach: each polynomial is represented as an array of its coefficients $\{c_m\}$, where $m \in \{1,\dots,n_{\text{mon}}\}$ and $n_{\text{mon}}$ denotes the number of available monomials, determined by the chosen maximum degree \texttt{max\_degree} and the number of variables. We also impose a constraint on the maximum number of terms within a single polynomial \texttt{max\_num\_monomials} to promote sparsity. \footnote{An alternative approach would be to encourage sparsity through the prior distribution or within the loss function formulation.} For our simulations, we chose:
 	\begin{equation} \label{eq:parampol}
 		\begin{aligned}
@@ -1088,10 +933,10 @@ This approach opens several promising avenues for advancement. The scalability t
 
 Our analysis reveals that the 5-dimensional scalar space contains a 3-dimensional conformal manifold. The discovered solutions preserve a ${\rm U}(1) \times {\rm U}(1)$ gauged symmetry and breaks all supersymmetries. The Zamolodchikov metric on the moduli space provides a concrete geometric description of the conformal manifold. While the specific solutions found may have limited direct physical applications, the demonstrated feasibility of our approach and its potential for systematic classification of flat directions across the supergravity landscape make it a valuable addition to the theoretical physicist's toolkit. As the solutions live in a 3d consistent truncation of both the ${\rm AdS}_3 \times S^3$ solution of ${\cal N}=(1,1)$ six-dimensional supergravity and of the ${\rm AdS}_3 \times S^3 \times T^4$ vacuum of IIB supergravity, we can uplift the solution to 6d and 10d using the tools of exceptional field theory (ExFT)~\cite{Hohm:2014fxa,Hohm:2014qga,Hohm:2017wtr}. The higher-dimensional solutions would be of the form ${\rm AdS}_3 \times M^3$ or ${\rm AdS}_3 \times M^7$, with $M^{3}$, and $M^{7}$ being deformations of the round $S^{3}$ and $S^{3}\times {\rm T}^{4}$, respectively. These deformed spaces have as moduli the 3 parameters $\{x_{1},x_{2},x_{4}\}$ that define the solutions. ExFT gives further access to the full Kaluza-Klein spectrum for those compactifications~\cite{Malek:2019eaz,Malek:2020yue,Eloy:2020uix}, allowing a test of the perturbative stability of the solutions, and giving valuable information on the spectrum of states of the dual CFT. These applications relies entirely on the fact that we have an analytic parametrisation of the solutions thanks to the symbolic regression we performed. We live these for future works.
 
-The marriage of machine learning techniques with traditional supergravity analysis represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, we envision this methodology becoming a standard tool for exploring the intricate relationships between geometry, symmetry, and dynamics in supergravity theories. \ce{Not sure if I agree with the last sentence. Maybe we could weaken the statement a bit?}
+The marriage of machine learning techniques with the study of geometry, symmetry, and dynamics in supergravity theories represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, this marriage might become an important player for exploring the landscape of supergravity theories. \ce{Bastien: change here.}
 
 \section*{Acknowledgements}
-We would like to thank Magdalena Larfors, whose talk on Machine Learning at the kick-off meeting of the COST action ``Fundamental challenges in theoretical physics'' in Padova in May 2024 triggered this project. We are thankful to \ce{Jan? for ...}, and to Nelly Pustelnik, Jason Reneuve and Henning Samtleben for inspiring discussions. \ce{Funding Bastien?} \ce{Others?}
+We would like to thank Magdalena Larfors, whose talk on Machine Learning at the kick-off meeting of the COST action ``Fundamental challenges in theoretical physics'' in Padova in May 2024 triggered this project. We are thankful to \ce{Jan? for ...}, and to Nelly Pustelnik, Jason Reneuve and Henning Samtleben for inspiring discussions. \ce{Funding Bastien?} \ce{Others?} \ce{Mitchell foundations and Cook branch.}
 
 
 \appendix
