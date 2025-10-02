@@ -42,6 +42,9 @@
 \definecolor{mygreen}{RGB}{21, 124, 80}
 \definecolor{myblack}{RGB}{43, 65, 82}
 \definecolor{myred}{rgb}{0.5, 0.0, 0.13}
+\definecolor{clusteringred1}{RGB}{139, 0, 0}
+\definecolor{clusteringred2}{RGB}{231, 76, 60}
+\definecolor{clusteringyellow1}{RGB}{192, 200, 44}
 
 % ---- SECTIONING ----
 \usepackage{titlesec}
@@ -273,19 +276,23 @@ color=charcoal
 \vspace{25pt}
 		
 
-{\large  Bastien Duboeuf$^{1}$, Camille Eloy$^{1}$ \,and\, Gabriel Larios$^{2}$}
+{\large  Bastien Duboeuf$^{1}$, Camille Eloy$^{2}$ \,and\, Gabriel Larios$^{3}$}
 		
 \vspace{25pt}
 		
 		
 	\begin{small}
 
-	{\it $^{1}$ ENS de Lyon, CNRS, LPENSL, UMR5672,\\ 69342, Lyon cedex 07, France}  \\
+	{\it $^{1}$ Max-Planck-Institut f\"ur Gravitationsphysik (Albert-Einstein-Institut)\\ Am M\"uhlenberg 1, DE-14476 Potsdam, Germany}  \\
+
+	\vspace{10pt}
+
+	{\it $^{2}$ ENS de Lyon, CNRS, LPENSL, UMR5672,\\ 69342, Lyon cedex 07, France}  \\
 
 
 	\vspace{10pt}
 	
-	{\it $^{2}$ Mitchell Institute for Fundamental Physics and Astronomy, \\
+	{\it $^{3}$ Mitchell Institute for Fundamental Physics and Astronomy, \\
 	Texas A\&M University, College Station, TX, 77843, USA}     \\
 		
 	\end{small}
@@ -297,7 +304,7 @@ color=charcoal
 
 \begin{abstract}
 	We investigate the structure of conformal manifolds around AdS$_3 \times S^3$ which lift from continuous flat directions in the scalar potential of gauged supergravity resulting from six-dimensional $\mathcal{N}=(1,1)$.
-	Our approach combines numerical exploration and symbolic inference. For the latter, we develop a symbolic regression algorithm based on Annealed Importance Sampling (AIS) combined with Sequential Monte Carlo (SMC), well-suited to uncovering polynomial constraints in high-dimensional parameter spaces. 
+	Our approach combines numerical exploration and symbolic inference. For the latter, we develop a symbolic regression algorithm based on Annealed Importance Sampling combined with Sequential Monte Carlo, well-suited to uncovering polynomial constraints in high-dimensional parameter spaces. 
 	The algorithm reconstructs a set of polynomial relations that provides an explicit analytic parametrization of a new family of solutions. 
 \end{abstract}
 
@@ -313,7 +320,7 @@ color=charcoal
 
 \section{Introduction}
 
-The AdS/CFT correspondence stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between string theory solutions on anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries~\cite{Maldacena:1997re}. This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. The CFT side plays a crucial role in statistical physics, as CFT are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow and this is this latter aspect that is our interest in this paper. An interesting question is indeed to know whether those CFT are isolated fixed points of RG flows, or belong to a continuous family of CFT. If this is the case, the space of continuous deformations that takes from one CFT to another is called a conformal manifold. These deformations are parametrised by exactly marginal operators, or in other words operators that preserves the conformal symmetry, \textit{i.e.} whose $\beta$ functions exactly vanish. ICI \ce{Needs some modifications.}
+The AdS/CFT correspondence stands as one of the most profound dualities in theoretical physics, establishing a remarkable equivalence between string theory solutions on anti-de Sitter (AdS) spacetimes and conformal field theories (CFTs) living on their boundaries~\cite{Maldacena:1997re}. This correspondence has revolutionized our understanding of both quantum gravity and strongly coupled field theories, providing unprecedented insights into the holographic nature of gravity. Within this holographic framework, supergravity theories in AdS backgrounds serve as the low-energy effective descriptions of string theory compactifications, making them natural laboratories for exploring the gravitational side of the duality. The CFT side plays a crucial role in statistical physics, as CFT are known to describe phase transitions ; they are also fixed point of Renormalisation Group flow and this is this latter aspect that is our interest in this paper. An interesting question is indeed to know whether those CFT are isolated fixed points of RG flows, or belong to a continuous family of CFT. If this is the case, the space of continuous deformations that takes from one CFT to another is called a conformal manifold. These deformations are parametrised by exactly marginal operators, or in other words operators that preserves the conformal symmetry, \textit{i.e.} whose $\beta$ functions exactly vanish. \ce{Needs some modifications.}
 
 From the AdS/CFT correspondence perspective, conformal manifolds on the boundary theory are dual to continuous families of AdS solutions where the (possibly warped) AdS factor stays undeformed. If a consistent truncation on these solutions exists, conformal manifolds can also be identified as flat directions in the scalar potential of the truncation. Along these directions, the scalar field configurations vary continuously while the cosmological constant remains unchanged. Supersymmetry is believed to be necessary for the existence of holographic conformal manifolds, as non-supersymmetric AdS solutions are expected to be unstable~\cite{Ooguri:2016pdq,Palti:2019pca}. However, recent investigations have identified AdS$_4$ configurations that appear to evade this requirement, with no evidence of standard decay channels -- neither perturbative nor non-perturbative -- being present~\cite{Giambrone:2021wsm}. The situation is even richer in the context of AdS$_3$/CFT$_2$, as current-current deformations, given by products $J\bar J$ of (anti-)holomorphic conserved currents, are exactly marginal in two dimensions~\cite{Chaudhuri:1988qb}, although they may break supersymmetry. The question of the exact form of the gravity dual to $J\bar J$ deformations is however open. A well-known example is given in ref.~\cite{Aharony:2001dp,Dong:2014tsa}, and recent works have demonstrated the existence of vast families of classically marginal deformations of the ${\rm AdS}_{3}\times S^{3}\times {\rm T}^{4}$ and ${\rm AdS}_{3}\times S^{3}\times S^{3}\times S^{1}$ solutions of type IIB supergravity that are perturbatively stable despite supersymmetry breaking~\cite{Eloy:2023zzh,Eloy:2023acy,Eloy:2024lwn}. These deformations were shown in ref.~\cite{Eloy:2024lwn} to be equivalent to current-current deformations of the worldsheet Wess-Zumino-Witten models~\cite{Gepner:1986wi} describing the undeformed solutions~\cite{Eberhardt:2017pty,Eberhardt:2018ouy}, giving strong indications that their CFT duals arise from $J\bar J$ deformations as well.
 
@@ -560,19 +567,16 @@ The second term is a regularisation factor that prevents the algorithm to send a
 We typically take $\lambda \sim \mathcal{O}(10^3)$. 
 Together with the loss function, we also need to specify a cooling schedule for $\beta$. We will discuss different approaches in the next section.
 		
-		Once the Annealing loop is over, we end up with a total of $n_{\rm sample}$ particles, which in principle should be close to annihilate our data, but whose coefficients may need some refinement. To deal with it, for each polynomial we now only modify its coefficients with a perturbation $\epsilon \sim \mathcal{N}(0, \sigma')$ and keep the particles when the loss function decreases.
-
-%		\bd{Results for naive choices of parameters (numbers of iteration and particles, probabilities, $\beta$) and motivate them (we want some exploration and then exploitation, not too long computations): for multiple runs we find multiple polynomials (good polynomial: after exploitation we convert the coefficients to integers and square roots, and recompute loss without regularisation, select with threshold). Quantify it nicely: success rates for each polynomials, and absolute number of success, failing rate. Total time needed, without cluster or fancy computers.}
-	%\end{itemize}
+Once the AIS-SMC loop is over, we end up with a total of $n_{\rm sample}$ particles, which in principle should be close to annihilate our data, but whose coefficients may need some refinement. To deal with it, for each polynomial we now only modify its coefficients with a perturbation $\epsilon \sim \mathcal{N}(0, \sigma')$ and keep the particles when the loss function decreases.
 
 
 
 %%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%
-\section{Sequential Monte Carlo sampler for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
+\section{Annealed Sequential Monte Carlo sampler for Polynomial Symbolic Regression} \label{Sec:AIS-SMC}
 
 	\subsection{General idea}
-	The numerical sampling of the space of vacua described above results in clouds of points embedded in a higher-dimensional space. 
+	The numerical sampling of the space of vacua (described in sec.~\ref{sec:graddes}) results in clouds of points embedded in a higher-dimensional space. 
 	The aim of symbolic regression is to uncover interpretable mathematical expressions that best describe the embedding of these loci of solutions. 
 	In the present context, the form of the supergravity potential \eqref{eq:scalarpotential} determining the solutions implies that the loci can be defined through polynomials $p_{m}$ such that $p_{m}\big(\vec{x}^{(i)}\big) = 0$, with $i \in \{1, \dots, n_{\rm points}\}$. Such polynomials will be called ``annihilating polynomials'' in the following.
 	Finding annihilating polynomials involves navigating a vast, discrete, and often rugged search space of possible symbolic models, which poses significant challenges for traditional sampling methods. 
@@ -592,7 +596,7 @@ Together with the loss function, we also need to specify a cooling schedule for 
 	\end{equation}
 	where $w^{(k)} = w\big(z^{(k)}\big)$. The sample admits $d$ as marginal distribution asymptotically when $n_{\rm particles}\rightarrow+\infty$. The accuracy of this estimation depends on the size of the sample and, crucially, on the choice of the distribution $\pi$, that needs to be close enough to $d$. 
 	
-	However, providing a good importance distribution $\pi$ remains a hard problem. In order to fix this point, we employ a Sequential Monte Carlo sampler (SMC)~\cite{del2006sequential,DoucetTutorial,naesseth2024elementssequentialmontecarlo} mixed with inspirations from Annealed Importance Sampling (AIS)~\cite{neal1998annealedimportancesampling}. SMC aims at estimating $\pi$ sequentially from multiple intermediate distributions $\pi_{n}$ that smoothly transition from an initial, tractable distribution $\pi_{0}$ (chosen to be easy to sample from) to the complex distribution $\pi$. These distributions are approximated by weighted samples of particles $\big\{z^{(k)}_{n},w^{(k)}_{n}\big\}$ approximating $\pi_{n}$:
+	However, providing a good importance distribution $\pi$ remains a hard problem. In order to fix this point, we employ a Sequential Monte Carlo sampler (SMC)~\cite{del2006sequential,DoucetTutorial,naesseth2024elementssequentialmontecarlo} enhanced by Annealed Importance Sampling (AIS)~\cite{neal1998annealedimportancesampling}. SMC aims at estimating $\pi$ sequentially from multiple intermediate distributions $\pi_{n}$ that smoothly transition from an initial, tractable distribution $\pi_{0}$ (chosen to be easy to sample from) to the complex distribution $\pi$. These distributions are approximated by weighted samples of particles $\big\{z^{(k)}_{n},w^{(k)}_{n}\big\}$ approximating $\pi_{n}$:
 	\begin{equation} \label{eq:pifromweights}
 		\pi_{n}(z) \simeq \sum_{k=1}^{n_{\rm particles}} \tilde{w}^{(k)}_{n}\,\delta(z-z^{(k)}_{n}),
 	\end{equation}
@@ -600,7 +604,7 @@ Together with the loss function, we also need to specify a cooling schedule for 
 	
 	This procedure has the disadvantage that the weights variance tends to increase, leading to weight degeneracy. AIS-SMC includes a resampling procedure, thus focussing computational effort on high-probability regions.  This combination of importance sampling, mutation and resampling maintains diversity among the particles and prevents premature convergence to suboptimal models. These features make AIS-SMC particularly well-suited for symbolic regression tasks, where the search space is not only high-dimensional but also structured and discontinuous.
 
-	\subsection{Detailed procedure}	
+	\subsection{Detailed procedure}	\label{sec:detailedAISSMC}
 	Let us now explain in more detail the procedure, based on ref.~\cite{del2006sequential,DoucetTutorial,naesseth2024elementssequentialmontecarlo}. 
 	The goal is to obtain particles sampled from a probability distribution $d(z)$, where $z$ runs over a space of polynomials, that assigns high probabilities to those polynomials that annihilate the data, and therefore will be used to identify their symbolic expressions. We reconstruct this density function $d$ by series of density functions $\pi_n(z)$, $n\in\llbracket0,n_{\rm epochs}\rrbracket$, such that $\pi_n\to d$ as $n\to n_{\rm epochs}$. On every annealing step, $\pi_n$ is defined in terms of an unnormalised density $\gamma_n$ and a normalisation constant as $\pi_n(z) = \gamma_n(z)/Z_n$. The unnormalised density at level $n$ is given in terms of a prior distribution $d_0(z)$ over the space of polynomials and a loss function $L(z)$, as
 		\begin{equation}\label{eq:gamman}
@@ -608,11 +612,11 @@ Together with the loss function, we also need to specify a cooling schedule for 
 		\end{equation}
 	where the inverse temperature constants $\beta_n$ are taken to evolve monotonically as $\beta_0 < \beta_1 <\dots< \beta_{n_{\rm epochs}}$. The importance given to each polynomial $z$ is thus updated at each steps, with polynomials $z$ with high loss being disfavoured. This update is controlled by the inverse temperature constants, enabling deeper exploration during the early stages and protecting the procedure from being trapped in local minima. The loss function is chosen to be minimal on annihilating polynomials, its design will be discussed at the end of the section. We choose the prior distribution $d_{0}$ to be flat on the space of polynomials, giving equal importance to all of them, which makes easy the initial sampling of the weighted particles $\big\{z^{(k)}_{0},w^{(k)}_{0} = 1/n_{\rm particles}\big\}$.
 
-	At each epoch $n\geq1$, we do not directly approximate $\pi_{n}$, but rather a distribution $\tilde{\pi}_{n}\big(z_{0:n}^{(k)}\big) = \tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)/\tilde{Z}_{n}$, with $z_{0:n}^{(k)} = \big(z_{0}^{(k)},\ldots,z_{n}^{(k)}\big)$, that knows about the whole path of the particles until step $n$. $\tilde{\gamma}_{n}$ is defined thanks to a backward propagation kernel $K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big)$:
+	At each epoch $n\geq1$, we do not directly approximate $\pi_{n}$, but rather a distribution $\tilde{\pi}_{n}\big(z_{0:n}^{(k)}\big) = \tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big)/\tilde{Z}_{n}$, with $z_{0:n}^{(k)} = \big(z_{0}^{(k)},\ldots,z_{n}^{(k)}\big)$, that describes the global trajectory of the particles until step~$n$. $\tilde{\gamma}_{n}$ is defined thanks to a backward propagation kernel $K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big)$:
 	\begin{equation}
 		\tilde{\gamma}_{n}\big(z_{0:n}^{(k)}\big) = \gamma_{n}\big(z_{n}^{(k)}\big)\,\prod_{i=1}^{n} K\big(z^{(k)}_{i-1}\vert z^{(k)}_{i}\big).
 	\end{equation}
-	This way, the distribution $\tilde{\pi}_{n}$ describes $\pi_{n}$ as well as the trajectory that followed the particles from epochs $0$ to $n$. This allows for more accuracy, correcting potential bias introduced by the mutations, and results in a setup that is more tunable.
+	This way, the distribution $\tilde{\pi}_{n}$ describes $\pi_{n}$ as well as the path that followed the particles from epochs $0$ to $n$. This allows for more accuracy, correcting potential bias introduced by the mutations, and results in a setup that is more tunable.
 	
 	At the beginning of epoch $n\geq1$, $\tilde{\pi}_{n-1}$ is approximated \textit{via} Importance Sampling from an importance distribution $\eta_{n-1}$, \textit{i.e.} from a set of particles and weights $\big\{z_{n-1}^{(k)},\ w_{n-1}^{(k)}\big\}$ using eq.~\eqref{eq:pifromweights}, with $\big\{z_{n-1}^{(k)}\big\}$ drawn from $\eta_{n-1}$ and $w_{n-1}^{(k)} = \tilde{\gamma}_{n-1}\big(z_{0:n-1}^{(k)}\big)/\eta_{n-1}\big(z_{0:n-1}^{(k)}\big)$.\footnote{We define $\eta_{0} = \pi_{0} = \tilde{\pi}_{0} = d_{0}$.} The importance density $\eta_{n-1}$ get mutated using a forward propagation Markov kernel $q\big(z^{(k)}_{n}\vert z^{(k)}_{n-1}\big)$, defining the probability to get $z^{(k)}_{n}$ when the current state is $z^{(k)}_{n-1}$:
 	\begin{equation}
@@ -633,7 +637,7 @@ Together with the loss function, we also need to specify a cooling schedule for 
 	For the implementation of the forward propagation kernel, we perform an AIS-style MCMC algorithm. On every epoch, we make some move in the space of polynomials, and then accept or reject those new polynomials based on a fixed rate. The moves that have been allowed in our implementation are the following.
 	\begin{itemize}
 		\item \textbf{Coefficient perturbation}\quad Given a polynomial, we choose one of its coefficients at random and modify it by a Gaussian noise distributed as $\mathcal{N}(0,\sigma^2)$, \textit{e.g.}
-		\begin{equation}
+		\begin{equation} \label{eq:coeffperturb}
 			2\, x_1x_{2} + 3\, x_2^2 \longmapsto  2.1\, x_1x_{2} + 3\, x_2^2.
 		\end{equation}
 		\item \textbf{Variable multiplication}\quad Given a polynomial, we pick randomly one of its monomials, and multiply it by one of the available variables, \textit{e.g.}
@@ -790,7 +794,7 @@ with the vectors $\vec{X}$ and $\vec{y}$ given in~\eqref{eq:defvecX} and~\eqref{
 		\label{fig:Analyze_V_points}
 	\end{figure}
 	
-	Upon completion, the loss function converges around $0.002$ \gl{$10^{-3}$?}. The distribution of the values of the gradient at each of the data points is plotted in fig.~\ref{fig:log_grad_V}. More than $93\%$ of the points converged to values of $\vert\nabla V\vert$ lower than $10^{-4}$, and more than $99\%$ of them exhibited gradient norms smaller than $10^{-3}$, yielding a satisfying sampling of the flat directions. As can be observed in fig.~\ref{fig:log_Vp4}, all data points converged to values close to $V(0)=-4$. Specifically, nearly all points attained $V(0)$ within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were of the order of $10^{-3}$ (not visible on the graph). As the origin $\vec{X}=0$ of the parameter space corresponds to the three-dimensional truncation of the round ${\rm AdS}_{3}\times S^{3}$ solution of half-maximal supergravity in six dimensions with $V(0)=-4$, this confirms that the data points lie within flat directions of the potential.
+	Upon completion, the loss function converges around $10^{-3}$. The distribution of the values of the gradient at each of the data points is plotted in fig.~\ref{fig:log_grad_V}. More than $93\%$ of the points converged to values of $\vert\nabla V\vert$ lower than $10^{-4}$, and more than $99\%$ of them exhibited gradient norms smaller than $10^{-3}$, yielding a satisfying sampling of the flat directions. As can be observed in fig.~\ref{fig:log_Vp4}, all data points converged to values close to $V(0)=-4$. Specifically, nearly all points attained $V(0)$ within an absolute error of at least $10^{-4}$, with the exception of four points whose deviations were of the order of $10^{-3}$ (not visible on the graph). As the origin $\vec{X}=0$ of the parameter space corresponds to the three-dimensional truncation of the round ${\rm AdS}_{3}\times S^{3}$ solution of half-maximal supergravity in six dimensions with $V(0)=-4$, this confirms that the data points lie within flat directions of the potential.
 
 	\begin{figure}
 		\centering
@@ -820,21 +824,36 @@ This, way, we remove the possible intersection points with local dimension 4 or 
 For the purpose of the clustering, we use the density-based algorithm HDBSCAN~\cite{10.1007/978-3-642-37456-2_14}. 
 As it can be observed in fig.~\ref{triangular_plot_1_2_4_8_10}, the points obtained after the gradient descent are denser around the origin, leading the algorithm to disregard points with a norm greater than 1. 
 To avoid this effect, we de-sample the densest areas by randomly selecting no more than 10 points per 0.25-sided hyper-cube, and apply the HDBSCAN algorithm on the remaining 72,216 points, with minimum cluster size set to 5 points. 
-The algorithm identifies one cluster made of 5 points, one other with 71,993 points, and fails to assign any cluster to 218 points. We show in fig.~\ref{fig:3dplots} some 3d projections of the data to visualize the clustering. In these scatter plots, orange points belong to the main cluster, while blue points are those that the algorithm failed to assign to any cluster. The smallest cluster, made of 5 points, is likely an artefact of local fluctuations in the data density and is not interpreted as physically meaningful. The size of the different points has been adjusted to facilitate the visualisation. From visual inspection, it appears that the unassigned (blue) points lie mostly on the boundary of the sampled region. We therefore interpret their unassigned status not as evidence of belonging to another manifold, but rather as a result of insufficient local density near the edges of the dataset. Thus, the algorithm does indicate that over 99\% of the data belongs to a single dominant cluster.
+The algorithm identifies one cluster made of 5 points, one other with 71,993 points, and fails to assign any cluster to 218 points. We show in fig.~\ref{fig:3dplots} some 3d projections of the data to visualize the clustering. In these scatter plots, red points belong to the main cluster, while yellow points are those that the algorithm failed to assign to any cluster. The smallest cluster, made of 5 points, is likely an artefact of local fluctuations in the data density and is not interpreted as physically meaningful. The size of the different points has been adjusted to facilitate the visualisation. From visual inspection, it appears that the unassigned (blue) points lie mostly on the boundary of the sampled region. We therefore interpret their unassigned status not as evidence of belonging to another manifold, but rather as a result of insufficient local density near the edges of the dataset. Thus, the algorithm does indicate that over 99\% of the data belongs to a single dominant cluster.
 
 	\begin{figure}
 		\centering
-		\subfigure{ \label{fig:3dx4x8x10}
-			\begin{tikzpicture}
-		  		\draw (0,0) node (fig1) {\includegraphics[scale=0.7, trim = 0.75cm 0 0 1cm, clip]{Figures/3d_plot_x4_x8_x10_21_05_2025_desampled.png}};
-		  		\draw ($(fig1.north west) + (0,0)$) node {\small (a)};
-		  		\draw (9,0) node (fig2) {\includegraphics[scale=0.7, trim = 0.75cm 0 0 1cm, clip]{Figures/3d_plot_x1_x4_x8_21_05_2025_desampled.png}};
-		  		\draw ($(fig2.north west) + (0,0)$) node {\small (b)};
-		  		\draw (3.8,-3) node (leg) {\includegraphics[scale=0.85]{Figures/3d_plot_21_05_2025_desampled_legend.pdf}};
-		  	\end{tikzpicture}
+		\centerline{
+			\subfigure{ \label{fig:3dx4x8x10}
+				\begin{tikzpicture}
+					\draw (0,0) node (fig11) {\includegraphics[scale=0.7, trim = 0.25cm 0.2cm 0.25cm 1.2cm, clip]{Figures/3d_plot_x4_x8_x10_21_05_2025_desampled_1.png}};
+			  		\draw ($(fig11.north west) + (0,0)$) node {\small (a)};
+			  		\draw (5.75,-0.25) node (fig12) {\includegraphics[scale=0.7, trim = 0.5cm 0.1cm 1.3cm 1.4cm, clip]{Figures/3d_plot_x4_x8_x10_21_05_2025_desampled_2.png}};
+			  		% \draw ($(fig12.north west) + (0,0)$) node {\small (b)};
+			  		\draw (11.5,0) node (fig13) {\includegraphics[scale=0.7, trim = 0.25cm 0.2cm 0.2cm 1.2cm, clip]{Figures/3d_plot_x4_x8_x10_21_05_2025_desampled_3.png}};
+			  		% \draw ($(fig13.north west) + (0,0)$) node {\small (c)};
+
+			  		\begin{scope}[shift={(0,-5.75)}]
+			  			\draw (-0.25,0) node (fig21) {\includegraphics[scale=0.7, trim = 0.25cm 0.2cm 0.25cm 1.2cm, clip]{Figures/3d_plot_x1_x4_x8_21_05_2025_desampled_1.png}};
+				  		\draw ($(fig11.north west) + (0,-5.5)$) node {\small (b)};
+				  		\draw (5.75,-0.25) node (fig22) {\includegraphics[scale=0.7, trim = 0.2cm 0.1cm 0.35cm 1.4cm, clip]{Figures/3d_plot_x1_x4_x8_21_05_2025_desampled_2.png}};
+				  		\draw (11.75,0) node (fig33) {\includegraphics[scale=0.7, trim = 0.6cm 0.2cm 0.2cm 1.2cm, clip]{Figures/3d_plot_x1_x4_x8_21_05_2025_desampled_3.png}};
+			  		\end{scope}
+
+			  		\draw [thick, clusteringred1, fill=clusteringred2,opacity=0.9] (12,-2.6) circle [radius=2.5pt] node [right=0.3cm, black, opacity=1] {\small Cluster};
+			  		\draw [gray, fill=clusteringyellow1, opacity=0.6] (12,-3.1) circle [radius=3pt] node [right=0.3cm, black, opacity=1] {\small Not assigned};
+			  		\draw [rounded corners=2pt] (11.75,-2.35) rectangle +(2.75,-1.05);
+			  	\end{tikzpicture}
+			}
 		}
 		\subfigure{\label{fig:3dx1x4x8}}
-		\caption{3d projections of the data set in selected coordinates: (a) $(x_4, x_8, x_{10})$ and (b) $(x_1, x_4, x_8)$. The colors are assigned by the clustering algorithm: the orange points correspond to the cluster, while the blue points were not assigned to any cluster. The size of each class of points has been tuned to favour the visualisation.}
+		\vspace{-0.5cm}
+		\caption{3d projections of the data set in selected coordinates: (a) $(x_4, x_8, x_{10})$ and (b) $(x_1, x_4, x_8)$. The colors are assigned by the clustering algorithm: the red points correspond to the cluster, while the yellow points were not assigned to any cluster. The size of each class of points has been tuned to favour the visualisation.}
 		\label{fig:3dplots}
 	\end{figure}
 
@@ -845,21 +864,21 @@ The algorithm identifies one cluster made of 5 points, one other with 71,993 poi
 	
 	\subsubsection{Initialization of the algorithm}
 	
-	We initialized the algorithm with
+	We initialized the algorithm with\footnote{$n_{\rm points}$ is the number of points used in the gradient descent, see sec.~\ref{sec:graddes} ; $n_{\rm epochs}$, $n_{\rm particles}$, $\beta_{0}$, $p_{\rm shift}$, $p_{\rm multiply}$, and $p_{\rm divide}$ are, respectively, the number of steps, the number of particles, the initial inverse temperature and the probabilities of each MCMC moves used in the AIS-SMC procedure, see sec.~\ref{sec:detailedAISSMC} ; $\lambda$ is the regularisation parameter used in the loss function, see eq.~\eqref{eq:lossreg} ; $\sigma$ is the parameter defining the Gaussian noise for the coefficient perturbation move of the AIS-SMC procedure, see eq.~\eqref{eq:coeffperturb}.}
 	\begin{equation}	\label{eq:sample10000adaptativetemp}
 		\begin{aligned}
 			&\texttt{n\_points = 10,000},\\
 			&\texttt{n\_epochs = 1000},\\
-			&\texttt{beta  = 1e-6}, \\
-			&\texttt{p\_{modify} = 0.5},\\
+			&\texttt{n\_particles = 1000},\\
+			&\texttt{beta0  = 1e-6}, \\
+			&\texttt{p\_{shift} = 0.5},\\
 			&\texttt{p\_{multiply} = 0.25},\\
 			&\texttt{p\_{divide} = 0.25},\\
 			&\texttt{lambda = 1000},\\
-			&\texttt{sigma = 0.1},\\
-			&\texttt{n\_particles = 1000}.
+			&\texttt{sigma = 0.1}.
 		\end{aligned}
 	\end{equation}
-	%ICI \gl{link to notations in section 3}
+	\gl{link to notations in section 3}
 	The convenience of these parameters was determined empirically --a systematic analysis of its optimization is left for future work. For the representation of polynomials, we adopt a vectorial approach: each polynomial is represented as an array of its coefficients $\{c_m\}$, where $m \in \{1,\dots,n_{\text{mon}}\}$ and $n_{\text{mon}}$ denotes the number of available monomials, determined by the chosen maximum degree \texttt{max\_degree} and the number of variables. We also impose a constraint on the maximum number of terms within a single polynomial \texttt{max\_num\_monomials} to promote sparsity. \footnote{An alternative approach would be to encourage sparsity through the prior distribution or within the loss function formulation.} For our simulations, we chose:
 	\begin{equation} \label{eq:parampol}
 		\begin{aligned}
@@ -1069,7 +1088,10 @@ This approach opens several promising avenues for advancement. The scalability t
 
 Our analysis reveals that the 5-dimensional scalar space contains a 3-dimensional conformal manifold. The discovered solutions preserve a ${\rm U}(1) \times {\rm U}(1)$ gauged symmetry and breaks all supersymmetries. The Zamolodchikov metric on the moduli space provides a concrete geometric description of the conformal manifold. While the specific solutions found may have limited direct physical applications, the demonstrated feasibility of our approach and its potential for systematic classification of flat directions across the supergravity landscape make it a valuable addition to the theoretical physicist's toolkit. As the solutions live in a 3d consistent truncation of both the ${\rm AdS}_3 \times S^3$ solution of ${\cal N}=(1,1)$ six-dimensional supergravity and of the ${\rm AdS}_3 \times S^3 \times T^4$ vacuum of IIB supergravity, we can uplift the solution to 6d and 10d using the tools of exceptional field theory (ExFT)~\cite{Hohm:2014fxa,Hohm:2014qga,Hohm:2017wtr}. The higher-dimensional solutions would be of the form ${\rm AdS}_3 \times M^3$ or ${\rm AdS}_3 \times M^7$, with $M^{3}$, and $M^{7}$ being deformations of the round $S^{3}$ and $S^{3}\times {\rm T}^{4}$, respectively. These deformed spaces have as moduli the 3 parameters $\{x_{1},x_{2},x_{4}\}$ that define the solutions. ExFT gives further access to the full Kaluza-Klein spectrum for those compactifications~\cite{Malek:2019eaz,Malek:2020yue,Eloy:2020uix}, allowing a test of the perturbative stability of the solutions, and giving valuable information on the spectrum of states of the dual CFT. These applications relies entirely on the fact that we have an analytic parametrisation of the solutions thanks to the symbolic regression we performed. We live these for future works.
 
-The marriage of machine learning techniques with traditional supergravity analysis represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, we envision this methodology becoming a standard tool for exploring the intricate relationships between geometry, symmetry, and dynamics in supergravity theories. %ICI \ce{Not sure if I agree with the last sentence. Maybe we could weaken the statement a bit?}
+The marriage of machine learning techniques with traditional supergravity analysis represents a step toward more systematic approaches to understanding the rich geometric structures underlying these theories. As computational power increases and algorithms improve, we envision this methodology becoming a standard tool for exploring the intricate relationships between geometry, symmetry, and dynamics in supergravity theories. \ce{Not sure if I agree with the last sentence. Maybe we could weaken the statement a bit?}
+
+\section*{Acknowledgements}
+We would like to thank Magdalena Larfors, whose talk on Machine Learning at the kick-off meeting of the COST action ``Fundamental challenges in theoretical physics'' in Padova in May 2024 triggered this project. We are thankful to \ce{Jan? for ...}, and to Nelly Pustelnik, Jason Reneuve and Henning Samtleben for inspiring discussions. \ce{Funding Bastien?} \ce{Others?}
 
 
 \appendix
